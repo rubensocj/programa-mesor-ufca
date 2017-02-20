@@ -614,52 +614,7 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
         // Botão "Adicionar" interventor.
         btnAddInterventor = new JButton("Adicionar");
         btnAddInterventor.setPreferredSize(new Dimension(90, 20));
-        btnAddInterventor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /* Lida com erros de dados do usuário */
-                String mensagemErroInterventor;
-                
-                if(tfdNome.getText().isEmpty() || 
-                            tfdNome.getText().startsWith(" ")) {
-                    
-                    mensagemErroInterventor = "Informe um nome válido.";
-                
-                    /* Se houver erro, exibe mensagem de erro */
-                    JOptionPane mPane = new JOptionPane();
-                    mPane.setMessage(mensagemErroInterventor);
-                    mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
-                    mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-
-                    JDialog mDialog = mPane.createDialog(mPane, "Aviso");
-                    mDialog.pack();
-                    mDialog.setVisible(true);
-                    mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                } else {
-                    // Se não houver erro, executa a operação.                    
-                    interventor = new Interventor();
-                    interventor.setNome(tfdNome.getText());
-                    interventor.setSexo(tfdSexo.getText());
-                    interventor.setNascimento(tfdNascimento.getText());
-                    interventor.setAdmissao(tfdAdmissao.getText());
-                    interventor.setCargo(tfdCargo.getText());
-                    interventor.setFormacao(tfdFormacao.getText());
-                    interventor.setRemuneracao(tfdRemuneracao.getText());
-                    interventor.setEstadoCivil(tfdEstadoCivil.getText());
-                    interventor.setEndereco(tfdEndereco.getText());
-                    interventor.setCidade(tfdCidade.getText());
-
-                    /**
-                     * Converte os textos no formato String inseridos nos
-                     * JTextFields do painel interventor em variáveis do tipo
-                     * Object para a tabela adicioná-los a tabela da equipe.
-                     */
-                    modeloTabInterventor.addRow(interventor.toObject());
-
-                    limparTexto();
-                }
-            }
-        });
+        btnAddInterventor.addActionListener(new AddInterventor());
         
         // Botão "Remover" interventor.
         btnRemInterventor = new JButton("Remover");
@@ -818,5 +773,57 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
         pnlListas2.add(pnlListas1, BorderLayout.CENTER);
         
         return pnlListas2;
+    }
+    
+    
+    /** 
+     * {@inheritDoc}
+     * @see menu.JanelaAdicionarAlterar.ActionSalvar
+     */
+    private class AddInterventor extends JanelaAdicionarAlterar.ActionSalvar {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            /* Lida com erros de dados do usuário */
+            String mensagemErroInterventor;
+
+            if(tfdNome.getText().isEmpty() || 
+                        tfdNome.getText().startsWith(" ")) {
+
+                mensagemErroInterventor = "Informe um nome válido.";
+
+                /* Se houver erro, exibe mensagem de erro */
+                JOptionPane mPane = new JOptionPane();
+                mPane.setMessage(mensagemErroInterventor);
+                mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
+                mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
+
+                JDialog mDialog = mPane.createDialog(mPane, "Aviso");
+                mDialog.pack();
+                mDialog.setVisible(true);
+                mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            } else {
+                // Se não houver erro, executa a operação.                    
+                interventor = new Interventor();
+                interventor.setNome(tfdNome.getText());
+                interventor.setSexo(tfdSexo.getText());
+                interventor.setNascimento(tfdNascimento.getText());
+                interventor.setAdmissao(tfdAdmissao.getText());
+                interventor.setCargo(tfdCargo.getText());
+                interventor.setFormacao(tfdFormacao.getText());
+                interventor.setRemuneracao(tfdRemuneracao.getText());
+                interventor.setEstadoCivil(tfdEstadoCivil.getText());
+                interventor.setEndereco(tfdEndereco.getText());
+                interventor.setCidade(tfdCidade.getText());
+
+                /**
+                 * Converte os textos no formato String inseridos nos
+                 * JTextFields do painel interventor em variáveis do tipo
+                 * Object para a tabela adicioná-los a tabela da equipe.
+                 */
+                modeloTabInterventor.addRow(interventor.toObject());
+
+                limparTexto();
+            }
+        }
     }
 }
