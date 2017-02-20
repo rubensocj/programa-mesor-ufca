@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+	font-family: arial;
+   	background-color: #F8F8FF;
+}
+h1 {
+	color: #FFFFFF;
+    	background-color: #B0C4DE;
+    	padding: 20px;
+}
+h2 {
+	background-color: #ffec80;
+    	padding: 10px;
+}
+h3 {
+	background-color: #E6E6FA;
+	padding-left: 5px;
+}
+p {
+	margin: 10px;
+}
+p.topico {
+	padding-left: 15px;
+}
+</style>
+</head>
+
+<body>
+<h1>Adicionar demanda</h1>
+<h2>Informações gerais</h2>
+
+<h3>Data e hora</h3>
+<p>Data e hora da identificação da demanda <i>(Dia / Mês / Ano)</i> e <i>(Hora : Minuto)</i>.</p>
+
+<h3>Modo de falha</h3>
+<p>Os modos de falha devem normalmente estar relacionados à classe de equipamentos. Podem ser categorizados em três tipos:</p>
+<p>• Função desejada não obtida (<i>ex.</i> falha ao iniciar).</p>
+<p>• Função específica perdida ou fora dos limites de operação aceitáveis.</p>
+<p>• Indicativo de falha observado, mas não há impacto imediato e crítico no funcionamento da unidade de equipamento (estas são falhas tipicamente não críticas, relacionadas com alguma degradação ou condição de falha incipiente).</p>
+
+<h3>Data de início do serviço atual da unidade</h3>
+<p>Data de início de operação do atual serviço do equipamento.</p>
+
+<h3>Impacto no funcionamento da unidade</h3>
+<p>Efeito da falha na unidade de equipamento: crítica, não crítica, degradada, incipiente.</p>
+
+<h3>Condição de operação durante a falha<i>(opcional)</i></h3>
+<p>Estado operacional do equipamento no momento da falha: executando, inicializando, testando, inativo, em espera.</p>
+
+<h3>Causa <i>(opcional)</i></h3>
+<p>As circunstâncias durante o projeto, fabricação ou uso as quais levaram à falha. O objetivo é identificar o evento inicial (a "raiz") na sequência que conduziu a uma falha em um item de equipamento. São cinco categorias de causas de falhas, onde cada categoria é subdividida:</p>
+<p><strong>1.</strong> Causa relacionada ao projeto.</p>
+	<p class="topico"><strong>1.0</strong> Geral: configuração ou projeto inadequado do equipamento, sem detalhes adicionais conhecidos.</p>
+	<p class="topico"><strong>1.1</strong> Capacidade inadequada: capacidade/dimensionamento inadequado.</p>
+	<p class="topico"><strong>1.2</strong> Material inadequado: escolha do material inadequado.</p>
+
+<p><strong>2.</strong> Causa relacionada a fabricação/instalação.</p>
+	<p class="topico"><strong>2.0</strong> Geral: falha relacionada a fabricação ou instalação, sem detalhes adicionais conhecidos.</p>
+	<p class="topico"><strong>2.1</strong> Erro de fabricação: falha na fabricação ou processamento.</p>
+	<p class="topico"><strong>2.2</strong> Erro de instalação: falha na instalação ou na montagem.</p>
+
+<p><strong>3.</strong> Causa relacionada a operação/manutenção.</p>
+	<p class="topico"><strong>3.0</strong> Geral: falha relacionada a operação/uso ou manutenção do equipamento, sem detalhes adicionais conhecidos.</p>
+	<p class="topico"><strong>3.1</strong> Serviço fora de projeto: condições de serviço não intencionais ou fora das condições de projeto.</p>
+	<p class="topico"><strong>3.2</strong> Erro de operação: erro, mau uso, negligência, equívocos, etc. durante a operação.</p>
+	<p class="topico"><strong>3.3</strong> Erro de manutenção: erro, mau uso, negligência, equívocos, etc. durante a manutenção.</p>
+	<p class="topico"><strong>3.4</strong> Desgaste e quebra esperados: falha causada por desgaste e quebra esperados, resultantes da operação normal da unidade de equipamento.</p>
+
+<p><strong>4.</strong> Causa relacionada a gestão.</p>
+	<p class="topico"><strong>4.0</strong> Geral: falha relacionada a problemas de gestão, sem detalhes adicionais conhecidos.</p>
+	<p class="topico"><strong>4.1</strong> Erro de documentação: falha relacionada a procedimentos, especificações, projetos, relatórios, etc.</p>
+	<p class="topico"><strong>4.2</strong> Erro de gestão: falha relacionada a planejamento, organização, garantia da qualidade, etc.</p>
+
+<p><strong>5.</strong> Diversos.</p>
+	<p class="topico"><strong>5.0</strong> Geral: falha que nao se encaixa em nenhuma das outras categorias acima.</p>
+	<p class="topico"><strong>5.1</strong> Causa não encontrada: falha investigada, mas nenhuma causa específica encontrada.</p>
+	<p class="topico"><strong>5.2</strong> Causa comum: causa/modo comum.</p>
+	<p class="topico"><strong>5.3</strong> Causas combinadas: várias causas atuando simultaneamente. Se uma causa é predominante, esta deve ser destacada.</p>
+	<p class="topico"><strong>5.4</strong> Outra: nenhuma das causa acima se aplica. Especificada livremente por texto.</p>
+	<p class="topico"><strong>5.5</strong> Desconhecida: sem informações disponíveis relacionadas a causa da falha.</p>
+
+<h2>Equipamento</h2>
+
+<h3>Unidade</h3>
+<p>Unidade de equipamento na qual aconteceu a falha.</p>
+
+<h3>Subunidade <i>(opcional)</i></h3>
+<p>Subunidade do equipamento na qual aconteceu a falha.</p>
+
+<h3>Componente <i>(opcional)</i></h3>
+<p>Componente do equipamento no qual aconteceu a falha.</p>
+
+<h3>Parte <i>(opcional)</i></h3>
+<p>Parte do equipamento na qual aconteceu a falha.</p>
+</body>
+</html>
