@@ -25,12 +25,12 @@ public class ModeloTabela extends AbstractTableModel {
     private boolean conectado = false;
     
     // Nome e URL do banco de dados
-    private static final String BD_NAME = "dbprograma";
+    private static final String BD_NAME = "bdprograma";
     private static final String BD_URL = "jdbc:mysql://localhost:3306/" + BD_NAME;
     
     // Acesso ao servidor: usuário e senha
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "150613";
+    private static final String USERNAME = "mesor";
+    private static final String PASSWORD = "mesorufca1506";
     
     // Construtor
     public ModeloTabela(String consulta) throws SQLException {

@@ -20,12 +20,12 @@ import javax.swing.*;
 public class Teste {
     
     // Nome e URL do banco de dados
-    static final String BD_NAME = "dbprograma";
+    static final String BD_NAME = "bdprograma";
     static final String BD_URL = "jdbc:mysql://localhost:3306/" + BD_NAME;
     
     // Acesso ao servidor: usuário e senha
-    static final String USERNAME = "root";
-    static final String PASSWORD = "150613";
+    static final String USERNAME = "mesor";
+    static final String PASSWORD = "mesorufca1506";
     
     public static void main(String[] args) throws SQLException {
         
@@ -59,14 +59,11 @@ public class Teste {
             
             // query database
             resultSet = statement.executeQuery(
-            "SELECT objetivos_especificos.descricao " +
-            "FROM equipe, objetivos_especificos " +
-            "WHERE objetivos_especificos.id_time = 2 " +
-            "GROUP BY objetivos_especificos.id;");
+            "select * from sistema");
 //            
 //            // process query results
-//            ResultSetMetaData metaData = resultSet.getMetaData();
-//            int numColuna = metaData.getColumnCount();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int numColuna = metaData.getColumnCount();
 //            
 //            System.out.println("Tabela Descrição do banco de dados dbteste:\n");
 //            
@@ -79,16 +76,16 @@ public class Teste {
 //            resultSet.last();
 //            int numLinhas = resultSet.getRow();
 //            String[] obj = new String[numLinhas];
-//            java.util.Vector<String> vec = new java.util.Vector();
-//            
-//            resultSet.beforeFirst();
-//            while(resultSet.next()) {
-//                for (int i = 1; i <= numColuna; i++) {
-//                    vec.addElement(resultSet.getString(i));
-//                }
-//                
-//            } // end while
-//            System.out.println(vec.toString());
+            java.util.Vector<String> vec = new java.util.Vector();
+            
+            resultSet.beforeFirst();
+            while(resultSet.next()) {
+                for (int i = 1; i <= numColuna; i++) {
+                    vec.addElement(resultSet.getString(i));
+                }
+                
+            } // end while
+            System.out.println(vec.toString());
 //        } // end try // end try // end try // end try
 //        
 //        catch(SQLException sqlException) {
@@ -107,14 +104,14 @@ public class Teste {
 //            } // end catch
 //        } // end finally
 //        
-        String tabela = "objetivos_especificos";
-        String idEquipe = "2";
-        conexaoJavaSql.Lista lista = new conexaoJavaSql.Lista();
-        lista.setQuery("SELECT " + tabela + ".descricao " +
-            "FROM equipe, " + tabela + " " +
-            "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
-            "GROUP BY " + tabela + ".id;");
-            System.out.println(lista.toVector());
+//        String tabela = "objetivos_especificos";
+//        String idEquipe = "2";
+//        conexaoJavaSql.Lista lista = new conexaoJavaSql.Lista();
+//        lista.setQuery("SELECT " + tabela + ".descricao " +
+//            "FROM equipe, " + tabela + " " +
+//            "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
+//            "GROUP BY " + tabela + ".id;");
+//            System.out.println(lista.toVector());
         } catch(SQLException ex) {
             ex.printStackTrace();
         }finally {

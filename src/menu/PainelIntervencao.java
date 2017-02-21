@@ -86,26 +86,23 @@ public class PainelIntervencao {
         tabIntervencao.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         tabIntervencao.getColumnModel().getColumn(0).setPreferredWidth(40);
-        tabIntervencao.getColumnModel().getColumn(1).setPreferredWidth(70);
+        tabIntervencao.getColumnModel().getColumn(1).setPreferredWidth(100);
         tabIntervencao.getColumnModel().getColumn(2).setPreferredWidth(100);
-        tabIntervencao.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tabIntervencao.getColumnModel().getColumn(3).setPreferredWidth(160);
         tabIntervencao.getColumnModel().getColumn(4).setPreferredWidth(160);
-        tabIntervencao.getColumnModel().getColumn(5).setPreferredWidth(160);
-        tabIntervencao.getColumnModel().getColumn(6).setPreferredWidth(70);
+        tabIntervencao.getColumnModel().getColumn(5).setPreferredWidth(70);
+        tabIntervencao.getColumnModel().getColumn(6).setPreferredWidth(100);
         tabIntervencao.getColumnModel().getColumn(7).setPreferredWidth(100);
-        tabIntervencao.getColumnModel().getColumn(8).setPreferredWidth(100);
-        tabIntervencao.getColumnModel().getColumn(9).setPreferredWidth(60);
-        tabIntervencao.getColumnModel().getColumn(10).setPreferredWidth(100);
+        tabIntervencao.getColumnModel().getColumn(8).setPreferredWidth(60);
+        tabIntervencao.getColumnModel().getColumn(9).setPreferredWidth(100);
 
         tabIntervencao.getColumnModel().getColumn(0).setCellRenderer(render);
-        tabIntervencao.getColumnModel().getColumn(1).setCellRenderer(render);
-        tabIntervencao.getColumnModel().getColumn(4).setCellRenderer(render);
+        tabIntervencao.getColumnModel().getColumn(3).setCellRenderer(render);
         tabIntervencao.getColumnModel().getColumn(5).setCellRenderer(render);
         tabIntervencao.getColumnModel().getColumn(6).setCellRenderer(render);
         tabIntervencao.getColumnModel().getColumn(7).setCellRenderer(render);
         tabIntervencao.getColumnModel().getColumn(8).setCellRenderer(render);
         tabIntervencao.getColumnModel().getColumn(9).setCellRenderer(render);
-        tabIntervencao.getColumnModel().getColumn(10).setCellRenderer(render);
     }
     
     /**

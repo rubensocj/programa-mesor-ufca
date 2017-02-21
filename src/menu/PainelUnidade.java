@@ -106,21 +106,21 @@ public class PainelUnidade {
             
             // Subunidade
             tabSubunidade = new JTable(new ModeloTabela(
-                        "SELECT id, descricao FROM subunidade;"));
+                        "SELECT * FROM subunidade;"));
             
             tabSubunidade.setCellSelectionEnabled(false);
             atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
 
             // Componente
             tabComponente = new JTable(new ModeloTabela(
-                        "SELECT id, descricao FROM componente;"));
+                        "SELECT * FROM componente;"));
             
             tabComponente.setCellSelectionEnabled(false);
             atualizarAparenciaDaTabela(TAB_COMPONENTE);
 
             // Parte
             tabParte = new JTable(new ModeloTabela(
-                        "SELECT id, descricao FROM parte;"));
+                        "SELECT * FROM parte;"));
             
             tabParte.setCellSelectionEnabled(false);
             atualizarAparenciaDaTabela(TAB_PARTE);
@@ -147,7 +147,7 @@ public class PainelUnidade {
                     
                     try {
                         tabSubunidade.setModel(new ModeloTabela(
-                            "SELECT id, descricao FROM subunidade "
+                            "SELECT * FROM subunidade "
                             + "WHERE id_unidade = "
                             + String.valueOf(tabUnidade.getValueAt(
                                         tabUnidade.getSelectedRow(), 0))));
@@ -187,7 +187,7 @@ public class PainelUnidade {
                     
                     try {
                         tabComponente.setModel(new ModeloTabela(
-                            "SELECT id, descricao FROM componente "
+                            "SELECT * FROM componente "
                             + "WHERE id_subunidade = "
                             + String.valueOf(tabSubunidade.getValueAt(
                                         tabSubunidade.getSelectedRow(), 0))));
@@ -226,7 +226,7 @@ public class PainelUnidade {
                     
                     try {
                         tabParte.setModel(new ModeloTabela(
-                            "SELECT id, descricao FROM parte WHERE "
+                            "SELECT * FROM parte WHERE "
                             + "id_componente = "
                             + String.valueOf(tabComponente.getValueAt(
                                         tabComponente.getSelectedRow(), 0))));
@@ -356,6 +356,10 @@ public class PainelUnidade {
     // Métodos.
     // -------------------------------------------------------------------------
     
+    /**
+     * @deprecated 
+     * @param e 
+     */
     private void setEditavel(int e) {
         switch(e) {
             case TAB_EDITAVEL:
@@ -428,6 +432,7 @@ public class PainelUnidade {
 
                 tabSubunidade.getColumnModel().getColumn(0).setPreferredWidth(40);
                 tabSubunidade.getColumnModel().getColumn(1).setPreferredWidth(250);
+                tabSubunidade.getColumnModel().getColumn(2).setPreferredWidth(80);
 
                 tabSubunidade.getColumnModel().getColumn(0).setCellRenderer(render);
 
@@ -441,6 +446,7 @@ public class PainelUnidade {
 
                 tabComponente.getColumnModel().getColumn(0).setPreferredWidth(40);
                 tabComponente.getColumnModel().getColumn(1).setPreferredWidth(250);
+                tabComponente.getColumnModel().getColumn(2).setPreferredWidth(100);
 
                 tabComponente.getColumnModel().getColumn(0).setCellRenderer(render);
 
@@ -454,6 +460,7 @@ public class PainelUnidade {
 
                 tabParte.getColumnModel().getColumn(0).setPreferredWidth(40);
                 tabParte.getColumnModel().getColumn(1).setPreferredWidth(250);
+                tabParte.getColumnModel().getColumn(2).setPreferredWidth(100);
 
                 tabParte.getColumnModel().getColumn(0).setCellRenderer(render);
 
