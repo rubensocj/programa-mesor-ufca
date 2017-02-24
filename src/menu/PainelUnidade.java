@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import conexaoJavaSql.ModeloTabela;
 
 import equipamento.*;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
  * PainelUnidade.java
@@ -69,6 +70,9 @@ public class PainelUnidade {
     
     private final JPanel pnlSelecao;
     private final JPanel pnlUniFinal;
+    
+    private final JSplitPane splitPane;
+    private final BasicSplitPaneDivider divisor;
     
     /**
      * Construtor.
@@ -333,11 +337,33 @@ public class PainelUnidade {
         pnlUni.add(uPane, BorderLayout.CENTER);        
                         
         // SpliPanel horizontal Unidade / Subunidade, Componente, Parte
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                                    pnlUni, pnlDivisoes);
+        splitPane.setOpaque(true);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(290);
         
+        /** 
+         * Pega o divisor do JSplitPane como objeto
+         * da classe BasicSplitPaneDivider, usando getComponent(index)
+         */
+        divisor = (BasicSplitPaneDivider) splitPane.getComponent(2);
+        
+        // Define a largura, em pixel, do divisor
+        int largura = 5;
+        divisor.setDividerSize(largura);
+        
+        // Define a nova cor da borda externa do divisor
+        Color cor = new Color(172, 172, 172);
+        
+        /**
+         * Define a nova borda do divisor do JSplitPane, 
+         * com a cor e a largura especificadas
+         */
+        divisor.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 1, cor),
+                BorderFactory.createEmptyBorder(0, largura, 0, 0)));
+                
         // PainelUnidade "Itens selecionados"
         pnlSelecao = new JPanel(new FlowLayout());
         pnlSelecao.add(lblSelecionados);
