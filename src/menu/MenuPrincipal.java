@@ -69,8 +69,8 @@ public class MenuPrincipal extends JFrame {
         // Adiciona o item ao submenu "Adicionar"
         menuAdicionar.add(novaDemanda);
         menuAdicionar.add(novoEquipamento);
-        menuAdicionar.add(novaIntervencao);
         menuAdicionar.add(novaEquipe);
+        menuAdicionar.add(novaIntervencao);
         
         // Adiciona o item ao submenu "Alterar"
         menuAlterar.add(alterarDemanda);
@@ -224,6 +224,7 @@ public class MenuPrincipal extends JFrame {
     
     // Executa o programa
     public static void main(String[] args) {
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
         mostraMenuPrincipal();
         }
 }
