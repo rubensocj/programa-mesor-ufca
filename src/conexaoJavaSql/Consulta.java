@@ -17,7 +17,7 @@ public class Consulta {
     
     // Nome e URL do banco de dados.
     private static final String BD_NAME = "bdprograma";
-    private static final String BD_URL = "jdbc:mysql://localhost:3306/"+BD_NAME;
+    private static final String BD_URL = "jdbc:mysql://192.168.1.4:3306/"+BD_NAME;
     
     // Acesso ao servidor: usuário e senha.
     private static final String USERNAME = "mesor";

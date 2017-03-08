@@ -16,24 +16,25 @@ import java.util.Vector;
  */
 public class Lista extends AbstractListModel {
     
-    // Nome e URL do banco de dados.
-    private static final String BD_NAME = "dbprograma";
-    private static final String BD_URL = "jdbc:mysql://localhost:3306/"+BD_NAME;
-    
-    // Acesso ao servidor: usuário e senha.
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "150613";
-    
-    // Gerencia a conexão.
-    private static Connection connection = null;    
-    private ResultSet resultSet = null;    
-    private static Statement statement = null;
-    private ResultSetMetaData metaData = null;
+    private final Connection connection;
+    private final Statement statement;
+    private ResultSet resultSet;
+    private ResultSetMetaData metaData;
     private int numLinhas;
     
-    // lida com a conexão com o BD.
-    private static boolean conectado = false;
+    // lida com a conexão com o BD
+    private boolean conectado = false;
     
+    // Nome e URL do banco de dados
+    private static final String BD_NAME = "bdprograma";
+    private static final String BD_URL = "jdbc:mysql:" + 
+                                        "//192.168.1.4:3306/" + BD_NAME;
+    
+    // Acesso ao servidor: usuário e senha
+    private static final String USERNAME = "mesor";
+    private static final String PASSWORD = "mesorufca1506";
+    
+    private JList lista; //, listaAtributos;
     private Vector<String> vetorResultado;
     
     /**
@@ -42,7 +43,13 @@ public class Lista extends AbstractListModel {
      * @throws SQLException 
      */
     public Lista(String consulta) throws SQLException {
-        Lista.conectar();
+        
+        connection = DriverManager.getConnection(
+                    BD_URL, USERNAME, PASSWORD);
+        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+        conectado = true;
+        
         setQuery(consulta);
     }
     
@@ -51,29 +58,30 @@ public class Lista extends AbstractListModel {
      * @throws SQLException 
      */
     public Lista() throws SQLException {
-        Lista.conectar();
+        
+        connection = DriverManager.getConnection(
+                    BD_URL, USERNAME, PASSWORD);
+        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+        conectado = true;        
     }
     
     // -------------------------------------------------------------------------
     // Métodos private.
     // -------------------------------------------------------------------------
     
-    /**
-     * 
-     * @throws SQLException 
-     */
-    private static void conectar() throws SQLException {
-        connection = DriverManager.getConnection(
-                    BD_URL, USERNAME, PASSWORD);
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
-        conectado = true;
-    }
-    
     // -------------------------------------------------------------------------
     // Métodos public.
     // -------------------------------------------------------------------------
     
+    /**
+     * Define a consulta SQL a ser executada, passada como String pelo
+     * parâmetro.
+     * 
+     * @param q
+     * @throws SQLException
+     * @throws IllegalStateException 
+     */
     public void setQuery(String q) throws SQLException, IllegalStateException {
         if(!conectado) {
             throw new IllegalStateException("Sem conexão com o banco de dados");
@@ -87,10 +95,17 @@ public class Lista extends AbstractListModel {
         numLinhas = resultSet.getRow(); // Pega o número de linhas.
     }
     
+    /**
+     * Monta um vetor com o resultado da consulta.
+     * 
+     * @return Um vetor.
+     * @throws SQLException 
+     */
     public Vector<String> toVector() throws SQLException {
         vetorResultado = new Vector();
+        vetorResultado.addElement("");
         int numColuna = metaData.getColumnCount();
-            
+        
         resultSet.beforeFirst();
         while(resultSet.next()) {
             for (int i = 1; i <= numColuna; i++) {
@@ -126,6 +141,10 @@ public class Lista extends AbstractListModel {
         return "";
     } // Fim do método getElementAt
     
+    /**
+     * @deprecated 
+     * @return 
+     */
     public Object[] asObject() {
         Object[] obj = null;
         if(!conectado) {
@@ -142,6 +161,10 @@ public class Lista extends AbstractListModel {
         return obj;
     }
     
+    /**
+     * @deprecated 
+     * @return 
+     */
     public String[] asString() {
         String[] str = null;
         if(!conectado) {
@@ -157,7 +180,10 @@ public class Lista extends AbstractListModel {
         } // Fim do catch
         return str;
     }
-    
+     /**
+      * @deprecated 
+      * @return 
+      */
     public Vector<String> asVector() {
         Vector<String> str;
         str = null;
@@ -175,6 +201,11 @@ public class Lista extends AbstractListModel {
         return str;
     }
     
+    /**
+     * @deprecated 
+     * @param index
+     * @return 
+     */
     public Object listaSubunidadesBanco(int index) {
         Object model = null;
         if(!conectado) {
@@ -197,6 +228,5 @@ public class Lista extends AbstractListModel {
         }
         
         return model;
-    }
-    
+    }    
 }

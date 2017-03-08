@@ -85,7 +85,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                 p.setContentType("text/html");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarEquipamento.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) { ex.printStackTrace();
@@ -131,7 +131,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
         btnEscolher.addActionListener(new Escolher());
         btnEscolher.setPreferredSize(new Dimension(35, 25));
         btnEscolher.setIcon(
-                    new ImageIcon(local + "\\icone\\seta_dupla_direita.png"));
+                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_direita.png"));
         
         /**
          * Botão "Voltar" limpa o texto dos JTextFields e cancela a alteração.
@@ -140,7 +140,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
         btnVoltar.addActionListener(new Voltar());
         btnVoltar.setPreferredSize(new Dimension(35, 25));
         btnVoltar.setIcon(
-                    new ImageIcon(local + "\\icone\\seta_dupla_esquerda.png"));
+                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_esquerda.png"));
         
         /* Botão "Salvar alterações" executa a operação */
         btnSalvarAlteracao = new JButton("Salvar alterações");
@@ -185,6 +185,9 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
          * de escolha e alteração completo à direita.
          */
         pnlPrincipal = new JPanel(new BorderLayout(3,0));
+        try {
+            pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+        } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(painelAbas(), BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);
         return pnlPrincipal;

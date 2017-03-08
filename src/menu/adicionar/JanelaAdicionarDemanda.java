@@ -12,6 +12,8 @@ import intervencao.Demanda;
 import java.io.File;
 import java.io.IOException;
 
+import java.sql.SQLException;
+
 import menu.HoraFormatada;
 import menu.PainelUnidade;
 import menu.JanelaAdicionarAlterar;
@@ -76,7 +78,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
                 p.setContentType("text/html;charset=UTF-8");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarDemanda.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarDemanda.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
@@ -106,6 +108,9 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         criarBotoesOpcoes();
         
         pnlPrincipal = new JPanel(new BorderLayout());
+        try {
+            pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+        } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelDemanda(), BorderLayout.EAST);
         
@@ -209,23 +214,18 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
                     BorderFactory.createEmptyBorder(), "Modo de falha: * "));
         
         /* Impacto */
-        cbxImpacto = new JComboBox(new Object[] {"Selecionar...",
+        cbxImpacto = new JComboBox(new Object[] {"Selecione...",
             "Crítico", "Não crítico", "Degradado", "Incipiente"});
         cbxImpacto.setPrototypeDisplayValue("XXXXXXXXX");
         cbxImpacto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(cbxImpacto.getSelectedIndex()!=0) {
-                    // Se o item selecionado não for "Selecionar...".
+                    // Se o item selecionado não for "Selecione...".
                     impacto = cbxImpacto.getSelectedItem().toString();
                 } else {impacto = null;} // Caso contrário, impacto = null.
             }
         });
-        
-        // Painel Impacto
-        JPanel pnlImpacto = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlImpacto.add(lblImpacto);
-        pnlImpacto.add(cbxImpacto);
         
         /* Causa */
         cbxCausaCategoria = new JComboBox(new Object[] { // JComboBox Categoria.
@@ -244,7 +244,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(cbxCausaSubdivisao.getSelectedIndex()!=0) {
-                    // Se o item selecionado não for "Selecionar...".
+                    // Se o item selecionado não for "Selecione...".
                     String causaCbx;
                     causaCbx = cbxCausaSubdivisao.getSelectedItem().toString();
                     causa = causaCbx.substring(0,3);
@@ -327,7 +327,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
             }
         });
         
-        JPanel pnlCausa = new JPanel(new GridLayout(0,1,0,10)); // Painel Causa.
+        JPanel pnlCausa = new JPanel(new GridLayout(0,1,0,4)); // Painel Causa.
         pnlCausa.setBorder(BorderFactory.createTitledBorder(
                             BorderFactory.createEmptyBorder(), "Causa: "));
         pnlCausa.add(cbxCausaCategoria);
@@ -335,24 +335,18 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         
         /* Condição de operação da unidade durante a falha */
         cbxCondicaoOperacao = new JComboBox(new Object[] {
-            "Selecionar...", "Executando", "Inicializando", "Testando",
+            "Selecione...", "Executando", "Inicializando", "Testando",
             "Inativo", "Em espera"});
         cbxCondicaoOperacao.setPrototypeDisplayValue("XXXXXXXXX");
         cbxCondicaoOperacao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(cbxCondicaoOperacao.getSelectedIndex()!= 0) {
-                    // Se o item selecionado não for "Selecionar...".
+                    // Se o item selecionado não for "Selecione...".
                     condicao = cbxCondicaoOperacao.getSelectedItem().toString();
                 } else {condicao = null;} // Caso contrário, condicao = null.
             }
         });
-        
-        // Painel Condicao de Operaçao.
-        JPanel pnlCondicaoOperacao;
-        pnlCondicaoOperacao = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlCondicaoOperacao.add(lblCondicaoOperacao);
-        pnlCondicaoOperacao.add(cbxCondicaoOperacao);
         
         /* Data da demanda */
         tfdData = new JFormattedTextField();
@@ -385,9 +379,20 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         pnlSuperior.add(pnlDem1, "North");
         pnlSuperior.add(pnlModo, "Center");
         
-        JPanel pnlInferior = new JPanel(new GridLayout(0,1));
-        pnlInferior.add(pnlImpacto);
-        pnlInferior.add(pnlCondicaoOperacao);
+        // Painel com JLabel Impacto e Condicao de Operaçao.
+        JPanel pnllblImpactoCondicao = new JPanel(new GridLayout(0,1,0,8));
+        pnllblImpactoCondicao.add(lblImpacto);
+        pnllblImpactoCondicao.add(lblCondicaoOperacao);
+        
+        // Painel com JComboBoxes Impacto e Condicao de Operaçao.
+        JPanel pnlcbxImpactoCondicao;
+        pnlcbxImpactoCondicao = new JPanel(new GridLayout(0,1,0,4));
+        pnlcbxImpactoCondicao.add(cbxImpacto);
+        pnlcbxImpactoCondicao.add(cbxCondicaoOperacao);
+        
+        JPanel pnlInferior = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        pnlInferior.add(pnllblImpactoCondicao);
+        pnlInferior.add(pnlcbxImpactoCondicao);
         
         JPanel pnlDemanda1 = new JPanel(new BorderLayout(0,10));
         pnlDemanda1.setBorder(BorderFactory.createTitledBorder(

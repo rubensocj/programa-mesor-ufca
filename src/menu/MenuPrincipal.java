@@ -8,6 +8,7 @@ import menu.adicionar.*;
 import menu.alterar.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import javax.swing.*;
 
 public class MenuPrincipal extends JFrame {

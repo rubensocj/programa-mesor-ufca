@@ -15,6 +15,7 @@ import menu.JanelaAdicionarAlterar;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * JanelaAdicionarEquipamento.Java
@@ -24,25 +25,24 @@ import java.io.IOException;
  */
 public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
     
-    @SuppressWarnings("FieldMayBeFinal")
-    private JPanel pnlUniGeral, pnlUni1, pnlUniOp, pnlUni2, pnlSubInfo, pnl1,
+    public JPanel pnlUniGeral, pnlUni1, pnlUniOp, pnlUni2, pnlSubInfo, pnl1,
         pnl2, pnlCompInfo, pnl3, pnl4, pnlParte, pnl5, pnl6, pnlFinal,
         pnlEsquerda, pnl7, pnl8, pnl9;
     
-    private JLabel lblUniCategoria, lblUniClasse, lblUniTipo, lblUniFabricante,
+    public JLabel lblUniCategoria, lblUniClasse, lblUniTipo, lblUniFabricante,
         lblUniIdentificacao, lblUniLocal, lblUniDataAq, lblUniDataOp,
         lblUniModo;
     
-    private JTextField tfdUniCategoria, tfdUniClasse, tfdUniTipo,
+    public JTextField tfdUniCategoria, tfdUniClasse, tfdUniTipo,
         tfdUniFabricante, tfdUniIdentificacao, tfdUniLocal, tfdSubDescricao,
         tfdCompDescricao, tfdPteDescricao;
     
-    private JFormattedTextField tfdUniDataAq, tfdUniDataOp;
+    public JFormattedTextField tfdUniDataAq, tfdUniDataOp;
     
     private JButton btnSubAdicionar, btnSubRemover, btnCompAdicionar,
         btnCompRemover, btnPteAdicionar, btnPteRemover;
     
-    private JComboBox cbxModo, cbxSubunidade, cbxComponente, cbxParte;
+    public JComboBox cbxModo, cbxSubunidade, cbxComponente, cbxParte;
     
     public Unidade unidade = new Unidade();    
     private final String eventSelected = "ActionEvent";
@@ -81,7 +81,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
                 p.setContentType("text/html");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarEquipamento.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
@@ -109,12 +109,25 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
     public JPanel montarPainelPrincipal() {
         /* Cria os botões antes de montar o painel Principal */
         criarBotoesOpcoes();
+        /*
         
         pnlEsquerda = new JPanel(new BorderLayout());
         pnlEsquerda.add(painelGeral(), BorderLayout.NORTH);
         pnlEsquerda.add(painelOperacional(), BorderLayout.CENTER);
                 
         pnlPrincipal = new JPanel(new BorderLayout());
+        pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
+        pnlPrincipal.add(painelSubunidades(), BorderLayout.CENTER);
+        
+        */
+        pnlEsquerda = new JPanel(new BorderLayout());
+        pnlEsquerda.add(painelGeral(), BorderLayout.NORTH);
+        pnlEsquerda.add(painelOperacional(), BorderLayout.CENTER);
+        
+        pnlPrincipal = new JPanel(new BorderLayout());
+        try {
+            pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+        } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
         pnlPrincipal.add(painelSubunidades(), BorderLayout.CENTER);
         return pnlPrincipal;
@@ -164,7 +177,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
      * 
      * @return JPanel.
      */
-    private JPanel painelGeral() {
+    public JPanel painelGeral() {
         lblUniClasse = new JLabel("Classe: *");
         lblUniTipo = new JLabel("Tipo: *");
         lblUniFabricante = new JLabel("Fabricante: *");
@@ -237,7 +250,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
      * 
      * @return Um JPanel.
      */
-    private JPanel painelOperacional() {
+    public JPanel painelOperacional() {
         lblUniModo = new JLabel("Modo operacional normal: *");
         lblUniDataOp = new JLabel("Data de início de operação: *");
         

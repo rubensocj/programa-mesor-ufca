@@ -31,26 +31,14 @@ import conexaoJavaSql.ModeloTabela;
  * @author Rubens Jr
  */
 public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
-    private JPanel pnlUniGeral, pnlUni1, pnlUniOp, pnlUni2;
     private final JPanel pnlTabela;
     
-    private JLabel lblUniCategoria, lblUniClasse, lblUniTipo, lblUniFabricante,
-        lblUniIdentificacao, lblUniLocal, lblUniDataAq, lblUniModo;
-    
-    private JTextField tfdUniCategoria, tfdUniClasse, tfdUniTipo,
-        tfdUniFabricante, tfdUniIdentificacao, tfdUniLocal, tfdDescricao;
-    
-    private JFormattedTextField tfdUniDataAq;
-    
+    private JTextField tfdDescricao;
     public PainelUnidade pnlUnidade = new PainelUnidade();
     
     private static final int ALTERAR_UNIDADE = 0;
     private static final int ALTERAR_ITEM = 1;
     private static final int ALTERAR_NULL = 2;
-    
-    private JLabel lblUniDataOp;
-    private JComboBox cbxModo;
-    private JFormattedTextField tfdUniDataOp;
     
     /**
      * Construtor.
@@ -93,7 +81,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                 p.setContentType("text/html");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarEquipamento.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {ex.printStackTrace();}
@@ -125,7 +113,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
         btnEscolher.addActionListener(new Escolher());
         btnEscolher.setPreferredSize(new Dimension(35, 25));
         btnEscolher.setIcon(
-                    new ImageIcon(local + "\\icone\\seta_dupla_direita.png"));
+                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_direita.png"));
         
         /**
          * Botão "Voltar" limpa o texto dos JTextFields e cancela a alteração.
@@ -134,7 +122,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
         btnVoltar.addActionListener(new Voltar());
         btnVoltar.setPreferredSize(new Dimension(35, 25));
         btnVoltar.setIcon(
-                    new ImageIcon(local + "\\icone\\seta_dupla_esquerda.png"));
+                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_esquerda.png"));
         
         /* Botão "Salvar alterações" executa a operação */
         btnSalvarAlteracao = new JButton("Salvar alterações");
@@ -179,6 +167,9 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
          * e alteração completo à direita.
          */
         pnlPrincipal = new JPanel(new BorderLayout());
+        try {
+            pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+        } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlTabela, BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);
         
@@ -477,131 +468,6 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                 
             default: break;
         }
-    }
-    
-    /**
-     * Monta a área para alteração dos dados gerais da unidade.
-     * 
-     * @return Um JPanel.
-     */
-    private JPanel painelGeral() {
-        lblUniClasse = new JLabel("Classe: *");
-        lblUniTipo = new JLabel("Tipo: *");
-        lblUniFabricante = new JLabel("Fabricante: *");
-        lblUniIdentificacao = new JLabel("Identificação: *");
-        lblUniCategoria = new JLabel("Categoria: ");
-        lblUniLocal = new JLabel("Localização: ");
-        lblUniDataAq = new JLabel("Data de aquisição: ");
-        
-        tfdUniClasse = new JTextField(20);
-        tfdUniTipo = new JTextField(20);
-        tfdUniFabricante = new JTextField(20);
-        tfdUniIdentificacao = new JTextField(20);
-        tfdUniCategoria = new JTextField(20);
-        tfdUniLocal = new JTextField(20);
-        
-        tfdUniDataAq = new JFormattedTextField();
-        tfdUniDataAq.setFocusLostBehavior(JFormattedTextField.PERSIST);
-        tfdUniDataAq.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                tfdUniDataAq.setSelectionStart(0);
-                tfdUniDataAq.setSelectionEnd(10);
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(tfdUniDataAq.getText().contains(" ")) {
-                    tfdUniDataAq.setText("");
-                }
-            }});
-        try {
-            MaskFormatter mf = new MaskFormatter("##/##/####");
-            mf.install(tfdUniDataAq);
-            mf.setPlaceholder("DD/MM/AAAA");
-            mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
-        
-        // Adiciona os componentes ao JPanel.
-        JPanel pnlGeral1 = new JPanel(new GridLayout(0,1,0,8));
-        pnlGeral1.add(lblUniClasse);
-        pnlGeral1.add(lblUniTipo);
-        pnlGeral1.add(lblUniFabricante);
-        pnlGeral1.add(lblUniIdentificacao);
-        pnlGeral1.add(lblUniCategoria);
-        pnlGeral1.add(lblUniLocal);
-        pnlGeral1.add(lblUniDataAq);
-        
-        JPanel pnlGeral2 = new JPanel(new GridLayout(0,1,0,4));
-        pnlGeral2.add(tfdUniClasse);
-        pnlGeral2.add(tfdUniTipo);
-        pnlGeral2.add(tfdUniFabricante);
-        pnlGeral2.add(tfdUniIdentificacao);
-        pnlGeral2.add(tfdUniCategoria);
-        pnlGeral2.add(tfdUniLocal);
-        pnlGeral2.add(tfdUniDataAq);
-        
-        pnlUniGeral = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlUniGeral.add(pnlGeral1);      pnlUniGeral.add(pnlGeral2);
-
-        // Painel "Informações gerais".
-        pnlUni1 = new JPanel(new FlowLayout());
-        pnlUni1.setBorder(BorderFactory.createTitledBorder(
-                                BorderFactory.createEtchedBorder(),
-                                            "Informações gerais"));
-        pnlUni1.setOpaque(true);
-        pnlUni1.add(pnlUniGeral);
-        return pnlUni1;
-    }
-    
-    /**
-     * Monta a área para alteração dos dados de operação da unidade.
-     * 
-     * @return Um JPanel.
-     */
-    private JPanel painelOperacional() {
-        lblUniModo = new JLabel("Modo operacional normal: *");
-        lblUniDataOp = new JLabel("Data de início de operação: *");
-        
-        cbxModo = new JComboBox(
-                    new Object[] {
-                            "Selecionar...", "Executando", "Inicializando",
-                            "Testando", "Inativo", "Em espera"});
-        cbxModo.setPreferredSize(new Dimension(80, 20));
-        
-        tfdUniDataOp = new JFormattedTextField();
-        tfdUniDataOp.setColumns(15);
-        tfdUniDataOp.setFocusLostBehavior(JFormattedTextField.PERSIST);
-        tfdUniDataOp.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                tfdUniDataOp.setSelectionStart(0);
-                tfdUniDataOp.setSelectionEnd(10);
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(tfdUniDataOp.getText().contains(" ")) {
-                    tfdUniDataOp.setText("");
-                }
-            }});
-        try {
-            MaskFormatter mf = new MaskFormatter("##/##/####");
-            mf.install(tfdUniDataOp);
-            mf.setPlaceholder("DD/MM/AAAA");
-            mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
-        
-        pnlUniOp = new JPanel(new GridLayout(0,2,0,5));
-        pnlUniOp.add(lblUniModo);       pnlUniOp.add(cbxModo);
-        pnlUniOp.add(lblUniDataOp);     pnlUniOp.add(tfdUniDataOp);
-        
-        // Painel "Informações de operação".
-        pnlUni2 = new JPanel(new FlowLayout());
-        pnlUni2.setBorder(BorderFactory.createTitledBorder(
-                                BorderFactory.createEtchedBorder(),
-                                            "Informações de operação"));
-        pnlUni2.setOpaque(true);
-        pnlUni2.add(pnlUniOp);
-        return pnlUni2;
     }
     
     /**

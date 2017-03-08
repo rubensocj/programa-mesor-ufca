@@ -124,7 +124,7 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
                 p.setContentType("text/html");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarTime.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarTime.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {

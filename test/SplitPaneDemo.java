@@ -1,138 +1,67 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
-import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
-/**
- * Autor Rubens Oliveira da Cunha Júnior
- */
-public class SplitPaneDemo extends JPanel implements ListSelectionListener {
-    private final JList listaUnidade; //, listaAtributos;
+public class SplitPaneDemo extends JFrame {
+
     private final JSplitPane splitPane;
+    private final JLabel label1, label2;
     
-    private final Connection connection;
-    private final Statement statement;
-    private ResultSet resultSet;
-    private ResultSetMetaData metaData;
-    private int numLinhas;
-    
-    // lida com a conexão com o BD
-    private boolean conectado = false;
-    
-    // Nome e URL do banco de dados
-    private static final String BD_NAME = "dbprograma";
-    private static final String BD_URL = "jdbc:mysql://localhost:3306/" + BD_NAME;
-    
-    // Acesso ao servidor: usuário e senha
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "150613";
-    
-    public SplitPaneDemo() throws SQLException {
+    // Construtor
+    public SplitPaneDemo() {
+        super("SplitPane Demo");
         
-        connection = DriverManager.getConnection(
-                    BD_URL, USERNAME, PASSWORD);
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
-        conectado = true;
+        // Inicializa os JLabels
+        label1 = new JLabel();
+        label2 = new JLabel();
         
-        resultSet = statement.executeQuery("SELECT cod, classe FROM unidade;");
-        metaData = resultSet.getMetaData();
-        int numColuna = metaData.getColumnCount();
-        
-        java.util.Vector<String> vec = new java.util.Vector();
-        while(resultSet.next()) {
-            for (int i = 2; i <= numColuna; i++) {
-                vec.addElement(resultSet.getString(i - 1) + " - " + resultSet.getString(i));
-            }
-
-        } // end while
-        // ---------------------------------------------------------------------
-        
-        listaUnidade = new JList(vec);
-        listaUnidade.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listaUnidade.setSelectedIndex(0);
-        listaUnidade.addListSelectionListener(this);
-        
-//        listaAtributos
-        
-//        "%-8s\t"
-        
-        JScrollPane listScrollPane = new JScrollPane(listaUnidade);
-        
-//        try {
-//            JTable tabUnidade = new JTable(
-//                        new sql.TabelaModelo("SELECT * FROM unidade"));
-//        }
-        JScrollPane pictureScrollPane = new JScrollPane(new JLabel("teste"));
- 
-        //Create a split pane with the two scroll panes in it.
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                                   listScrollPane, pictureScrollPane);
+        // Inicializa e configura o JSplitPane
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, label1, label2);
+        splitPane.setOpaque(true);
         splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(300);
- 
-        //Provide minimum sizes for the two components in the split pane.
-        Dimension minimumSize = new Dimension(100, 50);
-        listScrollPane.setMinimumSize(minimumSize);
-        pictureScrollPane.setMinimumSize(minimumSize);
- 
-        //Provide a preferred size for the split pane.
-        splitPane.setPreferredSize(new Dimension(700, 400));
-    }
-
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        JList list = (JList)e.getSource();
-        int indexUnidade = list.getSelectedIndex();
+        splitPane.setDividerLocation(200);
+        splitPane.setPreferredSize(new Dimension(400, 200));
+        
+        /** 
+         * Pega o divisor do JSplitPane como objeto
+         * da classe BasicSplitPaneDivider, usando getComponent(index)
+         */
+        BasicSplitPaneDivider div;
+        div = (BasicSplitPaneDivider) splitPane.getComponent(2);
+        
+        // Define a largura do divisor, em pixels
+        int largura = 8;
+        div.setDividerSize(largura);
+        
+        // Cria a borda externa
+        MatteBorder bordaE;
+        bordaE = BorderFactory.createMatteBorder(0, 1, 0, 1, Color.LIGHT_GRAY);
+        
+        // Cria a borda interna
+        Border bordaI;
+        bordaI = BorderFactory.createEmptyBorder(0, largura, 0, 0);
+        
+        /**
+         * Define a nova borda do divisor do JSplitPane:
+         * uma borda composta pelas bordas externa e
+         * interna definidas.
+         */
+        div.setBorder(BorderFactory.createCompoundBorder(bordaE, bordaI));
+        
+        Container pnl = getContentPane();
+        pnl.setLayout(new FlowLayout());
+        pnl.add(splitPane);
+        
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
     }
     
-    public JSplitPane getSplitPane() {
-        return splitPane;
-    }
-    
-    private static void createAndShowGUI() throws SQLException {
- 
-        //Create and set up the window.
-        JFrame frame = new JFrame("SplitPaneDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        SplitPaneDemo splitPaneDemo = new SplitPaneDemo();
-        frame.getContentPane().add(splitPaneDemo.getSplitPane());
- 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
-    
-    
- 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    createAndShowGUI();
-                } catch (SQLException ex) {
-                    Logger.getLogger(SplitPaneDemo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+        SplitPaneDemo split = new SplitPaneDemo();
     }
 }

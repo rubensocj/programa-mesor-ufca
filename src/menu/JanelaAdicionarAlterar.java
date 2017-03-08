@@ -1,13 +1,20 @@
 package menu;
 
+import conexaoJavaSql.Lista;
+
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -40,8 +47,15 @@ public abstract class JanelaAdicionarAlterar {
     public boolean edicaoPermitida;
     public int campoEditavel;
     
-    public final String local = // Local no pc com arquivos do programa.
+    /**
+     *
+     */
+    public static final String LOCAL = // Local no pc com arquivos do programa.
         "C:\\Users\\Rubens Jr\\Documents\\NetBeansProjects\\Programa";
+    
+    public JComboBox cbxSistema;
+    private Lista lista;
+    private JPanel pnlSistema;
     
     /**
      * Construtores.
@@ -94,6 +108,28 @@ public abstract class JanelaAdicionarAlterar {
      * buscar e limpar busca.
      */
     public void criarBotoesAlterar() {}
+    
+    /**
+     * Monta o painel para a seleção do sistema.
+     * 
+     * @return Um painel.
+     * @throws SQLException 
+     */
+    public final JPanel painelSistema() throws SQLException {
+        // Inicializa a lista com a consulta SQL e define o modelo da JComboBox
+        try {
+            lista = new Lista("SELECT descricao FROM sistema");
+        } catch (SQLException ex) {ex.printStackTrace();}
+        cbxSistema = new JComboBox(lista.toVector());
+        cbxSistema.setPreferredSize(new Dimension(275, 20));
+        
+        JLabel lblSistema = new JLabel("Sistema: ");
+        
+        pnlSistema = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        pnlSistema.add(lblSistema);
+        pnlSistema.add(cbxSistema);
+        return pnlSistema;
+    }
     
     /**
      * Monta o painel principal da janela.

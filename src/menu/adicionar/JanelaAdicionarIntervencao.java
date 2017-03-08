@@ -84,7 +84,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
                 p.setContentType("text/html");
                 p.setEditable(false);
                 File ajudaHTML = new File(
-                            local + "\\ajuda\\janelaAdicionarIntervencao.html");
+                            LOCAL + "\\ajuda\\janelaAdicionarIntervencao.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
@@ -114,6 +114,9 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
         criarBotoesOpcoes();
         
         pnlPrincipal = new JPanel(new BorderLayout());
+        try {
+            pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+        } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelIntervencao(), BorderLayout.EAST);
         return pnlPrincipal;
