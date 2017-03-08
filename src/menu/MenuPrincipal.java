@@ -1,16 +1,18 @@
-/**
- * @author Rubens Oliveira da Cunha Júnior
- */
-
 package menu;
 
 import menu.adicionar.*;
 import menu.alterar.*;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
 import javax.swing.*;
 
+/**
+ * MenuPrincipal.java
+ * 
+ * @version 1.0 1/2/2017
+ * @author Rubens Jr
+ */
 public class MenuPrincipal extends JFrame {
     
     private JMenuBar barraMenu;
@@ -129,8 +131,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: NOVA DEMANDA selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarDemanda janela = new JanelaAdicionarDemanda();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Adicionar demanda");
+                janela.mostrar("Adicionar demanda", 0);
             }
         }
     }
@@ -142,8 +143,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarEquipamento janela;
                 janela = new JanelaAdicionarEquipamento();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Adicionar unidade de equipamento");
+                janela.mostrar("Adicionar unidade de equipamento", 0);
             }
         }
     }
@@ -155,8 +155,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarIntervencao janela;
                 janela = new JanelaAdicionarIntervencao();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Adicionar intervenção");
+                janela.mostrar("Adicionar intervenção", 0);
             }
         }
     }
@@ -167,8 +166,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: NOVA EQUIPE DE INTERVENÇÃO selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarEquipe janela = new JanelaAdicionarEquipe();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Adicionar equipe de intervenção");
+                janela.mostrar("Adicionar equipe de intervenção", 0);
             }
         }
     }
@@ -180,8 +178,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipamento janela;
                 janela = new JanelaAlterarEquipamento();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Alterar equipamento");
+                janela.mostrar("Alterar equipamento", 0);
             }
         }
     }
@@ -192,8 +189,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR DEMANDA selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarDemanda janela = new JanelaAlterarDemanda();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Alterar demanda");
+                janela.mostrar("Alterar demanda", 0);
             }
         }
     }
@@ -205,8 +201,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarIntervencao janela;
                 janela = new JanelaAlterarIntervencao();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Alterar intervenção");
+                janela.mostrar("Alterar intervenção", 0);
             }
         }
     }
@@ -217,8 +212,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR EQUIPE selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipe janela = new JanelaAlterarEquipe();
-                janela.montarPainelPrincipal();
-                janela.mostrar("Alterar equipe de intervenção");
+                janela.mostrar("Alterar equipe de intervenção", 0);
             }
         }
     }

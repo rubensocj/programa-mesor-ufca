@@ -139,12 +139,23 @@ public abstract class JanelaAdicionarAlterar {
     public JPanel montarPainelPrincipal() { return pnlPrincipal; }
     
     /**
-     * Mostra um JDialog como a janela para adição ou alteração do elemento ou
-     * evento, com o título especificado.
+     * Monta o painel principal e mostra um JDialog como a janela para adição ou
+     * alteração do elemento ou evento, com o título especificado.
+     * 
+     * Se um sistema for selecionado antes da chamada deste método, ele define
+     * este sistema como o item o item selecionado na JComboBox
+     * {@code cbxSistema}. Se nenhum sistema tiver sido especificado, então o
+     * item selecionado na JComboBox será o primeiro - índice zero (nulo).
      *
      * @param titulo 
+     * @param indiceSistema 
      */
-    public void mostrar(String titulo) {
+    public void mostrar(String titulo, int indiceSistema) {
+        
+        montarPainelPrincipal();
+        
+        cbxSistema.setSelectedIndex(indiceSistema);
+        
         pane = new JOptionPane();
         pane.setMessage(pnlPrincipal);
         pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);

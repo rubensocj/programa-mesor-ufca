@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.text.MaskFormatter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import equipamento.*;
