@@ -1,12 +1,15 @@
-/**
- * Autor Rubens Oliveira da Cunha Júnior
- */
-
 package equipamento;
 
 import java.util.Vector;
+
 import conexaoJavaSql.Consulta;
 
+/**
+ * Subunidade.java
+ * 
+ * @version 1.0 1/11/2016
+ * @author Rubens Jr
+ */
 public class Subunidade {
     private String descricao;
     private final Vector<Componente> componente = new Vector();
@@ -17,7 +20,9 @@ public class Subunidade {
 
     Consulta consulta = new Consulta();
     
-    // Construtores
+    /**
+     * Construtores.
+     */
     public Subunidade() {}
     public Subunidade(String pDescricao) {
         setDescricao(pDescricao);
@@ -28,7 +33,11 @@ public class Subunidade {
         setComponente(pComponente);
     }
 
-    // Métodos set
+    // -------------------------------------------------------------------------
+    // Métodos.
+    // -------------------------------------------------------------------------
+    
+    /* Métodos setters */
     public void setDescricao(String pDescricao) {
         this.descricao = pDescricao;
     }
@@ -39,13 +48,7 @@ public class Subunidade {
         this.idBD = pId;
     }
     
-    // Métodos de exclusão
-    // Exclui tudo
-    public void removeTudo() {
-        this.componente.clear();
-    }
-    
-    // Métodos get
+    /* Métodos getters */
     public String getDescricao() {
         return descricao;
     }
@@ -61,7 +64,11 @@ public class Subunidade {
     public int getIdBD() {
         return idBD;
     }
-    
+    /** @deprecated */
+    public void removeTudo() {
+        this.componente.clear();
+    }
+        
     /**
      * Sobrescreve o método toString(). Assim, o vetor de subunidades de objetos
      * da classe Unidade é composto pelas descrições das subunidades.
@@ -73,7 +80,12 @@ public class Subunidade {
         return descricao;
     }
     
-    // Método de composição do campo código do banco de dados
+    /**
+     * Método de composição do campo código do banco de dados
+     * 
+     * @deprecated 
+     * @return 
+     */
     public String codigo() {
         cod = this.descricao.substring(0, 3).concat(
                 this.descricao.substring(
@@ -81,9 +93,10 @@ public class Subunidade {
         return cod.toUpperCase();
     }
     
+    /**
+     * Altera informações no banco de dados.
+     */
     public void alteraSubunidade() {
-        int n;
-        
-        n = consulta.updateSubunidade(this.descricao, this.idBD);
+        int n = consulta.updateSubunidade(this.descricao, this.idBD);
     }
 }

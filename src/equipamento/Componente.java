@@ -1,12 +1,15 @@
-/**
- * Autor Rubens Oliveira da Cunha Júnior
- */
-
 package equipamento;
 
 import java.util.Vector;
+
 import conexaoJavaSql.Consulta;
 
+/**
+ * Componente.java
+ * 
+ * @version 1.0 1/11/2016
+ * @author Rubens Jr
+ */
 public class Componente {
     private String descricao;
     private final Vector<Parte> parte = new Vector();
@@ -17,7 +20,9 @@ public class Componente {
     
     Consulta consulta = new Consulta();
     
-    // Construtores
+    /**
+     * Construtores.
+     */
     public Componente() {}
     public Componente(String pDescricao) {
         setDescricao(pDescricao);
@@ -26,8 +31,12 @@ public class Componente {
         setDescricao(pDescricao);
         setParte(pParte);
     }
+
+    // -------------------------------------------------------------------------
+    // Métodos.
+    // -------------------------------------------------------------------------
     
-    // Métodos set
+    /* Métodos setters */
     public void setDescricao(String pDescricao) {
         this.descricao = pDescricao;
     }
@@ -38,7 +47,7 @@ public class Componente {
         this.idBD = pId;
     }
     
-    //Métodos get
+    /* Métodos getters */
     public String getDescricao() {
         return descricao;
     }
@@ -65,8 +74,13 @@ public class Componente {
     public String toString() {
         return descricao;
     }
-    
-    // Método de composição do campo código do banco de dados
+        
+    /**
+     * Método de composição do campo código do banco de dados
+     * 
+     * @deprecated 
+     * @return 
+     */
     public String codigo() {
         cod = this.descricao.substring(0, 3).concat(
                 this.descricao.substring(
@@ -74,9 +88,10 @@ public class Componente {
         return cod.toUpperCase();
     }
     
+    /**
+     * Altera informações no banco de dados.
+     */
     public void alteraComponente() {
-        int n;
-        
-        n = consulta.updateComponente(this.descricao, this.idBD);
+        int n = consulta.updateComponente(this.descricao, this.idBD);
     }
 }

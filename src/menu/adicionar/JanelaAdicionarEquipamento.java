@@ -164,6 +164,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         unidade.setDataAquisicao(dataAquisicao);
         unidade.setModoOperacional((String) cbxModo.getSelectedItem());
         unidade.setDataInicioOperacao(dataInicio);
+        unidade.setSistema(cbxSistema.getSelectedIndex());
 
         unidade.adicionaUnidade();
     }
@@ -439,7 +440,9 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";
-            if(tfdUniClasse.getText().isEmpty()) {
+            if(cbxSistema.getSelectedIndex() == 0) {
+                mensagemErro = "Informe um sistema.";                
+            } else if(tfdUniClasse.getText().isEmpty()) {
                 mensagemErro = "Informe uma classe de equipamento válida.";                    
             } else if(tfdUniTipo.getText().isEmpty()) {
                 mensagemErro = "Informe um tipo de equipamento válido.";

@@ -1,11 +1,13 @@
-/**
- * Autor Rubens Oliveira da Cunha Júnior
- */
-
 package equipamento;
 
 import conexaoJavaSql.Consulta;
 
+/**
+ * Parte.java
+ * 
+ * @version 1.0 1/11/2016
+ * @author Rubens Jr
+ */
 public class Parte {
     private String descricao;
     
@@ -15,21 +17,27 @@ public class Parte {
     
     Consulta consulta = new Consulta();
     
-    // Construtores
+    /**
+     * Construtores.
+     */
     public Parte() {}
     public Parte(String pDescricao) {
         setDescricao(pDescricao);     
     }
 
-    // Métodos set
+    // -------------------------------------------------------------------------
+    // Métodos.
+    // -------------------------------------------------------------------------
+    
+    /* Métodos setters */
     public void setDescricao(String pDescricao) {
         this.descricao = pDescricao;
     }
     public void setIdBD(int pId) {
         this.idBD = pId;
     }
-
-    // Métodos get
+    
+    /* Métodos getters */
     public String getDescricao() {
         return descricao;
     }
@@ -47,8 +55,13 @@ public class Parte {
     public String toString() {
         return descricao;
     }
-    
-    // Método de composição do campo código do banco de dados
+        
+    /**
+     * Método de composição do campo código do banco de dados
+     * 
+     * @deprecated 
+     * @return 
+     */
     public String codigo() {
         cod = this.descricao.substring(0, 3).concat(
                 this.descricao.substring(
@@ -56,9 +69,10 @@ public class Parte {
         return cod.toUpperCase();
     }
     
+    /**
+     * Altera informações no banco de dados.
+     */
     public void alteraParte() {
-        int n;
-        
-        n = consulta.updateParte(this.descricao, this.idBD);
+        int n = consulta.updateParte(this.descricao, this.idBD);
     }
 }

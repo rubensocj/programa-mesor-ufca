@@ -447,6 +447,7 @@ public class PainelUnidade {
                 tabUnidade.getColumnModel().getColumn(0).setCellRenderer(render);
                 tabUnidade.getColumnModel().getColumn(7).setCellRenderer(render);
                 tabUnidade.getColumnModel().getColumn(9).setCellRenderer(render);
+                tabUnidade.getColumnModel().getColumn(10).setCellRenderer(render);
                 
                 break;
                 
@@ -461,6 +462,7 @@ public class PainelUnidade {
                 tabSubunidade.getColumnModel().getColumn(2).setPreferredWidth(80);
 
                 tabSubunidade.getColumnModel().getColumn(0).setCellRenderer(render);
+                tabSubunidade.getColumnModel().getColumn(2).setCellRenderer(render);
 
                 break;
                 
@@ -475,6 +477,7 @@ public class PainelUnidade {
                 tabComponente.getColumnModel().getColumn(2).setPreferredWidth(100);
 
                 tabComponente.getColumnModel().getColumn(0).setCellRenderer(render);
+                tabComponente.getColumnModel().getColumn(2).setCellRenderer(render);
 
                 break;
                 
@@ -489,6 +492,7 @@ public class PainelUnidade {
                 tabParte.getColumnModel().getColumn(2).setPreferredWidth(100);
 
                 tabParte.getColumnModel().getColumn(0).setCellRenderer(render);
+                tabParte.getColumnModel().getColumn(2).setCellRenderer(render);
 
                 break;
                 

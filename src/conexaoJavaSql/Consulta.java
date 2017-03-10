@@ -74,10 +74,11 @@ public class Consulta {
             
             /* Definição de métodos para a classe UNIDADE */
             inserirUnidade = connection.prepareStatement(
-                "INSERT INTO unidade" + 
-                    "(classe, tipo, fabricante, identificacao, categoria" +
+                "INSERT INTO unidade " + 
+                    "(classe, tipo, fabricante, identificacao, categoria, " +
                     "localizacao, data_aquisicao, modo_operacional, " +
-                    "data_inicio_operacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    "data_inicio_operacao, id_sistema) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                     Statement.RETURN_GENERATED_KEYS);
             
             alterarUnidade = connection.prepareStatement(
@@ -90,8 +91,8 @@ public class Consulta {
             /* Definição de métodos para a classe SUBUNIDADE */
             inserirSubunidade = connection.prepareStatement(
                 "INSERT INTO subunidade" +
-                    "(cod, descricao, id_unidade)" +
-                "VALUES (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                    "(descricao, id_unidade) VALUES (?, ?);",
+                    Statement.RETURN_GENERATED_KEYS);
             
             alterarSubunidade = connection.prepareStatement(
                 "UPDATE subunidade SET descricao = ? WHERE id = ?");
@@ -99,8 +100,8 @@ public class Consulta {
             /* Definição de métodos para a classe COMPONENTE */
             inserirComponente = connection.prepareStatement(
                 "INSERT INTO componente" +
-                    "(cod, descricao, id_subunidade)" +
-                "VALUES (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                    "(descricao, id_subunidade)" +
+                "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
             
             alterarComponente = connection.prepareStatement(
                 "UPDATE componente SET descricao = ? WHERE id = ?");
@@ -108,8 +109,8 @@ public class Consulta {
             /* Definição de métodos para a classe PARTE */
             inserirParte = connection.prepareStatement(
                 "INSERT INTO parte" +
-                    "(cod, descricao, id_componente)" +
-                "VALUES (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                    "(descricao, id_componente)" +
+                "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
             
             alterarParte = connection.prepareStatement(
                 "UPDATE parte SET descricao = ? WHERE id = ?");
@@ -309,11 +310,13 @@ public class Consulta {
      * @param aquisicao
      * @param operacao
      * @param inicio
+     * @param idSistema
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
     public int insertUnidade(String classe, String tipo, String fabricante,
             String identificacao, String categoria, String localizacao,
-            java.util.Date aquisicao, String operacao, java.util.Date inicio) {
+            java.util.Date aquisicao, String operacao, java.util.Date inicio,
+            int idSistema) {
         
         int resultado = 0;        
         try {
@@ -338,6 +341,7 @@ public class Consulta {
             java.sql.Date sqlDataOp;
             sqlDataOp = new java.sql.Date(inicio.getTime());
             inserirUnidade.setDate(9, sqlDataOp);
+            inserirUnidade.setInt(10, idSistema);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirUnidade.executeUpdate();
@@ -425,17 +429,15 @@ public class Consulta {
      * Adiciona uma linha à entidade SUBUNIDADE do banco de dados com as
      * informações dadas pelo usuário.
      * 
-     * @param cod
      * @param descricao
      * @param id
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public int insertSubunidade(String cod, String descricao, int id) {
+    public int insertSubunidade(String descricao, int id) {
         int resultado = 0;        
         try {
-            inserirSubunidade.setString(1, cod);
-            inserirSubunidade.setString(2, descricao);
-            inserirSubunidade.setObject(3, id);
+            inserirSubunidade.setString(1, descricao);
+            inserirSubunidade.setObject(2, id);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirSubunidade.executeUpdate();
@@ -490,17 +492,15 @@ public class Consulta {
      * Adiciona uma linha à entidade COMPONENTE do banco de dados com as
      * informações dadas pelo usuário.
      * 
-     * @param cod
      * @param descricao
      * @param id
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public int insertComponente(String cod, String descricao, int id) {
+    public int insertComponente(String descricao, int id) {
         int resultado = 0;        
         try {
-            inserirComponente.setString(1, cod);
-            inserirComponente.setString(2, descricao);
-            inserirComponente.setObject(3, id);
+            inserirComponente.setString(1, descricao);
+            inserirComponente.setObject(2, id);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirComponente.executeUpdate();
@@ -555,17 +555,15 @@ public class Consulta {
      * Adiciona uma linha à entidade PARTE do banco de dados com as
      * informações dadas pelo usuário.
      * 
-     * @param cod
      * @param descricao
      * @param id
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public int insertParte(String cod, String descricao, int id) {
+    public int insertParte(String descricao, int id) {
         int resultado = 0;        
         try {
-            inserirParte.setString(1, cod);
-            inserirParte.setString(2, descricao);
-            inserirParte.setObject(3, id);
+            inserirParte.setString(1, descricao);
+            inserirParte.setObject(2, id);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirParte.executeUpdate();

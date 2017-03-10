@@ -26,6 +26,8 @@ public class Unidade {
     private String dataInicioOperacao;
     private String modoOperacional;
     
+    private int sistema;
+    
     private int idBD = 0;   // Parâmetros do banco de dados: id.
     
     private final Vector<Subunidade> subunidade = new Vector();
@@ -100,6 +102,9 @@ public class Unidade {
     public void setIdBD(int id) {
         this.idBD = id;
     }
+    public void setSistema(int id) {
+        this.sistema = id;
+    }
     
     /* Métodos getters */
     public String getCategoria() {
@@ -141,6 +146,9 @@ public class Unidade {
     public int getIdBD() {
         return idBD;
     }
+    public int getSistema() {
+        return sistema;
+    }
     
     /**
      * 
@@ -178,18 +186,18 @@ public class Unidade {
         // Insere na entidade "unidade".
         n = consulta.insertUnidade(this.classe, this.tipo, this.fabricante,
                 this.identificacao, this.categoria, this.local, sqlDataAq,
-                this.modoOperacional, sqlDataOp);
+                this.modoOperacional, sqlDataOp, this.sistema);
         // Insere as subunidades uma a uma na entidade "subunidade".
         for(Subunidade sb : this.getVetorSubunidade()) {
-            n = consulta.insertSubunidade(sb.codigo(), sb.getDescricao(),
-                        consulta.idUnidade);
+            n = consulta.insertSubunidade(sb.getDescricao(),
+                            consulta.idUnidade);
             // Insere os componentes um a um na entidade "componente".
             for(Componente cp : sb.getVetorComponente()) {
-                n = consulta.insertComponente(cp.codigo(), cp.getDescricao(),
+                n = consulta.insertComponente(cp.getDescricao(),
                             consulta.idSubunidade);
                 // Insere as partes uma a uma na entidade "parte".
                 for(Parte pt : cp.getVetorParte()) {
-                    n = consulta.insertParte(pt.codigo(), pt.getDescricao(),
+                    n = consulta.insertParte(pt.getDescricao(),
                                 consulta.idComponente);
                 }
             }
