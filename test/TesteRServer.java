@@ -5,8 +5,6 @@
  */
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.*;
-import org.rosuda.JRI.*;
-import org.rosuda.JRI.Rengine;
 
 /**
  *
