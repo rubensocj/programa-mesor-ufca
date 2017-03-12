@@ -23,7 +23,7 @@ import menu.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarDemanda;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 
 /**
  * JanelaAlterarDemanda.java

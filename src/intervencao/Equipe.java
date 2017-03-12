@@ -4,7 +4,7 @@
 
 package intervencao;
 
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 

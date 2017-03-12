@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 
 import equipamento.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;

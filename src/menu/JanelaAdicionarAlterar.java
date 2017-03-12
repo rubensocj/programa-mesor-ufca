@@ -1,6 +1,6 @@
 package menu;
 
-import conexaoJavaSql.Lista;
+import conexaoSql.Lista;
 
 import java.awt.Component;
 import java.awt.Dimension;

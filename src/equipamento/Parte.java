@@ -1,6 +1,6 @@
 package equipamento;
 
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 
 /**
  * Parte.java

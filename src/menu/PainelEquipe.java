@@ -1,6 +1,6 @@
 package menu;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

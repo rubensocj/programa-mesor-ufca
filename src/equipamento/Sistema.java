@@ -1,7 +1,7 @@
 package equipamento;
 
 import java.util.Vector;
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 
 /**
  * Sistema.java
@@ -17,7 +17,7 @@ public class Sistema {
     
     private int idBD;   // Parâmetros do banco de dados: id.
     
-    Consulta consulta = new Consulta();
+//    Consulta consulta = new Consulta();
     
     /**
      * Construtores.

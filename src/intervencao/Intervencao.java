@@ -6,7 +6,7 @@ import java.text.*;
 
 import java.util.Date;
 
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 
 /**
  * Intervencao.Java

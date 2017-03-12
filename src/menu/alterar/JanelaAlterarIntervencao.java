@@ -23,7 +23,7 @@ import menu.PainelIntervencao;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarIntervencao;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 
 /**
  * JanelaAlterarIntervencao.java

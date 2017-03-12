@@ -2,7 +2,7 @@ package equipamento;
 
 import java.util.Vector;
 
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 
 /**
  * Componente.java

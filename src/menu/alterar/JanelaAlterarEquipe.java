@@ -23,7 +23,7 @@ import menu.adicionar.JanelaAdicionarEquipe;
 import menu.JanelaAdicionarAlterar;
 import menu.PainelEquipe;
 
-import conexaoJavaSql.Lista;
+import conexaoSql.Lista;
 import intervencao.Interventor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

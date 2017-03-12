@@ -1,4 +1,4 @@
-package conexaoJavaSql;
+package conexaoSql;
 
 import javax.swing.*;
 
@@ -16,7 +16,7 @@ import java.util.Vector;
  */
 public class Lista extends AbstractListModel {
     
-    private final Connection connection;
+    //private final Connection connection;
     private final Statement statement;
     private ResultSet resultSet;
     private ResultSetMetaData metaData;
@@ -44,9 +44,10 @@ public class Lista extends AbstractListModel {
      */
     public Lista(String consulta) throws SQLException {
         
-        connection = DriverManager.getConnection(
-                    BD_URL, USERNAME, PASSWORD);
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
+//        connection = DriverManager.getConnection(
+//                    BD_URL, USERNAME, PASSWORD);
+        statement = Consulta.connection.createStatement(
+                    ResultSet.CONCUR_READ_ONLY,
                     ResultSet.TYPE_SCROLL_INSENSITIVE);
         conectado = true;
         
@@ -59,9 +60,9 @@ public class Lista extends AbstractListModel {
      */
     public Lista() throws SQLException {
         
-        connection = DriverManager.getConnection(
-                    BD_URL, USERNAME, PASSWORD);
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
+//        connection = DriverManager.getConnection(
+//                    BD_URL, USERNAME, PASSWORD);
+        statement = Consulta.connection.createStatement(ResultSet.CONCUR_READ_ONLY,
                     ResultSet.TYPE_SCROLL_INSENSITIVE);
         conectado = true;        
     }

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import conexaoJavaSql.Consulta;
+import conexaoSql.Consulta;
 
 /**
  * Unidade.java
@@ -32,7 +32,7 @@ public class Unidade {
     
     private final Vector<Subunidade> subunidade = new Vector();
     
-    private final Consulta consulta = new Consulta();
+//    private final Consulta consulta = new Consulta();
     
     private final SimpleDateFormat formatoSQLDate;
     
@@ -184,21 +184,21 @@ public class Unidade {
         
         int n;
         // Insere na entidade "unidade".
-        n = consulta.insertUnidade(this.classe, this.tipo, this.fabricante,
+        n = Consulta.insertUnidade(this.classe, this.tipo, this.fabricante,
                 this.identificacao, this.categoria, this.local, sqlDataAq,
                 this.modoOperacional, sqlDataOp, this.sistema);
         // Insere as subunidades uma a uma na entidade "subunidade".
         for(Subunidade sb : this.getVetorSubunidade()) {
-            n = consulta.insertSubunidade(sb.getDescricao(),
-                            consulta.idUnidade);
+            n = Consulta.insertSubunidade(sb.getDescricao(),
+                            Consulta.idUnidade);
             // Insere os componentes um a um na entidade "componente".
             for(Componente cp : sb.getVetorComponente()) {
-                n = consulta.insertComponente(cp.getDescricao(),
-                            consulta.idSubunidade);
+                n = Consulta.insertComponente(cp.getDescricao(),
+                            Consulta.idSubunidade);
                 // Insere as partes uma a uma na entidade "parte".
                 for(Parte pt : cp.getVetorParte()) {
-                    n = consulta.insertParte(pt.getDescricao(),
-                                consulta.idComponente);
+                    n = Consulta.insertParte(pt.getDescricao(),
+                                Consulta.idComponente);
                 }
             }
         }
@@ -219,7 +219,7 @@ public class Unidade {
         }
         
         int n;        
-        n = consulta.updateUnidade(this.classe, this.tipo, this.fabricante,
+        n = Consulta.updateUnidade(this.classe, this.tipo, this.fabricante,
                 this.identificacao, this.categoria, this.local, sqlDataAq,
                 this.modoOperacional, sqlDataOp, this.idBD);
     }

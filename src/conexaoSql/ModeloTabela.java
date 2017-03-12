@@ -2,7 +2,7 @@
  * Autor Rubens Oliveira da Cunha Júnior
  */
 
-package conexaoJavaSql;
+package conexaoSql;
 
 import java.sql.Connection;
 import java.sql.Statement;

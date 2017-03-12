@@ -20,7 +20,7 @@ import menu.adicionar.JanelaAdicionarEquipamento;
 
 import java.sql.SQLException;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 
 /**
  * JanelaAlterarEquipamento.java

@@ -1,5 +1,7 @@
 package menu;
 
+import conexaoSql.Consulta;
+
 import menu.adicionar.*;
 import menu.alterar.*;
 
@@ -105,6 +107,8 @@ public class MenuPrincipal extends JFrame {
     }
     
     public static void mostraMenuPrincipal() {
+        Consulta.conectar();
+        
         JFrame menuprincipal = new JFrame("Menu principal");
         menuprincipal.setLayout(new BorderLayout());
         menuprincipal.setDefaultCloseOperation(EXIT_ON_CLOSE);

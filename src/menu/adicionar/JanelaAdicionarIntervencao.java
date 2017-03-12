@@ -20,7 +20,7 @@ import menu.PainelUnidade;
 import menu.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 
-import conexaoJavaSql.ModeloTabela;
+import conexaoSql.ModeloTabela;
 
 public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
     
