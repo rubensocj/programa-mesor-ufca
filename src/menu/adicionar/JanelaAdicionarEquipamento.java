@@ -1,7 +1,5 @@
 package menu.adicionar;
 
-import conexaoSql.Consulta;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -52,9 +50,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
     /**
      * Construtor.
      */
-    public JanelaAdicionarEquipamento() {
-        Consulta.conectar();
-    }
+    public JanelaAdicionarEquipamento() {}
     
     // -------------------------------------------------------------------------
     // Métodos sobrepostos.
@@ -74,7 +70,6 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("opção CANCELAR selecionada");
                 dialog.dispose();
-                Consulta.desconectar();
             }
         });
         
@@ -465,7 +460,6 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
             /* Se não houver erro, executa a operação */
             if(mensagemErro.isEmpty()) {
                 confirmar();
-                Consulta.desconectar();
                 dialog.dispose();
             } else {
                 /* Se houver erro, exibe mensagem de erro */

@@ -25,14 +25,12 @@ public class MenuPrincipal extends JFrame {
         
     private final String eventSelected = "ActionEvent";
 
-    public JMenuBar criaBarraMenu(){
+    public JMenuBar criaBarraMenu() {
         // Cria a barra de menu
         barraMenu = new JMenuBar();
         barraMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
         
-        /**
-         * Cria os menus e define os atalhos do teclado.
-         */
+        /* Cria os menus e define os atalhos do teclado. */
         menuAdicionar = new JMenu("Adicionar");
         menuAdicionar.setMnemonic(KeyEvent.VK_A);
         
@@ -40,32 +38,38 @@ public class MenuPrincipal extends JFrame {
         menuAlterar.setMnemonic(KeyEvent.VK_L);
         
         /**      
-         * Legenda exibida quando cursor do mouse é colocado sobre o componente
+         * 1. Legenda exibida quando cursor do mouse passar sobre o componente:
+         * 
          * menuArquivo.setToolTipText("Arquivo");
+         * 
+         * 2. Definir o atalho do teclado:
+         * 
+         * novoEquipamento.setAccelerator(KeyStroke.getKeyStroke(
+         *              KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+         * 
+         * 3. Adiciona um separador de itens ao menu:
+         * 
+         * menuArquivo.addSeparator(); 
          */
         
         // Cria os itens do menu "Adicionar"
         novaDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
-        novoEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);
-//        novoEquipamento.setAccelerator(KeyStroke.getKeyStroke(
-//                                        KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        
+        novoEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);        
         novaIntervencao = new JMenuItem("Intervenção", KeyEvent.VK_I);
         novaEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_T);
-                
-        // Adiciona o ActionListener aos itens
-        novoEquipamento.addActionListener(new novoEquipamento());
-        novaIntervencao.addActionListener(new novaIntervencao());
-        novaDemanda.addActionListener(new novaDemanda());
-        novaEquipe.addActionListener(new novaEquipe());
-        
+          
         // Cria os itens do menu "Alterar"
         alterarDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
         alterarEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);
         alterarIntervencao = new JMenuItem("Intervenção", KeyEvent.VK_I);
         alterarEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
-
+        
         // Adiciona o ActionListener aos itens
+        novoEquipamento.addActionListener(new adicionarEquipamento());
+        novaIntervencao.addActionListener(new adicionarIntervencao());
+        novaDemanda.addActionListener(new adicionarDemanda());
+        novaEquipe.addActionListener(new adicionarEquipe());
+        
         alterarEquipamento.addActionListener(new alterarEquipamento());
         alterarDemanda.addActionListener(new alterarDemanda());
         alterarIntervencao.addActionListener(new alterarIntervencao());
@@ -82,14 +86,6 @@ public class MenuPrincipal extends JFrame {
         menuAlterar.add(alterarEquipamento);
         menuAlterar.add(alterarIntervencao);
         menuAlterar.add(alterarEquipe);
-                
-        // Adiciona o item (submenu) "Novo..." ao menu "Arquivo"
-        //menuNovo.add(arquivoNovo);
-                
-        /**
-         * Adiciona um separador de itens ao menu
-         * menuArquivo.addSeparator(); 
-         */
         
         // Adiciona o menu "Arquivo" à barra de menus
         barraMenu.add(menuAdicionar);
@@ -97,7 +93,12 @@ public class MenuPrincipal extends JFrame {
 
         return barraMenu;
     }
-        
+    
+    /**
+     * Cria o conteiner que guarda os componentes menores do menu principal.
+     * 
+     * @return Um Conteiner
+     */
     public Container criaConteiner() {
         JPanel conteiner = new JPanel();
 
@@ -106,7 +107,11 @@ public class MenuPrincipal extends JFrame {
         return conteiner;
     }
     
+    /**
+     * Exibe o menu principal.
+     */
     public static void mostraMenuPrincipal() {
+        /* Conecta ao banco de dados */
         Consulta.conectar();
         
         JFrame menuprincipal = new JFrame("Menu principal");
@@ -117,6 +122,7 @@ public class MenuPrincipal extends JFrame {
         
         menuprincipal.setJMenuBar(menuPrincipal.criaBarraMenu());
         menuprincipal.setContentPane(menuPrincipal.criaConteiner());
+        
         /**
          * Para adicionar algum painel ao menu principal, usa-se
          * "menuprincipal.add(menuPrincipal.metodoAdicionar());"
@@ -129,7 +135,11 @@ public class MenuPrincipal extends JFrame {
         menuprincipal.setLocationRelativeTo(null);
     }
     
-    class novaDemanda implements ActionListener {
+    // -------------------------------------------------------------------------
+    // Classes privadas.
+    // -------------------------------------------------------------------------
+    
+    private class adicionarDemanda implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: NOVA DEMANDA selecionado");
@@ -140,7 +150,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class novoEquipamento implements ActionListener {
+    private class adicionarEquipamento implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: NOVO EQUIPAMENTO selecionado");
@@ -152,7 +162,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class novaIntervencao implements ActionListener {
+    private class adicionarIntervencao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: NOVA INTERVENÇÃO selecionado");
@@ -164,7 +174,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class novaEquipe implements ActionListener {
+    private class adicionarEquipe implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: NOVA EQUIPE DE INTERVENÇÃO selecionado");
@@ -175,7 +185,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class alterarEquipamento implements ActionListener {
+    private class alterarEquipamento implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: ALTERAR EQUIPAMENTO selecionado");
@@ -187,7 +197,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class alterarDemanda implements ActionListener {
+    private class alterarDemanda implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: ALTERAR DEMANDA selecionado");
@@ -198,7 +208,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class alterarIntervencao implements ActionListener {
+    private class alterarIntervencao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: ALTERAR INTERVENÇÃO selecionado");
@@ -210,7 +220,7 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    class alterarEquipe implements ActionListener {
+    private class alterarEquipe implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: ALTERAR EQUIPE selecionado");
@@ -221,7 +231,10 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    // Executa o programa
+    /**
+     * Executa o programa.
+     * @param args 
+     */
     public static void main(String[] args) {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         mostraMenuPrincipal();
