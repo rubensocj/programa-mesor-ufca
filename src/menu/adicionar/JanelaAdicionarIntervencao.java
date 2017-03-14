@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import menu.HoraFormatada;
-import menu.PainelUnidade;
+import menu.PainelEquipamento;
 import menu.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 
@@ -24,7 +24,7 @@ import conexaoSql.ModeloTabela;
 
 public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
     
-    public PainelUnidade pnlUnidade = new PainelUnidade();
+    public PainelEquipamento pnlUnidade = new PainelEquipamento();
     public PainelDemanda pnlDemanda = new PainelDemanda();
     
     public JPanel pnlTabelaDemanda;

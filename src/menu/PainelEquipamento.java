@@ -15,12 +15,12 @@ import equipamento.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
- * PainelUnidade.java
+ * PainelEquipamento.java
  * 
  * @version 1.0 7/2/2017
  * @author Rubens Jr
  */
-public class PainelUnidade {
+public class PainelEquipamento {
 
     private String selecao1;
     private String selecao2;
@@ -56,6 +56,8 @@ public class PainelUnidade {
     public JTable tabComponente;
     public JTable tabParte;
     
+    private ModeloTabela modelo;
+    
     private final DefaultTableCellRenderer render;
     
     public Unidade unidade = new Unidade();
@@ -77,7 +79,7 @@ public class PainelUnidade {
     /**
      * Construtor.
      */
-    public PainelUnidade() {
+    public PainelEquipamento() {
         lblUni = new JLabel(" Unidade: *");
         lblSub = new JLabel(" Subunidade:");
         lblComp = new JLabel(" Componente:");
@@ -364,12 +366,12 @@ public class PainelUnidade {
                 BorderFactory.createMatteBorder(0, 1, 0, 1, cor),
                 BorderFactory.createEmptyBorder(0, largura, 0, 0)));
                 
-        // PainelUnidade "Itens selecionados"
+        // PainelEquipamento "Itens selecionados"
         pnlSelecao = new JPanel(new FlowLayout());
         pnlSelecao.add(lblSelecionados);
         pnlSelecao.add(selecao);
         
-        // PainelUnidade final
+        // PainelEquipamento final
         pnlUniFinal = new JPanel(new BorderLayout(10,0));
         pnlUniFinal.setBorder(BorderFactory.createTitledBorder(
                             BorderFactory.createEtchedBorder(), "Equipamento"));
@@ -400,6 +402,25 @@ public class PainelUnidade {
         }
         
         editavel = e;
+    }
+    
+    /**
+     * Busca por unidade no sistema selecionado, através de uma cosulta SQL.
+     * 
+     * @param idSistema 
+     * @throws SQLException 
+     */
+    public void buscarUnidade(int idSistema) throws SQLException {
+        modelo = (ModeloTabela) tabUnidade.getModel();
+        if(idSistema != 0) {
+            modelo.setQuery("SELECT * FROM unidade WHERE id_sistema = " +
+                    String.valueOf(idSistema));
+        } else {
+            modelo.setQuery("SELECT * FROM unidade");
+        }
+        
+        habilitarTabela(TAB_UNIDADE);
+        atualizarAparenciaDaTabela(TAB_UNIDADE);
     }
     
     /**
@@ -502,14 +523,14 @@ public class PainelUnidade {
     
     /**
      * Habilita a tabela especificada, permitindo a seleção de linhas.
-     * Desabilita todas as tabelas caso tabela == PainelUnidade.TAB_NULL.
+     * Desabilita todas as tabelas caso tabela == PainelEquipamento.TAB_NULL.
      * 
      * @param tabela 
      */
     public void habilitarTabela(int tabela) {
         switch(tabela) {
             
-            case PainelUnidade.TAB_UNIDADE: 
+            case PainelEquipamento.TAB_UNIDADE: 
                 
                 tabUnidade.setEnabled(true);
                 tabUnidade.setRowSelectionAllowed(true);
@@ -529,7 +550,7 @@ public class PainelUnidade {
                 
                 break;
                 
-            case PainelUnidade.TAB_SUBUNIDADE:
+            case PainelEquipamento.TAB_SUBUNIDADE:
                 
                 tabSubunidade.setEnabled(true);
                 tabSubunidade.setRowSelectionAllowed(true);
@@ -548,7 +569,7 @@ public class PainelUnidade {
                 
                 break;
                 
-            case PainelUnidade.TAB_COMPONENTE:
+            case PainelEquipamento.TAB_COMPONENTE:
                 
                 tabComponente.setEnabled(true);                        
                 tabComponente.setRowSelectionAllowed(true);
@@ -562,7 +583,7 @@ public class PainelUnidade {
                 
                 break;
                 
-            case PainelUnidade.TAB_PARTE:
+            case PainelEquipamento.TAB_PARTE:
                 
                 tabParte.setEnabled(true);                        
                 tabParte.setRowSelectionAllowed(true);
@@ -571,7 +592,7 @@ public class PainelUnidade {
                 
                 break;
             
-            case PainelUnidade.TAB_NULL:
+            case PainelEquipamento.TAB_NULL:
                 
                 tabUnidade.setEnabled(false);
                 tabUnidade.setForeground(Color.LIGHT_GRAY);

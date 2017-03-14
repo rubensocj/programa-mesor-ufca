@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import menu.PainelUnidade;
+import menu.PainelEquipamento;
 import menu.PainelIntervencao;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarIntervencao;
@@ -274,7 +274,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
             pnlUnidade.limpaSelecao();
             pnlIntervencao.tabIntervencao.clearSelection();
             
-            pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+            pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
             
             habilitarEdicao(false);
             
@@ -650,7 +650,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                     pnlDemanda.habilitarTabela(false);
                 }
                 
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_NULL);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_NULL);
                 pnlIntervencao.habilitarTabela(false);
             }
         }
@@ -730,7 +730,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
             if(!pnlUnidade.tabelaSelecionada.equals("")
                 || pnlIntervencao.tabIntervencao.getSelectedRowCount() != 0) {
                 
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
                 limparTexto();
                 habilitarEdicao(false);
                 

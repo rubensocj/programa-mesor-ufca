@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import java.util.*;
 
-import menu.PainelUnidade;
+import menu.PainelEquipamento;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarEquipamento;
 
@@ -32,7 +32,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
     private final JPanel pnlTabela;
     
     private JTextField tfdDescricao;
-    public PainelUnidade pnlUnidade = new PainelUnidade();
+    public PainelEquipamento pnlUnidade = new PainelEquipamento();
     
     private static final int ALTERAR_UNIDADE = 0;
     private static final int ALTERAR_ITEM = 1;
@@ -268,10 +268,8 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     }
                     
                     // Reajusta a aparência da tabela.
-                    pnlUnidade.atualizarAparenciaDaTabela(
-                                PainelUnidade.TAB_UNIDADE);
-                    pnlUnidade.atualizarAparenciaDaTabela(
-                                PainelUnidade.TAB_SUBUNIDADE);
+                    pnlUnidade.atualizarAparenciaDaTabela(PainelEquipamento.TAB_UNIDADE);
+                    pnlUnidade.atualizarAparenciaDaTabela(PainelEquipamento.TAB_SUBUNIDADE);
                     
                     break;
                 
@@ -301,8 +299,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     }
                     
                     // Reajusta a aparência da tabela.
-                    pnlUnidade.atualizarAparenciaDaTabela(
-                                PainelUnidade.TAB_SUBUNIDADE);
+                    pnlUnidade.atualizarAparenciaDaTabela(PainelEquipamento.TAB_SUBUNIDADE);
                     
                     break;
 
@@ -331,8 +328,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     }
                     
                     // Reajusta a aparência da tabela.
-                    pnlUnidade.atualizarAparenciaDaTabela(
-                                PainelUnidade.TAB_COMPONENTE);
+                    pnlUnidade.atualizarAparenciaDaTabela(PainelEquipamento.TAB_COMPONENTE);
                     
                     break;
 
@@ -361,8 +357,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     }
                     
                     // Reajusta a aparência da tabela.
-                    pnlUnidade.atualizarAparenciaDaTabela(
-                                PainelUnidade.TAB_PARTE);
+                    pnlUnidade.atualizarAparenciaDaTabela(PainelEquipamento.TAB_PARTE);
                     
                     break;                
             }
@@ -381,7 +376,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
             
             habilitarEdicao(ALTERAR_NULL);
             
-            pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+            pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
         }
     }
     
@@ -627,7 +622,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                         break;
                 }
                 
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_NULL);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_NULL);
             }
         }
     }
@@ -689,7 +684,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
         public void actionPerformed(ActionEvent e) {
             if(!pnlUnidade.tabelaSelecionada.equals("")) {
                 pnlUnidade.limpaSelecao();
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
                 limparTexto(0);
                 limparTexto(1);
                 habilitarEdicao(ALTERAR_NULL);

@@ -109,17 +109,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
     public JPanel montarPainelPrincipal() {
         /* Cria os botões antes de montar o painel Principal */
         criarBotoesOpcoes();
-        /*
         
-        pnlEsquerda = new JPanel(new BorderLayout());
-        pnlEsquerda.add(painelGeral(), BorderLayout.NORTH);
-        pnlEsquerda.add(painelOperacional(), BorderLayout.CENTER);
-                
-        pnlPrincipal = new JPanel(new BorderLayout());
-        pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
-        pnlPrincipal.add(painelSubunidades(), BorderLayout.CENTER);
-        
-        */
         pnlEsquerda = new JPanel(new BorderLayout());
         pnlEsquerda.add(painelGeral(), BorderLayout.NORTH);
         pnlEsquerda.add(painelOperacional(), BorderLayout.CENTER);

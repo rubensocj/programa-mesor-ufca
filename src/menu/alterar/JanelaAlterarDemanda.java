@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import menu.PainelUnidade;
+import menu.PainelEquipamento;
 import menu.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarDemanda;
@@ -273,7 +273,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
             
             pnlDemanda.habilitarTabela(true);
             pnlDemanda.atualizarAparenciaDaTabela();
-            pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+            pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
         }
     }
     
@@ -562,7 +562,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                     cbxCondicaoOperacao.setSelectedItem(condicao);
                 }
                 
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_NULL);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_NULL);
                 pnlDemanda.habilitarTabela(false);
             }
         }
@@ -599,7 +599,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                 } catch (SQLException ex) {ex.printStackTrace();}
 
                 pnlUnidade.limpaSelecao();
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
                 pnlDemanda.atualizarAparenciaDaTabela();
             }
         }
@@ -657,7 +657,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
             if(!pnlUnidade.tabelaSelecionada.equals("")
                         || pnlDemanda.tabDemanda.getSelectedRowCount() != 0) {
                 
-                pnlUnidade.habilitarTabela(PainelUnidade.TAB_UNIDADE);
+                pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
                 pnlDemanda.habilitarTabela(true);
                 limparTexto();
                 habilitarEdicao(false);
