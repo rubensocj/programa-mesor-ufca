@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import menu.HoraFormatada;
-import menu.PainelEquipamento;
+import menu.painel.PainelEquipamento;
 import menu.JanelaAdicionarAlterar;
 
 /**
@@ -421,7 +421,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
      * selecionado, então, a tabela mostrará todas as unidades do banco,
      * independente do sistema.
      */
-    private class ItemEventSistema implements ItemListener {
+    public class ItemEventSistema implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {

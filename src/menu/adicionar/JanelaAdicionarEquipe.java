@@ -508,10 +508,10 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
         lblEndereco = new JLabel("Endereço: ");
         lblCidade = new JLabel("Cidade: ");
         
-        tfdNome = new JTextField(15);    tfdEstadoCivil = new JTextField(15);
-        tfdSexo = new JTextField(15);    tfdEndereco = new JTextField(15);
-        tfdCargo = new JTextField(15);   tfdFormacao = new JTextField(15);
-        tfdCidade = new JTextField(15);
+        tfdNome = new JTextField(20);    tfdEstadoCivil = new JTextField(20);
+        tfdSexo = new JTextField(20);    tfdEndereco = new JTextField(20);
+        tfdCargo = new JTextField(20);   tfdFormacao = new JTextField(20);
+        tfdCidade = new JTextField(20);
         
         // Define o fomato numérico do JFormattedTextField tfdRemuneração.
         DecimalFormat formatoDecimal = new DecimalFormat();
@@ -607,9 +607,9 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
         pnlEqp2.add(tfdEndereco);
         pnlEqp2.add(tfdCidade);
         
-        JPanel pnlEqp3 = new JPanel(new BorderLayout());
-        pnlEqp3.add(pnlEqp1, BorderLayout.WEST);
-        pnlEqp3.add(pnlEqp2, BorderLayout.EAST);
+        JPanel pnlEqp3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        pnlEqp3.add(pnlEqp1);
+        pnlEqp3.add(pnlEqp2);
         
         // Botão "Adicionar" interventor.
         btnAddInterventor = new JButton("Adicionar");

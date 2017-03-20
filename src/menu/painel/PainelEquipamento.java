@@ -1,5 +1,9 @@
-package menu;
+package menu.painel;
 
+import equipamento.Unidade;
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,7 +15,6 @@ import java.sql.SQLException;
 
 import conexaoSql.ModeloTabela;
 
-import equipamento.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**

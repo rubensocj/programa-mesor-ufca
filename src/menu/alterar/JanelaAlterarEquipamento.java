@@ -1,5 +1,8 @@
 package menu.alterar;
 
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,14 +10,13 @@ import javax.swing.*;
 
 import java.text.SimpleDateFormat;
 
-import equipamento.*;
 
 import java.io.File;
 import java.io.IOException;
 
 import java.util.*;
 
-import menu.PainelEquipamento;
+import menu.painel.PainelEquipamento;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarEquipamento;
 

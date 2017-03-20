@@ -1,4 +1,4 @@
-package menu;
+package menu.painel;
 
 import java.awt.Color;
 import java.awt.Dimension;

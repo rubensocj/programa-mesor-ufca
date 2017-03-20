@@ -1,5 +1,6 @@
 package equipamento;
 
+import equipamento.Componente;
 import java.util.Vector;
 
 import conexaoSql.Consulta;

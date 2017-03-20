@@ -150,11 +150,32 @@ public abstract class JanelaAdicionarAlterar {
      * @param titulo 
      * @param indiceSistema 
      */
-    public void mostrar(String titulo, int indiceSistema) {
+    public final void mostrar(String titulo, int indiceSistema) {
         
         montarPainelPrincipal();
         
         cbxSistema.setSelectedIndex(indiceSistema);
+        
+        pane = new JOptionPane();
+        pane.setMessage(pnlPrincipal);
+        pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+        pane.setOptions(options);
+        
+        dialog = pane.createDialog(pane, titulo);
+        dialog.pack();
+        dialog.setVisible(true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+    
+    /**
+     * Monta o painel principal e mostra um JDialog como a janela para adição ou
+     * alteração do elemento ou evento, com o título especificado.
+     * 
+     * @param titulo 
+     */
+    public final void mostrar(String titulo) {
+        
+        montarPainelPrincipal();
         
         pane = new JOptionPane();
         pane.setMessage(pnlPrincipal);

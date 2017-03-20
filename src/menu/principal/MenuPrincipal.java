@@ -1,9 +1,15 @@
-package menu;
+package menu.principal;
 
+import menu.alterar.JanelaAlterarIntervencao;
+import menu.alterar.JanelaAlterarEquipe;
+import menu.alterar.JanelaAlterarEquipamento;
+import menu.alterar.JanelaAlterarDemanda;
+import menu.adicionar.JanelaAdicionarIntervencao;
+import menu.adicionar.JanelaAdicionarEquipe;
+import menu.adicionar.JanelaAdicionarEquipamento;
+import menu.adicionar.JanelaAdicionarDemanda;
 import conexaoSql.Consulta;
 
-import menu.adicionar.*;
-import menu.alterar.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -180,7 +186,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: NOVA EQUIPE DE INTERVENÇÃO selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarEquipe janela = new JanelaAdicionarEquipe();
-                janela.mostrar("Adicionar equipe de intervenção", 0);
+                janela.mostrar("Adicionar equipe de intervenção");
             }
         }
     }
@@ -226,7 +232,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR EQUIPE selecionado");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipe janela = new JanelaAlterarEquipe();
-                janela.mostrar("Alterar equipe de intervenção", 0);
+                janela.mostrar("Alterar equipe de intervenção");
             }
         }
     }

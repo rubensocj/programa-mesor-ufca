@@ -2,11 +2,14 @@
  * Autor Rubens Oliveira da Cunha Júnior
  */
 
+import equipamento.Unidade;
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.DefaultComboBoxModel;
-import equipamento.*;
 
 public class JanelaTeste {
     private final JPanel pnlUniInfo, pnlUni, pnlCategoria1, pnlCategoria2,

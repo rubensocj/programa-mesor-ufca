@@ -18,8 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import menu.PainelEquipamento;
-import menu.PainelIntervencao;
+import menu.painel.PainelEquipamento;
+import menu.painel.PainelIntervencao;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarIntervencao;
 
@@ -191,6 +191,8 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
         pnlPrincipal = new JPanel(new BorderLayout(3,0));
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+            /* Adiciona o ItemListener a cbxSistema */
+            cbxSistema.addItemListener(new ItemEventSistema());
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(painelAbas(), BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);

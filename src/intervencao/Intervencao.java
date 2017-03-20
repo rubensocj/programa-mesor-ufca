@@ -1,6 +1,9 @@
 package intervencao;
 
-import equipamento.*;
+import equipamento.Unidade;
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 
 import java.text.*;
 

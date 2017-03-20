@@ -1,5 +1,9 @@
 package menu.adicionar;
 
+import equipamento.Unidade;
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,7 +13,6 @@ import javax.swing.text.MaskFormatter;
 
 import java.text.ParseException;
 
-import equipamento.*;
 
 import menu.JanelaAdicionarAlterar;
 
@@ -225,7 +228,8 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         pnlGeral2.add(tfdUniDataAq);
         
         pnlUniGeral = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlUniGeral.add(pnlGeral1);      pnlUniGeral.add(pnlGeral2);
+        pnlUniGeral.add(pnlGeral1);
+        pnlUniGeral.add(pnlGeral2);
         
         pnlUni1 = new JPanel(new FlowLayout());
         pnlUni1.setBorder(BorderFactory.createTitledBorder(

@@ -1,5 +1,8 @@
 package equipamento;
 
+import equipamento.Subunidade;
+import equipamento.Parte;
+import equipamento.Componente;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 

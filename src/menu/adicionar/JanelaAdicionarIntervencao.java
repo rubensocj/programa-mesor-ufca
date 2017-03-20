@@ -1,5 +1,7 @@
 package menu.adicionar;
 
+import intervencao.Demanda;
+import intervencao.Intervencao;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
@@ -8,7 +10,6 @@ import java.awt.event.*;
 
 import java.text.ParseException;
 
-import intervencao.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +17,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import menu.HoraFormatada;
-import menu.PainelEquipamento;
-import menu.PainelDemanda;
+import menu.painel.PainelEquipamento;
+import menu.painel.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 
 import conexaoSql.ModeloTabela;
@@ -116,6 +117,8 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
         pnlPrincipal = new JPanel(new BorderLayout());
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+            /* Adiciona o ItemListener a cbxSistema */
+            cbxSistema.addItemListener(new ItemEventSistema());
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelIntervencao(), BorderLayout.EAST);
@@ -547,6 +550,25 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
                 mDialog.pack();
                 mDialog.setVisible(true);
                 mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            }
+        }
+    }
+    
+    /**
+     * Altera o conteúdo da tabela de Unidades de acordo com o sistema
+     * selecionado no {@code JComboBox cbxSistema} através de uma consulta SQL
+     * pelas unidades daquele sistema. Caso nenhum sistema seja selecionado, ou
+     * seja, o item vazio do {@code JComboBox cbxSistema} - índice zero - seja
+     * selecionado, então, a tabela mostrará todas as unidades do banco,
+     * independente do sistema.
+     */
+    public class ItemEventSistema implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                try {
+                    pnlUnidade.buscarUnidade(cbxSistema.getSelectedIndex());
+                } catch(SQLException ex) { ex.printStackTrace();}
             }
         }
     }
