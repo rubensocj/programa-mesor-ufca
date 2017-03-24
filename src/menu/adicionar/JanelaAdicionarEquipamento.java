@@ -159,7 +159,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         unidade.setDataInicioOperacao(dataInicio);
         unidade.setSistema(cbxSistema.getSelectedIndex());
 
-        unidade.adicionaUnidade();
+        unidade.sqlInserir();
     }
     
     // -------------------------------------------------------------------------

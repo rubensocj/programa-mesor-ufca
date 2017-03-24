@@ -118,7 +118,7 @@ public abstract class JanelaAdicionarAlterar {
     public final JPanel painelSistema() throws SQLException {
         // Inicializa a lista com a consulta SQL e define o modelo da JComboBox
         try {
-            lista = new Lista("SELECT descricao FROM sistema");
+            lista = new Lista("SELECT nome FROM sistema");
         } catch (SQLException ex) {ex.printStackTrace();}
         cbxSistema = new JComboBox(lista.toVector());
         cbxSistema.setPreferredSize(new Dimension(275, 20));

@@ -414,7 +414,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
     // -------------------------------------------------------------------------
     
     /**
-     * Altera o conteúdo da tabela de Unidades de acordo com o sistema
+     * Atualiza o conteúdo da tabela de Unidades de acordo com o sistema
      * selecionado no {@code JComboBox cbxSistema} através de uma consulta SQL
      * pelas unidades daquele sistema. Caso nenhum sistema seja selecionado, ou
      * seja, o item vazio do {@code JComboBox cbxSistema} - índice zero - seja

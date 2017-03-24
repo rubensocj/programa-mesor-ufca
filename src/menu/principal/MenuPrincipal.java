@@ -14,6 +14,8 @@ import conexaoSql.Consulta;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import menu.adicionar.JanelaAdicionarSistema;
+import menu.alterar.JanelaAlterarSistema;
 
 /**
  * MenuPrincipal.java
@@ -25,9 +27,10 @@ public class MenuPrincipal extends JFrame {
     
     private JMenuBar barraMenu;
     private JMenu menuAdicionar, menuAlterar;
-    private JMenuItem novaDemanda, novoEquipamento, novaIntervencao, novaEquipe;
+    private JMenuItem novaDemanda, novoEquipamento, novaIntervencao, novaEquipe,
+                novoSistema;
     private JMenuItem alterarDemanda, alterarEquipamento, alterarIntervencao,
-                alterarEquipe;
+                alterarEquipe, alterarSistema;
         
     private final String eventSelected = "ActionEvent";
 
@@ -62,36 +65,42 @@ public class MenuPrincipal extends JFrame {
         novaDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
         novoEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);        
         novaIntervencao = new JMenuItem("Intervenção", KeyEvent.VK_I);
-        novaEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_T);
+        novaEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
+        novoSistema = new JMenuItem("Sistema", KeyEvent.VK_S);
           
         // Cria os itens do menu "Alterar"
         alterarDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
         alterarEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);
         alterarIntervencao = new JMenuItem("Intervenção", KeyEvent.VK_I);
         alterarEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
+        alterarSistema = new JMenuItem("Sistema", KeyEvent.VK_S);
         
         // Adiciona o ActionListener aos itens
         novoEquipamento.addActionListener(new adicionarEquipamento());
         novaIntervencao.addActionListener(new adicionarIntervencao());
         novaDemanda.addActionListener(new adicionarDemanda());
         novaEquipe.addActionListener(new adicionarEquipe());
+        novoSistema.addActionListener(new adicionarSistema());
         
         alterarEquipamento.addActionListener(new alterarEquipamento());
         alterarDemanda.addActionListener(new alterarDemanda());
         alterarIntervencao.addActionListener(new alterarIntervencao());
         alterarEquipe.addActionListener(new alterarEquipe());
+        alterarSistema.addActionListener(new alterarSistema());
         
         // Adiciona o item ao submenu "Adicionar"
         menuAdicionar.add(novaDemanda);
         menuAdicionar.add(novoEquipamento);
         menuAdicionar.add(novaEquipe);
         menuAdicionar.add(novaIntervencao);
+        menuAdicionar.add(novoSistema);
         
         // Adiciona o item ao submenu "Alterar"
         menuAlterar.add(alterarDemanda);
         menuAlterar.add(alterarEquipamento);
-        menuAlterar.add(alterarIntervencao);
         menuAlterar.add(alterarEquipe);
+        menuAlterar.add(alterarIntervencao);
+        menuAlterar.add(alterarSistema);
         
         // Adiciona o menu "Arquivo" à barra de menus
         barraMenu.add(menuAdicionar);
@@ -145,21 +154,10 @@ public class MenuPrincipal extends JFrame {
     // Classes privadas.
     // -------------------------------------------------------------------------
     
-    private class adicionarDemanda implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: NOVA DEMANDA selecionado");
-            if (eventSelected.equals("ActionEvent")) {
-                JanelaAdicionarDemanda janela = new JanelaAdicionarDemanda();
-                janela.mostrar("Adicionar demanda", 0);
-            }
-        }
-    }
-    
     private class adicionarEquipamento implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: NOVO EQUIPAMENTO selecionado");
+            System.out.println("ActionEvent: ADICIONAR EQUIPAMENTO.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarEquipamento janela;
                 janela = new JanelaAdicionarEquipamento();
@@ -171,7 +169,7 @@ public class MenuPrincipal extends JFrame {
     private class adicionarIntervencao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: NOVA INTERVENÇÃO selecionado");
+            System.out.println("ActionEvent: ADICIONAR INTERVENÇÃO.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarIntervencao janela;
                 janela = new JanelaAdicionarIntervencao();
@@ -180,10 +178,21 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
+    private class adicionarDemanda implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ADICIONAR DEMANDA.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAdicionarDemanda janela = new JanelaAdicionarDemanda();
+                janela.mostrar("Adicionar demanda", 0);
+            }
+        }
+    }
+    
     private class adicionarEquipe implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: NOVA EQUIPE DE INTERVENÇÃO selecionado");
+            System.out.println("ActionEvent: ADICIONAR EQUIPE DE INTERVENÇÃO.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAdicionarEquipe janela = new JanelaAdicionarEquipe();
                 janela.mostrar("Adicionar equipe de intervenção");
@@ -191,10 +200,22 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
+    private class adicionarSistema implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ADICIONAR SISTEMA.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAdicionarSistema janela;
+                janela = new JanelaAdicionarSistema();
+                janela.mostrar("Adicionar sistema");
+            }
+        }
+    }
+    
     private class alterarEquipamento implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR EQUIPAMENTO selecionado");
+            System.out.println("ActionEvent: ALTERAR EQUIPAMENTO.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipamento janela;
                 janela = new JanelaAlterarEquipamento();
@@ -203,21 +224,10 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
-    private class alterarDemanda implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR DEMANDA selecionado");
-            if (eventSelected.equals("ActionEvent")) {
-                JanelaAlterarDemanda janela = new JanelaAlterarDemanda();
-                janela.mostrar("Alterar demanda", 0);
-            }
-        }
-    }
-    
     private class alterarIntervencao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR INTERVENÇÃO selecionado");
+            System.out.println("ActionEvent: ALTERAR INTERVENÇÃO.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarIntervencao janela;
                 janela = new JanelaAlterarIntervencao();
@@ -226,13 +236,35 @@ public class MenuPrincipal extends JFrame {
         }
     }
     
+    private class alterarDemanda implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ALTERAR DEMANDA.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAlterarDemanda janela = new JanelaAlterarDemanda();
+                janela.mostrar("Alterar demanda", 0);
+            }
+        }
+    }
+    
     private class alterarEquipe implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR EQUIPE selecionado");
+            System.out.println("ActionEvent: ALTERAR EQUIPE.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipe janela = new JanelaAlterarEquipe();
                 janela.mostrar("Alterar equipe de intervenção");
+            }
+        }
+    }    
+    
+    private class alterarSistema implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ALTERAR SISTEMA.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAlterarSistema janela = new JanelaAlterarSistema();
+                janela.mostrar("Alterar sistema");
             }
         }
     }

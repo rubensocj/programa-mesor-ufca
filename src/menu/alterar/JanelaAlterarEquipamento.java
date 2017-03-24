@@ -255,7 +255,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     unidade.setIdBD((int)pnlUnidade.tabUnidade.getValueAt(
                                     pnlUnidade.tabUnidade.getSelectedRow(),0));
 
-                    unidade.alteraUnidade();
+                    unidade.sqlAlterar();
                     
                     /**
                      * Obtém o TableModel tabUnidade como sql.ModeloTabelaSQL

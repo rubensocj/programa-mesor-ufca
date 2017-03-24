@@ -1,8 +1,5 @@
 package equipamento;
 
-import equipamento.Subunidade;
-import equipamento.Parte;
-import equipamento.Componente;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -35,10 +32,7 @@ public class Unidade {
     
     private final Vector<Subunidade> subunidade = new Vector();
     
-//    private final Consulta consulta = new Consulta();
-    
     private final SimpleDateFormat formatoSQLDate;
-    
     private Date sqlDataAq, sqlDataOp, sqlData;
     int sqlIntTempFisc, sqlIntDem;
     
@@ -174,7 +168,7 @@ public class Unidade {
     /**
      * Insere informações no banco de dados.
      */
-    public void adicionaUnidade() {
+    public void sqlInserir() {
         sqlDataAq = null;
         sqlDataOp = null;
         
@@ -210,7 +204,7 @@ public class Unidade {
     /**
      * Altera informações no banco de dados.
      */
-    public void alteraUnidade() {
+    public void sqlAlterar() {
         sqlDataAq = null;
         sqlDataOp = null;
         

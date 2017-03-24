@@ -1,7 +1,7 @@
 package equipamento;
 
-import java.util.Vector;
 import conexaoSql.Consulta;
+import java.util.Vector;
 
 /**
  * Sistema.java
@@ -11,6 +11,7 @@ import conexaoSql.Consulta;
  */
 public class Sistema {
 
+    private String nome;
     private String descricao;
     
     private final Vector<Unidade> unidade = new Vector();
@@ -23,15 +24,19 @@ public class Sistema {
      * Construtores.
      */
     public Sistema() {}
-    public Sistema(String descricao) {
+    public Sistema(String nome, String descricao) {
         setDescricao(descricao);
+        setNome(nome);
     }
     
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
     
-    /* Métodos setters */    
+    /* Métodos setters */
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -57,5 +62,21 @@ public class Sistema {
     }
     public int getIdBD() {
         return idBD;
+    }
+    
+    /**
+     * Isere informações no banco de dados.
+     */
+    public void sqlInserir() {
+        int n;
+        n = Consulta.insertSistema(this.nome, this.descricao);
+    }
+    
+    /**
+     * Altera informações no banco de dados.
+     */
+    public void sqlAlterar() {
+        int n;
+        n = Consulta.updateSistema(this.nome, this.descricao, this.idBD);
     }
 }

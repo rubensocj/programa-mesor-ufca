@@ -17,7 +17,8 @@ public class Consulta {
     
     // Nome e URL do banco de dados.
     private static final String BD_NAME = "bdprograma";
-    private static final String BD_URL = "jdbc:mysql://192.168.1.12:3306/"+BD_NAME;
+    private static final String BD_HOST = "192.168.1.12:3306/";
+    private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
     
     // Acesso ao servidor: usuário e senha.
     private static final String USERNAME = "mesor";
@@ -39,7 +40,8 @@ public class Consulta {
      * Consulta em SQL previamente preparada que insere no banco de dados
      * elementos criados pelo usuário.
      */
-    private static PreparedStatement inserirUnidade = null,
+    private static PreparedStatement inserirSistema = null,
+                inserirUnidade = null,
                 inserirSubunidade = null,
                 inserirComponente = null,
                 inserirParte = null,
@@ -55,7 +57,8 @@ public class Consulta {
      * Consulta em SQL previamente preparada que atualiza no banco de dados
      * elementos alterados pelo usuário.
      */
-    private static PreparedStatement alterarUnidade = null,
+    private static PreparedStatement alterarSistema = null,
+                alterarUnidade = null,
                 alterarSubunidade = null,
                 alterarComponente = null,
                 alterarParte = null,
@@ -63,114 +66,58 @@ public class Consulta {
                 alterarIntervencao = null;
     
     // -------------------------------------------------------------------------
-    // Métodos da classe Demanda
+    // Métodos da classe Sistema
     // -------------------------------------------------------------------------
     
     /**
-     * Adiciona uma linha à entidade DEMANDA do banco de dados com as
+     * Adiciona uma linha à entidade SISTEMA do banco de dados com as
      * informações dadas pelo usuário.
-     *
-     * @param data
-     * @param modo
-     * @param impacto
-     * @param causa
-     * @param modoOperacional 
-     * @param idUni
-     * @param idSub
-     * @param idCp
-     * @param idPte
+     * 
+     * @param nome
+     * @param descricao
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertDemanda(java.util.Date data, String modo,
-                String impacto, String causa, String modoOperacional, int idUni,
-                int idSub, int idCp, int idPte) {
-        /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss)" */
-        java.sql.Timestamp sqlData = new java.sql.Timestamp(data.getTime());
-        
-        int resultado = 0;        
+    public static int insertSistema(String nome, String descricao) {
+        int resultado = 0;
         try {
-            // setString(numero do parametro da tabela, valor a ser inserido)
-            inserirDemanda.setTimestamp(1, sqlData);
-            if(modo == null) {
-                inserirDemanda.setNull(2, java.sql.Types.VARCHAR);
-            } else {inserirDemanda.setString(2, modo);}
-            if(impacto == null) {
-                inserirDemanda.setNull(3, java.sql.Types.VARCHAR);
-            } else {inserirDemanda.setString(3, impacto);}
-            if(causa == null) {
-                inserirDemanda.setNull(4, java.sql.Types.VARCHAR);
-            } else {inserirDemanda.setString(4, causa);}
-            if(modoOperacional == null) {
-                inserirDemanda.setNull(5, java.sql.Types.VARCHAR);
-            } else {inserirDemanda.setString(5, modoOperacional);}
-            inserirDemanda.setInt(6, idUni);
-            if(idSub == 0) {inserirDemanda.setNull(7, java.sql.Types.INTEGER);}
-                else {inserirDemanda.setInt(7, idSub);}
-            if(idCp == 0) {inserirDemanda.setNull(8, java.sql.Types.INTEGER);}
-                else {inserirDemanda.setInt(8, idCp);}
-            if(idPte == 0) {inserirDemanda.setNull(9, java.sql.Types.INTEGER);}
-                else {inserirDemanda.setInt(9, idPte);}
+            inserirSistema.setString(1, nome);
+            if(descricao.isEmpty()) {
+                inserirSistema.setNull(2, java.sql.Types.VARCHAR);
+            } else {inserirSistema.setString(2, descricao);}
             
             // executa a operação; retorna número de linhas atualizadas.
-            resultado = inserirDemanda.executeUpdate();
-            inserirDemanda.getQueryTimeout();
-            
-            // Pega os ID gerados automaticamente na inserção.
-            resultSet = inserirDemanda.getGeneratedKeys();
-            if(resultSet.next()) {
-                idDemanda = resultSet.getInt(1);
-            }
-        } // fim do try.
-        catch(SQLException sqlException) {
+            resultado = inserirSistema.executeUpdate();
+            inserirSistema.getQueryTimeout();
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
-        } // fim do catch.
+        }
         
         return resultado;
     }
     
     /**
-     * Altera uma linha selecionada da entidade DEMANDA do banco de dados com as
+     * Altera uma linha selecionada da entidade SISTEMA do banco de dados com as
      * novas informações dadas pelo usuário.
      * 
-     * @param data
-     * @param modo
-     * @param impacto
-     * @param causa
-     * @param modoOperacional
-     * @param id
+     * @param nome
+     * @param descricao
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int updateDemanda(java.util.Date data, String modo,
-                String impacto, String causa, String modoOperacional, int id) {
-        /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss) */
-        java.sql.Timestamp sqlData = new java.sql.Timestamp(data.getTime());
-        
+    public static int updateSistema(String nome, String descricao, int id) {
         int resultado = 0;
         try {
-            alterarDemanda.setTimestamp(1, sqlData);
-            if(modo == null) {
-                alterarDemanda.setNull(2, java.sql.Types.VARCHAR);
-            } else {alterarDemanda.setString(2, modo);}
-            if(impacto == null) {
-                alterarDemanda.setNull(3, java.sql.Types.VARCHAR);
-            } else {alterarDemanda.setString(3, impacto);}
-            if(causa == null) {
-                alterarDemanda.setNull(4, java.sql.Types.VARCHAR);
-            } else {alterarDemanda.setString(4, causa);}
-            if(modoOperacional == null) {
-                alterarDemanda.setNull(5, java.sql.Types.VARCHAR);
-            } else {alterarDemanda.setString(5, modoOperacional);}
-            alterarDemanda.setInt(6, id);
+            alterarSistema.setString(1, nome);
+            if(descricao.isEmpty()) {
+                alterarSistema.setNull(2, java.sql.Types.VARCHAR);
+            } else {alterarSistema.setString(2, descricao);}
+            alterarSistema.setInt(3, id);
             
             // executa a operação; retorna número de linhas atualizadas.
-            resultado = alterarDemanda.executeUpdate();
-            alterarDemanda.getQueryTimeout();
-        } // fim do try.
-        catch(SQLException sqlException) {
+            resultado = alterarSistema.executeUpdate();
+            alterarSistema.getQueryTimeout();
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
-        } // fim do catch.
+        }
         
         return resultado;
     }
@@ -609,7 +556,120 @@ public class Consulta {
         
         return resultado;
     }
-
+    
+    // -------------------------------------------------------------------------
+    // Métodos da classe Demanda
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Adiciona uma linha à entidade DEMANDA do banco de dados com as
+     * informações dadas pelo usuário.
+     *
+     * @param data
+     * @param modo
+     * @param impacto
+     * @param causa
+     * @param modoOperacional 
+     * @param idUni
+     * @param idSub
+     * @param idCp
+     * @param idPte
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int insertDemanda(java.util.Date data, String modo,
+                String impacto, String causa, String modoOperacional, int idUni,
+                int idSub, int idCp, int idPte) {
+        /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss)" */
+        java.sql.Timestamp sqlData = new java.sql.Timestamp(data.getTime());
+        
+        int resultado = 0;        
+        try {
+            // setString(numero do parametro da tabela, valor a ser inserido)
+            inserirDemanda.setTimestamp(1, sqlData);
+            if(modo == null) {
+                inserirDemanda.setNull(2, java.sql.Types.VARCHAR);
+            } else {inserirDemanda.setString(2, modo);}
+            if(impacto == null) {
+                inserirDemanda.setNull(3, java.sql.Types.VARCHAR);
+            } else {inserirDemanda.setString(3, impacto);}
+            if(causa == null) {
+                inserirDemanda.setNull(4, java.sql.Types.VARCHAR);
+            } else {inserirDemanda.setString(4, causa);}
+            if(modoOperacional == null) {
+                inserirDemanda.setNull(5, java.sql.Types.VARCHAR);
+            } else {inserirDemanda.setString(5, modoOperacional);}
+            inserirDemanda.setInt(6, idUni);
+            if(idSub == 0) {inserirDemanda.setNull(7, java.sql.Types.INTEGER);}
+                else {inserirDemanda.setInt(7, idSub);}
+            if(idCp == 0) {inserirDemanda.setNull(8, java.sql.Types.INTEGER);}
+                else {inserirDemanda.setInt(8, idCp);}
+            if(idPte == 0) {inserirDemanda.setNull(9, java.sql.Types.INTEGER);}
+                else {inserirDemanda.setInt(9, idPte);}
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = inserirDemanda.executeUpdate();
+            inserirDemanda.getQueryTimeout();
+            
+            // Pega os ID gerados automaticamente na inserção.
+            resultSet = inserirDemanda.getGeneratedKeys();
+            if(resultSet.next()) {
+                idDemanda = resultSet.getInt(1);
+            }
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Altera uma linha selecionada da entidade DEMANDA do banco de dados com as
+     * novas informações dadas pelo usuário.
+     * 
+     * @param data
+     * @param modo
+     * @param impacto
+     * @param causa
+     * @param modoOperacional
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int updateDemanda(java.util.Date data, String modo,
+                String impacto, String causa, String modoOperacional, int id) {
+        /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss) */
+        java.sql.Timestamp sqlData = new java.sql.Timestamp(data.getTime());
+        
+        int resultado = 0;
+        try {
+            alterarDemanda.setTimestamp(1, sqlData);
+            if(modo == null) {
+                alterarDemanda.setNull(2, java.sql.Types.VARCHAR);
+            } else {alterarDemanda.setString(2, modo);}
+            if(impacto == null) {
+                alterarDemanda.setNull(3, java.sql.Types.VARCHAR);
+            } else {alterarDemanda.setString(3, impacto);}
+            if(causa == null) {
+                alterarDemanda.setNull(4, java.sql.Types.VARCHAR);
+            } else {alterarDemanda.setString(4, causa);}
+            if(modoOperacional == null) {
+                alterarDemanda.setNull(5, java.sql.Types.VARCHAR);
+            } else {alterarDemanda.setString(5, modoOperacional);}
+            alterarDemanda.setInt(6, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = alterarDemanda.executeUpdate();
+            alterarDemanda.getQueryTimeout();
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
     // -------------------------------------------------------------------------
     // Métodos da classe Interventor
     // -------------------------------------------------------------------------
@@ -828,6 +888,13 @@ public class Consulta {
         try {
             connection = DriverManager.getConnection(
                         BD_URL, USERNAME, PASSWORD);
+            
+            /* Definição de métodos para a classe SISTEMA */
+            inserirSistema = connection.prepareStatement(
+                "INSERT INTO sistema (nome, descricao) VALUES (?, ?);");
+            
+            alterarSistema = connection.prepareStatement(
+                "UPDATE sistema SET nome = ?, descricao = ? WHERE id = ?;");
             
             /* Definição de métodos para a classe UNIDADE */
             inserirUnidade = connection.prepareStatement(
