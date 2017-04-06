@@ -18,8 +18,6 @@ public class Componente {
     private String cod; // código
     private int idBD = 0;   // id
     
-    Consulta consulta = new Consulta();
-    
     /**
      * Construtores.
      */
@@ -91,7 +89,14 @@ public class Componente {
     /**
      * Altera informações no banco de dados.
      */
-    public void alteraComponente() {
-        int n = consulta.updateComponente(this.descricao, this.idBD);
+    public void sqlAlterar() {
+        int n = Consulta.updateComponente(this.descricao, this.idBD);
+    }
+    
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n = Consulta.deleteComponente(this.idBD);
     }
 }

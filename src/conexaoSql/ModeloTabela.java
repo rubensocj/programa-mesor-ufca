@@ -1,7 +1,3 @@
-/**
- * Autor Rubens Oliveira da Cunha Júnior
- */
-
 package conexaoSql;
 
 import java.sql.Connection;
@@ -10,12 +6,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+
 import javax.swing.table.AbstractTableModel;
 
-// Classe que exibe tabelas do banco de dados ----------------------------------
+/**
+ * ModeloTabela.java
+ * 
+ * @version 1.0 17/2/2017
+ * @author Rubens Jr
+ */
 public class ModeloTabela extends AbstractTableModel {
     
-    private final Connection connection;
+//    private final Connection connection;
     private final Statement statement;
     private ResultSet resultSet;
     private ResultSetMetaData metaData;
@@ -24,9 +26,11 @@ public class ModeloTabela extends AbstractTableModel {
     // lida com a conexão com o BD
     private boolean conectado = false;
     
-    // Nome e URL do banco de dados
+    // Nome e URL do banco de dados.
     private static final String BD_NAME = "bdprograma";
-    private static final String BD_URL = "jdbc:mysql://192.168.1.12:3306/" + BD_NAME;
+//    private static final String BD_HOST = "192.168.1.12:3306/";
+    private static final String BD_HOST = "localhost:3306/";
+    private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
     
     // Acesso ao servidor: usuário e senha
     private static final String USERNAME = "mesor";
@@ -35,9 +39,9 @@ public class ModeloTabela extends AbstractTableModel {
     // Construtor
     public ModeloTabela(String consulta) throws SQLException {
         
-        connection = DriverManager.getConnection(
-                    BD_URL, USERNAME, PASSWORD);
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,
+//        connection = DriverManager.getConnection(
+//                    BD_URL, USERNAME, PASSWORD);
+        statement = Consulta.connection.createStatement(ResultSet.CONCUR_READ_ONLY,
                     ResultSet.TYPE_SCROLL_INSENSITIVE);
         conectado = true;
         
@@ -175,7 +179,7 @@ public class ModeloTabela extends AbstractTableModel {
             try {
                 resultSet.close();
                 statement.close();
-                connection.close();
+//                connection.close();
             } // Fim do try
             catch(SQLException ex) {
                 ex.printStackTrace();

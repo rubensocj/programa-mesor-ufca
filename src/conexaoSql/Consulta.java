@@ -17,7 +17,8 @@ public class Consulta {
     
     // Nome e URL do banco de dados.
     private static final String BD_NAME = "bdprograma";
-    private static final String BD_HOST = "192.168.1.12:3306/";
+//    private static final String BD_HOST = "192.168.1.12:3306/";
+    private static final String BD_HOST = "localhost:3306/";
     private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
     
     // Acesso ao servidor: usuário e senha.
@@ -65,6 +66,15 @@ public class Consulta {
                 alterarDemanda = null,
                 alterarIntervencao = null;
     
+    /**
+     * Consulta em SQL previamente preparada que exclui do banco de dados
+     * elementos selecionados pelo usuário.
+     */
+    private static PreparedStatement deletarUnidade = null,
+                deletarSubunidade = null,
+                deletarComponente = null,
+                deletarParte = null;
+    
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
     // -------------------------------------------------------------------------
@@ -101,6 +111,7 @@ public class Consulta {
      * 
      * @param nome
      * @param descricao
+     * @param id
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
     public static int updateSistema(String nome, String descricao, int id) {
@@ -250,6 +261,31 @@ public class Consulta {
         return resultado;
     }
     
+    /**
+     * Deleta uma linha selecionada da entidade UNIDADE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteUnidade(int id) {
+        
+        int resultado = 0;        
+        try {
+            deletarUnidade.setInt(1, id);
+                        
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarUnidade.executeUpdate();
+            deletarUnidade.getQueryTimeout();
+            
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
     // -------------------------------------------------------------------------
     // Métodos da classe Subunidade
     // -------------------------------------------------------------------------
@@ -303,6 +339,30 @@ public class Consulta {
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarSubunidade.executeUpdate();
             alterarSubunidade.getQueryTimeout();
+            
+        } // fim do try
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade SUBUNIDADE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteSubunidade(int id) {
+        int resultado = 0;        
+        try {
+            deletarSubunidade.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarSubunidade.executeUpdate();
+            deletarSubunidade.getQueryTimeout();
             
         } // fim do try
         catch(SQLException sqlException) {
@@ -376,6 +436,30 @@ public class Consulta {
         return resultado;
     }
     
+    /**
+     * Deleta uma linha selecionada da entidade COMPONENTE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteComponente(int id) {
+        int resultado = 0;        
+        try {
+            deletarComponente.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarComponente.executeUpdate();
+            deletarComponente.getQueryTimeout();
+            
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
     // -------------------------------------------------------------------------
     // Métodos da classe Parte
     // -------------------------------------------------------------------------
@@ -424,6 +508,30 @@ public class Consulta {
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarParte.executeUpdate();
             alterarParte.getQueryTimeout();
+            
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade PARTE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteParte(int id) {
+        int resultado = 0;        
+        try {
+            deletarParte.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarParte.executeUpdate();
+            deletarParte.getQueryTimeout();
             
         } // fim do try.
         catch(SQLException sqlException) {
@@ -912,6 +1020,9 @@ public class Consulta {
                     "modo_operacional = ?, data_inicio_operacao = ? " +
                 "WHERE id = ?;");
             
+            deletarUnidade = connection.prepareStatement(
+                "DELETE FROM unidade WHERE id = ?;");
+            
             /* Definição de métodos para a classe SUBUNIDADE */
             inserirSubunidade = connection.prepareStatement(
                 "INSERT INTO subunidade" +
@@ -920,6 +1031,9 @@ public class Consulta {
             
             alterarSubunidade = connection.prepareStatement(
                 "UPDATE subunidade SET descricao = ? WHERE id = ?");
+            
+            deletarSubunidade = connection.prepareStatement(
+                "DELETE FROM subunidade WHERE id = ?;");            
             
             /* Definição de métodos para a classe COMPONENTE */
             inserirComponente = connection.prepareStatement(
@@ -930,6 +1044,9 @@ public class Consulta {
             alterarComponente = connection.prepareStatement(
                 "UPDATE componente SET descricao = ? WHERE id = ?");
             
+            deletarComponente = connection.prepareStatement(
+                "DELETE FROM componente WHERE id = ?;");
+            
             /* Definição de métodos para a classe PARTE */
             inserirParte = connection.prepareStatement(
                 "INSERT INTO parte" +
@@ -938,7 +1055,10 @@ public class Consulta {
             
             alterarParte = connection.prepareStatement(
                 "UPDATE parte SET descricao = ? WHERE id = ?");
-
+            
+            deletarParte = connection.prepareStatement(
+                "DELETE FROM parte WHERE id = ?;");
+            
             /* Definição de métodos para a classe DEMANDA */
             inserirDemanda = connection.prepareStatement(
                 "INSERT INTO demanda" +

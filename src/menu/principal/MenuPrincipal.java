@@ -4,18 +4,20 @@ import menu.alterar.JanelaAlterarIntervencao;
 import menu.alterar.JanelaAlterarEquipe;
 import menu.alterar.JanelaAlterarEquipamento;
 import menu.alterar.JanelaAlterarDemanda;
+import menu.alterar.JanelaAlterarSistema;
+
 import menu.adicionar.JanelaAdicionarIntervencao;
 import menu.adicionar.JanelaAdicionarEquipe;
 import menu.adicionar.JanelaAdicionarEquipamento;
 import menu.adicionar.JanelaAdicionarDemanda;
-import conexaoSql.Consulta;
+import menu.adicionar.JanelaAdicionarSistema;
 
+import conexaoSql.Consulta;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
-import menu.adicionar.JanelaAdicionarSistema;
-import menu.alterar.JanelaAlterarSistema;
 
 /**
  * MenuPrincipal.java
@@ -43,7 +45,7 @@ public class MenuPrincipal extends JFrame {
         menuAdicionar = new JMenu("Adicionar");
         menuAdicionar.setMnemonic(KeyEvent.VK_A);
         
-        menuAlterar = new JMenu("Alterar");
+        menuAlterar = new JMenu("Alterar/Excluir");
         menuAlterar.setMnemonic(KeyEvent.VK_L);
         
         /**      
@@ -219,7 +221,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipamento janela;
                 janela = new JanelaAlterarEquipamento();
-                janela.mostrar("Alterar equipamento", 0);
+                janela.mostrar("Alterar/Excluir equipamento", 0);
             }
         }
     }

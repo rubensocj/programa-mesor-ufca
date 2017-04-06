@@ -220,4 +220,12 @@ public class Unidade {
                 this.identificacao, this.categoria, this.local, sqlDataAq,
                 this.modoOperacional, sqlDataOp, this.idBD);
     }
+    
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n;
+        n = Consulta.deleteUnidade(this.idBD);
+    }
 }

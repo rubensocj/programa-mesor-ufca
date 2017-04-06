@@ -4,18 +4,20 @@ import equipamento.Unidade;
 import equipamento.Subunidade;
 import equipamento.Parte;
 import equipamento.Componente;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import java.sql.SQLException;
 
 import conexaoSql.ModeloTabela;
-
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
  * PainelEquipamento.java
@@ -36,12 +38,7 @@ public class PainelEquipamento {
     public static final int TAB_PARTE = 3;
     public static final int TAB_NULL = 4;
     
-    public static final int TAB_EDITAVEL = 0;
-    public static final int TAB_NAO_EDITAVEL = 1;
-    
-    private int editavel;
-    
-    //private final JButton btnExcluir, btnAdicionar;
+    private boolean editavel;
     
     public String tabelaSelecionada;
     public String idSelecionado;
@@ -74,10 +71,13 @@ public class PainelEquipamento {
     private final JPanel pnlDivisoes;
     
     private final JPanel pnlSelecao;
+    private final JPanel pnlSelecionadosExcluir;
     private final JPanel pnlUniFinal;
     
     private final JSplitPane splitPane;
     private final BasicSplitPaneDivider divisor;
+    
+    private final JButton btnExcluir = new JButton("Excluir item");;
     
     /**
      * Construtor.
@@ -309,7 +309,7 @@ public class PainelEquipamento {
         
         // Parte
         JScrollPane pPane = new JScrollPane(tabParte,
-                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabParte.setFillsViewportHeight(true);
         tabParte.setPreferredScrollableViewportSize(dim);
@@ -370,16 +370,21 @@ public class PainelEquipamento {
                 BorderFactory.createEmptyBorder(0, largura, 0, 0)));
                 
         // PainelEquipamento "Itens selecionados"
-        pnlSelecao = new JPanel(new FlowLayout());
+        pnlSelecao = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlSelecao.add(lblSelecionados);
         pnlSelecao.add(selecao);
+        
+        // Painel inferior, que mostra itens selecionados e, caso o painel
+        // for editável, mostra opção de exluir itens
+        pnlSelecionadosExcluir = new JPanel(new BorderLayout());
+        pnlSelecionadosExcluir.add(pnlSelecao, BorderLayout.WEST);
         
         // PainelEquipamento final
         pnlUniFinal = new JPanel(new BorderLayout(10,0));
         pnlUniFinal.setBorder(BorderFactory.createTitledBorder(
                             BorderFactory.createEtchedBorder(), "Equipamento"));
         pnlUniFinal.add(splitPane, BorderLayout.CENTER);
-        pnlUniFinal.add(pnlSelecao, BorderLayout.PAGE_END);
+        pnlUniFinal.add(pnlSelecionadosExcluir, BorderLayout.PAGE_END);
         pnlUniFinal.setOpaque(true);
     }
     
@@ -388,23 +393,81 @@ public class PainelEquipamento {
     // -------------------------------------------------------------------------
     
     /**
-     * @deprecated 
-     * @param e 
      */
-    private void setEditavel(int e) {
-        switch(e) {
-            case TAB_EDITAVEL:
-                
+    public void setEditavel() {
+        btnExcluir.setPreferredSize(new Dimension(105, 25));
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!tabelaSelecionada.equals("")) {
+                    try {
+                        switch(tabelaSelecionada) {
+                            case "unidade":
+                                unidade.sqlExcluir();
+                                reiniciarTabela(TAB_UNIDADE);
+                                atualizarAparenciaDaTabela(TAB_UNIDADE);
+                                break;
+                            case "subunidade":
+                                subunidade.sqlExcluir();
+                                reiniciarTabela(TAB_SUBUNIDADE);
+                                atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
+                                habilitarTabela(TAB_UNIDADE);
+                                break;
+                            case "componente":
+                                componente.sqlExcluir();
+                                reiniciarTabela(TAB_COMPONENTE);
+                                atualizarAparenciaDaTabela(TAB_COMPONENTE);
+                                habilitarTabela(TAB_SUBUNIDADE);
+                                break;
+                            case "parte":
+                                parte.sqlExcluir();
+                                reiniciarTabela(TAB_PARTE);
+                                atualizarAparenciaDaTabela(TAB_PARTE);
+                                habilitarTabela(TAB_COMPONENTE);
+                                break;
+                            default: break;
+                        }
+                    } catch(SQLException ex) { ex.printStackTrace(); }
+                } else {
+                    // Bip do mouse ao clicar no botão
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
+        
+        JPanel pnlBtnExcluir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnExcluir.add(btnExcluir);
+        pnlSelecionadosExcluir.add(pnlBtnExcluir, BorderLayout.EAST);
+    }
+    
+    /**
+     * Reinicia a tabela através de uma consulta SQL {@code SELECT * FROM
+     * demanda}.
+     * 
+     * @param tabela Inteiro com a tabela reiniciada {@code TAB_UNIDADE = 0,
+     * TAB_SUBUNIDADE = 1, TAB_COMPONENTE = 2, TAB_PARTE = 3}.
+     * @throws SQLException 
+     */
+    public void reiniciarTabela(int tabela) throws SQLException {
+        switch(tabela) {
+            case TAB_UNIDADE:
+                modelo = (ModeloTabela) tabUnidade.getModel();
+                modelo.setQuery("SELECT * FROM unidade");
                 break;
-                
-            case TAB_NAO_EDITAVEL:
-                
+            case TAB_SUBUNIDADE:
+                modelo = (ModeloTabela) tabSubunidade.getModel();
+                modelo.setQuery("SELECT * FROM subunidade");
                 break;
-                
+            case TAB_COMPONENTE:
+                modelo = (ModeloTabela) tabComponente.getModel();
+                modelo.setQuery("SELECT * FROM componente");
+                break;
+            case TAB_PARTE:
+                modelo = (ModeloTabela) tabParte.getModel();
+                modelo.setQuery("SELECT * FROM parte");
+                break;
             default: break;
         }
-        
-        editavel = e;
     }
     
     /**

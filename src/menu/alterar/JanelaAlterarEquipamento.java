@@ -10,7 +10,6 @@ import javax.swing.*;
 
 import java.text.SimpleDateFormat;
 
-
 import java.io.File;
 import java.io.IOException;
 
@@ -50,9 +49,12 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
         criarBotoesAlterar();
               
         /**
+         * Define o painelUnidade como editável, permitindo a exclusão de itens.
+         * 
          * Inicializa objeto da classe PainelUnidade e um JPanel que recebe o
          * painel com as tabelas dos equipamentos.
          */
+        pnlUnidade.setEditavel();
         pnlTabela = pnlUnidade.painelTabelas();
     }
     
@@ -282,7 +284,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                                 pnlUnidade.tabSubunidade.getSelectedRow(),0));
                     subunidade.setDescricao(tfdDescricao.getText());
                     
-                    subunidade.alteraSubunidade();
+                    subunidade.sqlAlterar();
                     
                     /**
                      * Obtém o TableModel da tabSubunidade como 
@@ -311,7 +313,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                                 pnlUnidade.tabComponente.getSelectedRow(),0));
                     componente.setDescricao(tfdDescricao.getText());
                     
-                    componente.alteraComponente();
+                    componente.sqlAlterar();
                     
                     /**
                      * Obtém o TableModel da tabComponente como 
@@ -340,7 +342,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                                 pnlUnidade.tabParte.getSelectedRow(),0));
                     parte.setDescricao(tfdDescricao.getText());
                     
-                    parte.alteraParte();
+                    parte.sqlAlterar();
                     
                     /**
                      * Obtém o TableModel da tabSubunidade como 

@@ -1,6 +1,5 @@
 package equipamento;
 
-import equipamento.Componente;
 import java.util.Vector;
 
 import conexaoSql.Consulta;
@@ -18,8 +17,6 @@ public class Subunidade {
     // Parâmetros do banco de dados
     private String cod; // código
     private int idBD = 0;   // id
-
-    Consulta consulta = new Consulta();
     
     /**
      * Construtores.
@@ -97,7 +94,14 @@ public class Subunidade {
     /**
      * Altera informações no banco de dados.
      */
-    public void alteraSubunidade() {
-        int n = consulta.updateSubunidade(this.descricao, this.idBD);
+    public void sqlAlterar() {
+        int n = Consulta.updateSubunidade(this.descricao, this.idBD);
+    }
+    
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n = Consulta.deleteSubunidade(this.idBD);
     }
 }
