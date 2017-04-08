@@ -130,7 +130,7 @@ public class Demanda {
     /**
      * Insere informações no banco de dados.
      */
-    public void adicionaDemanda() {
+    public void sqlInserir() {
         int n;
         
         dataDate = null;    // Receberá a data no formato Timestamp.
@@ -141,7 +141,7 @@ public class Demanda {
             
         } catch (ParseException ex) {ex.printStackTrace();} // Fim do try-catch.
         
-        n = consulta.insertDemanda(dataDate, this.modo, this.impacto,
+        n = Consulta.insertDemanda(dataDate, this.modo, this.impacto,
                 this.causa, this.modoOperacional, this.unidade.getIdBD(),
                 this.subunidade.getIdBD(), this.componente.getIdBD(),
                 this.parte.getIdBD());
@@ -150,7 +150,7 @@ public class Demanda {
     /**
      * Altera informações do banco de dados.
      */
-    public void alteraDemanda() {
+    public void sqlAlterar() {
         int n;
         
         dataDate = null;    // Receberá a data no formato Timestamp.
@@ -161,7 +161,15 @@ public class Demanda {
             
         } catch (ParseException ex) {ex.printStackTrace();} // Fim do try-catch.
         
-        n = consulta.updateDemanda(dataDate, this.modo, this.impacto,
+        n = Consulta.updateDemanda(dataDate, this.modo, this.impacto,
                 this.causa, this.modoOperacional, this.idBD);
+    }
+
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n;
+        n = Consulta.deleteDemanda(this.idBD);
     }
 }

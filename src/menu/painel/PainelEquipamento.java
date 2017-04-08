@@ -77,7 +77,7 @@ public class PainelEquipamento {
     private final JSplitPane splitPane;
     private final BasicSplitPaneDivider divisor;
     
-    private final JButton btnExcluir = new JButton("Excluir item");;
+    private final JButton btnExcluir = new JButton("Excluir item");
     
     /**
      * Construtor.
@@ -395,7 +395,6 @@ public class PainelEquipamento {
     /**
      */
     public void setEditavel() {
-        btnExcluir.setPreferredSize(new Dimension(105, 25));
         btnExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -435,6 +434,8 @@ public class PainelEquipamento {
             }
         });
         
+        // Adiciona o botão "Excluir" ao painel de selecionados, no fim do
+        // painel principal.
         JPanel pnlBtnExcluir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnlBtnExcluir.add(btnExcluir);
         pnlSelecionadosExcluir.add(pnlBtnExcluir, BorderLayout.EAST);

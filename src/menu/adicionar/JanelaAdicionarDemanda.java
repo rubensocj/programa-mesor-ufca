@@ -149,7 +149,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         demanda.setComponente(pnlUnidade.componente);
         demanda.setParte(pnlUnidade.parte);
         
-        demanda.adicionaDemanda();
+        demanda.sqlInserir();
     }
     
     // -------------------------------------------------------------------------

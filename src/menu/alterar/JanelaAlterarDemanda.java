@@ -54,7 +54,8 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
         
         /* Inicializa objeto da classe PainelDemanda */
         pnlDemanda = new PainelDemanda();
-        pnlDemanda.tamanhoDaTabela(new Dimension(600,420));
+        pnlDemanda.tamanhoDaTabela(new Dimension(600,450));
+        pnlDemanda.setEditavel();
         
         /* Painel com a tabela das demandas */
         pnlTabelaDemanda = painelTabelaDemanda();
@@ -241,7 +242,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
             demanda.setIdBD((int) pnlDemanda.tabDemanda.getValueAt(
                         pnlDemanda.tabDemanda.getSelectedRow(), 0));
 
-            demanda.alteraDemanda();
+            demanda.sqlAlterar();
             
             /**
              * Limpa o texto dos JTextField ou JFormattedTextFields, e as

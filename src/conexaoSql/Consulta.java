@@ -73,7 +73,9 @@ public class Consulta {
     private static PreparedStatement deletarUnidade = null,
                 deletarSubunidade = null,
                 deletarComponente = null,
-                deletarParte = null;
+                deletarParte = null,
+                deletarDemanda = null,
+                deletarIntervencao = null;
     
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
@@ -562,9 +564,9 @@ public class Consulta {
      * @param idDem
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertIntervencao(String cod, String categoria, String atividade, 
-                java.util.Date inicio, java.util.Date termino, int idUni,
-                int idSub, int idCp, int idPte, int idDem) {
+    public static int insertIntervencao(String cod, String categoria,
+                String atividade, java.util.Date inicio, java.util.Date termino,
+                int idUni, int idSub, int idCp, int idPte, int idDem) {
         /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss) */
         java.sql.Timestamp sqlInicio = new java.sql.Timestamp(inicio.getTime());
         
@@ -656,6 +658,29 @@ public class Consulta {
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarIntervencao.executeUpdate();
             alterarIntervencao.getQueryTimeout();
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade PARTE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteIntervencao(int id) {
+        int resultado = 0;
+        try {
+            deletarIntervencao.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarIntervencao.executeUpdate();
+            deletarIntervencao.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
@@ -769,6 +794,30 @@ public class Consulta {
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarDemanda.executeUpdate();
             alterarDemanda.getQueryTimeout();
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade PARTE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteDemanda(int id) {
+        
+        int resultado = 0;
+        try {
+            deletarDemanda.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarDemanda.executeUpdate();
+            deletarDemanda.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
@@ -1071,6 +1120,9 @@ public class Consulta {
                 "UPDATE demanda SET " +
                     "data = ?, modo = ?, impacto = ?, causa = ?, " +
                     "modo_operacional = ? WHERE id = ?");
+            
+            deletarDemanda = connection.prepareStatement(
+                "DELETE FROM demanda WHERE id = ?");
 
             /* Definição de métodos para a classe INTERVENÇÃO */
             inserirIntervencao = connection.prepareStatement(
@@ -1085,6 +1137,9 @@ public class Consulta {
                     "categoria = ?, atividade = ?, inicio = ?, termino = ?, "
                     + "id_demanda = ? WHERE id = ?");
 
+            deletarIntervencao = connection.prepareStatement(
+                "DELETE FROM intervencao WHERE id = ?");
+            
             /* Definição de métodos para a classe INTERVENTOR */
             inserirInterventor = connection.prepareStatement(
                 "INSERT INTO interventor" +

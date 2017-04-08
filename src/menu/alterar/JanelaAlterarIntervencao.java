@@ -55,7 +55,8 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
         
         /* Inicializa objeto da classe PainelIntervencao */
         pnlIntervencao = new PainelIntervencao();
-        pnlIntervencao.tamanhoDaTabela(new Dimension(600,420));
+        pnlIntervencao.tamanhoDaTabela(new Dimension(600,450));
+        pnlIntervencao.setEditavel();
         
         /* Painel com a tabela das intervenções */        
         pnlTabelaIntervencao = painelTabelaIntervencao();

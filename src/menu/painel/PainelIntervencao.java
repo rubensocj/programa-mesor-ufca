@@ -10,6 +10,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.sql.SQLException;
 
 import conexaoSql.ModeloTabela;
+import intervencao.Intervencao;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * PainelIntervencao.java
@@ -22,9 +29,16 @@ public class PainelIntervencao {
     public JTable tabIntervencao;
     
     private final DefaultTableCellRenderer render;
+    private ModeloTabela modelo;
+        
+    public Intervencao intervencao = new Intervencao();
     
-    private final JPanel pnlIntervencao;
+    private final JPanel pnlInt;
+    private final JPanel pnlIntFinal;
+    private JPanel pnlSelecionadosExcluir = new JPanel(new BorderLayout());
+    
     private final JScrollPane iPane;
+    private final JButton btnExcluir = new JButton("Excluir item");
     
     /**
      * Construtor.
@@ -48,6 +62,26 @@ public class PainelIntervencao {
             
         } catch (SQLException ex) { ex.getErrorCode();}
         
+        // Adiciona os MOUSELISTENER às painelTabelas.
+        tabIntervencao.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(tabIntervencao.getSelectedRowCount() == 1 && 
+                            tabIntervencao.isEnabled()) {
+                    
+                    intervencao.setIdBD((int) tabIntervencao.getValueAt(
+                                tabIntervencao.getSelectedRow(), 0));
+                }
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}});
+        
         /**
          * Cria o JScrollPane da tabela.
          */
@@ -56,9 +90,15 @@ public class PainelIntervencao {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabIntervencao.setFillsViewportHeight(true);
         
-        pnlIntervencao = new JPanel(new FlowLayout());
-        pnlIntervencao.add(iPane);
-        pnlIntervencao.setOpaque(true);
+        pnlInt = new JPanel(new FlowLayout());
+        pnlInt.add(iPane);
+        pnlInt.setOpaque(true);
+        
+        // PainelIntervenção final
+        pnlIntFinal = new JPanel(new BorderLayout());
+        pnlIntFinal.add(pnlInt, BorderLayout.CENTER);
+        pnlIntFinal.add(pnlSelecionadosExcluir, BorderLayout.PAGE_END);
+        pnlIntFinal.setOpaque(true);  
     }
     
     // -------------------------------------------------------------------------
@@ -66,11 +106,48 @@ public class PainelIntervencao {
     // -------------------------------------------------------------------------
     
     /**
+     */
+    public void setEditavel() {
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(tabIntervencao.getSelectedRowCount() == 1) {
+                    try {
+//                        intervencao.sqlExcluir();
+                        reiniciarTabela();
+                        atualizarAparenciaDaTabela();
+                    } catch(SQLException ex) {ex.printStackTrace();}
+                } else {
+                    // Bip do mouse ao clicar no botão
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
+        
+        // Adiciona o botão "Excluir" ao painel de selecionados, no fim do
+        // painel principal.
+        JPanel pnlBtnExcluir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnExcluir.add(btnExcluir);
+        pnlSelecionadosExcluir.add(pnlBtnExcluir, BorderLayout.EAST);
+    }
+    
+    /**
      * 
      * @return Um JPanel com a tabela.
      */
     public JPanel painelTabelas() {
-        return pnlIntervencao;
+        return pnlIntFinal;
+    }
+    
+    /**
+     * Reinicia a tabela através de uma consulta SQL {@code SELECT * FROM
+     * demanda}.
+     * 
+     * @throws SQLException 
+     */
+    public void reiniciarTabela() throws SQLException {
+        modelo = (ModeloTabela) tabIntervencao.getModel();
+        modelo.setQuery("SELECT * FROM intervencao");
     }
     
     /**

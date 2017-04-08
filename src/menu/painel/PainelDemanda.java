@@ -10,6 +10,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.sql.SQLException;
 
 import conexaoSql.ModeloTabela;
+import intervencao.Demanda;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * PainelDemanda.java
@@ -23,8 +30,16 @@ public class PainelDemanda {
     
     private final DefaultTableCellRenderer render;
     private ModeloTabela modelo;
-    private final JPanel pnlDemanda;
+    
+    private final JPanel pnlDemFinal;
+    private JPanel pnlSelecionadosExcluir = new JPanel(new BorderLayout());
+    
     private final JScrollPane dPane;
+    
+    public Demanda demanda = new Demanda();
+    
+    private final JButton btnExcluir = new JButton("Excluir item");
+    private final JPanel pnlDem;
     
     /**
      * Construtor.
@@ -41,13 +56,30 @@ public class PainelDemanda {
          * Cria a tabela com uma consulta em SQL.
          */
         try {
-            tabDemanda = new JTable(
-                        new ModeloTabela("SELECT * FROM demanda"));
-            
-            atualizarAparenciaDaTabela();
-            
+            tabDemanda = new JTable(new ModeloTabela("SELECT * FROM demanda"));
+            atualizarAparenciaDaTabela();            
         } catch (SQLException ex) { ex.getErrorCode();}
         
+        // Adiciona os MOUSELISTENER às painelTabelas.
+        tabDemanda.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(tabDemanda.getSelectedRowCount() == 1 && 
+                            tabDemanda.isEnabled()) {
+                    
+                    demanda.setIdBD((int) tabDemanda.getValueAt(
+                                tabDemanda.getSelectedRow(), 0));
+                }
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}});
+            
         /**
          * Cria o JScrollPane da tabela.
          */
@@ -56,9 +88,15 @@ public class PainelDemanda {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabDemanda.setFillsViewportHeight(true);
         
-        pnlDemanda = new JPanel(new FlowLayout());
-        pnlDemanda.add(dPane);
-        pnlDemanda.setOpaque(true);
+        pnlDem = new JPanel(new FlowLayout());
+        pnlDem.add(dPane);
+        pnlDem.setOpaque(true);        
+        
+        // PainelDemanda final
+        pnlDemFinal = new JPanel(new BorderLayout());
+        pnlDemFinal.add(pnlDem, BorderLayout.CENTER);
+        pnlDemFinal.add(pnlSelecionadosExcluir, BorderLayout.PAGE_END);
+        pnlDemFinal.setOpaque(true);     
     }
     
     // -------------------------------------------------------------------------
@@ -66,11 +104,37 @@ public class PainelDemanda {
     // -------------------------------------------------------------------------
     
     /**
+     */
+    public void setEditavel() {
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(tabDemanda.getSelectedRowCount() == 1) {
+                    try {
+                        demanda.sqlExcluir();
+                        reiniciarTabela();
+                        atualizarAparenciaDaTabela();
+                    } catch(SQLException ex) {ex.printStackTrace();}
+                } else {
+                    // Bip do mouse ao clicar no botão
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
+        
+        // Adiciona o botão "Excluir" ao painel de selecionados, no fim do
+        // painel principal.
+        JPanel pnlBtnExcluir = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnExcluir.add(btnExcluir);
+        pnlSelecionadosExcluir.add(pnlBtnExcluir, BorderLayout.EAST);
+    }
+    
+    /**
      * 
      * @return Um JPanel com a tabela.
      */
     public JPanel painelTabelas() {
-        return pnlDemanda;
+        return pnlDemFinal;
     }
     
     /**
