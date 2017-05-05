@@ -15,10 +15,13 @@ import java.sql.Statement;
  */
 public class Consulta {
     
-    // Nome e URL do banco de dados.
-    private static final String BD_NAME = "bdprograma";
 //    private static final String BD_HOST = "192.168.1.12:3306/";
-    private static final String BD_HOST = "localhost:3306/";
+    // Virtual host
+    private static final String V_HOST = "mesor.ufca.rubens.ocj";
+    // Nome do banco de dados.
+    private static final String BD_NAME = "bdprograma";
+    // Host do banco de dados
+    private static final String BD_HOST = V_HOST + ":3306/";
     private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
     
     // Acesso ao servidor: usuário e senha.

@@ -29,7 +29,7 @@ public class TesteRServer {
 //        eng.eval("meanVal = var(" + vetor + ")");
 //        double var = eng.eval("meanVal").asDouble();
 //        System.out.println("* JRI: " + var);
-        
+        System.loadLibrary("Rserve");
         try {
             /* Create a connection to Rserve instance running
              * on default port 6311
