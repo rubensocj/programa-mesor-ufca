@@ -20,6 +20,8 @@ public class Interventor {
     private String estadoCivil;
     private String endereco;
     private String cidade;
+    private String estado;
+    private int contato;
     
     Consulta consulta = new Consulta();
     SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
@@ -30,7 +32,7 @@ public class Interventor {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Interventor(String pNome, String pSexo, String pNasc, String pAdms,
             String pCargo, String pForma, String pRem, String pEst, String pEnd,
-            String pCidade) {
+            String pCidade, String pEstado, int pContato) {
         
         setNome(pNome);
         setSexo(pSexo);
@@ -42,6 +44,8 @@ public class Interventor {
         setEstadoCivil(pEst);
         setEndereco(pEnd);
         setCidade(pCidade);
+        setEstado(pEstado);
+        setContato(pContato);
     }
 
     // Métodos set
@@ -75,6 +79,12 @@ public class Interventor {
     public void setCidade(String pCidade) {
         this.cidade = pCidade;
     }
+    public void setEstado(String pEstado) {
+        this.estado = pEstado;
+    }
+    public void setContato(int pContato) {
+        this.contato = pContato;
+    }
     
     // Métodos get
     public String getNome() {
@@ -107,13 +117,20 @@ public class Interventor {
     public String getCidade() {
         return cidade;
     }
+    public String getEstado() {
+        return estado;
+    }
+    public int getContato() {
+        return contato;
+    }
     
     // Exibe o interventor no formato Object[]
     // Usado em JanelaTime 480: modeloTabInterventor.addRow(interventor.toObject());
     public Object[] toObject() {
         Object[] obj = new Object[]{getNome(), getSexo(), getNascimento(),
         getAdmissao(), getCargo(), getFormacao(), getRemuneracao(),
-        getEstadoCivil(), getEndereco(), getCidade()};
+        getEstadoCivil(), getEndereco(), getCidade(), getEstado(),
+        getContato()};
         return obj;
     }
 }

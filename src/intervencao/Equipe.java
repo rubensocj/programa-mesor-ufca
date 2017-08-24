@@ -93,18 +93,18 @@ public class Equipe {
         
         int n;
         // Insere na entidade "equipe"
-        n = consulta.insertTime(this.objGeral, 0);
+        n = Consulta.insertTime(this.objGeral, 0);
         // Insere os objetivos expecíficos um a um na entidade "objetivosespecificos"
         for(String ob : this.getVetorObjEspecifico()) {
-            n = consulta.insertObjetivoEspecifico(consulta.idEquipe, ob);
+            n = Consulta.insertObjetivoEspecifico(Consulta.idEquipe, ob);
         }
         // Insere as experiências requeridas uma a uma na entidade "experienciasrequeridas"
         for(String er : this.getVetorExperiencia()) {
-            n = consulta.insertExperiencia(consulta.idEquipe, er);
+            n = Consulta.insertExperiencia(Consulta.idEquipe, er);
         }
         // Insere as habilidades requeridas uma a uma na entidade "habilidadesrequeridas"
         for(String hr : this.getVetorHabilidade()) {
-            n = consulta.insertHabilidade(consulta.idEquipe, hr);
+            n = Consulta.insertHabilidade(Consulta.idEquipe, hr);
         }
         // Insere as habilidades requeridas uma a uma na entidade "habilidadesrequeridas"
         for(Interventor it : this.getVetorInterventor()) {
@@ -126,10 +126,11 @@ public class Equipe {
             } catch (java.text.ParseException ex) {
                 ex.printStackTrace();
             } // Fim do try-catch
-            n = consulta.insertInterventor(consulta.idEquipe, it.getNome(), it.getSexo(),
-                        sqlDataNascimento, sqlDataAdmissao, it.getCargo(),
-                        it.getFormacao(), sqlRemuneracao, it.getEstadoCivil(),
-                        it.getEndereco(), it.getCidade());
+            n = Consulta.insertInterventor(Consulta.idEquipe, it.getNome(),
+                        it.getSexo(), sqlDataNascimento, sqlDataAdmissao,
+                        it.getCargo(), it.getFormacao(), sqlRemuneracao,
+                        it.getEstadoCivil(), it.getEndereco(), it.getCidade(),
+                        it.getEstado(), it.getContato());
         }
     }
 }

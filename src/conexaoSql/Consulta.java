@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  * Consulta.java
  * 
@@ -17,17 +20,40 @@ public class Consulta {
     
 //    private static final String BD_HOST = "192.168.1.12:3306/";
     // Virtual host
-    private static final String V_HOST = "mesor.ufca.rubens.ocj";
-    // Nome do banco de dados.
-    private static final String BD_NAME = "bdprograma";
+//    private static final String V_HOST = "sql10.freesqldatabase.com"; // online
+    private static final String V_HOST = "localhost"; // localhost
+    
+    // Obsoletos
+//    private static final String V_HOST = "db4free.net";
+//    private static final String V_HOST = "mesor.ufca.rubens.ocj";
+//    private static final String V_HOST = "rubensoliveira";
+//    private static final String V_HOST = "rubensteste.ddsnet.com";
+    
     // Host do banco de dados
     private static final String BD_HOST = V_HOST + ":3306/";
+    // Nome do banco de dados.
+//    private static final String BD_NAME = "sql10190138";    // online
+        private static final String BD_NAME = "bdprograma";   // localhost
+
+    // Obsoleto
+//    private static final String BD_NAME = "bdmesorprograma";
+    
+    // URL de conexão
     private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
     
     // Acesso ao servidor: usuário e senha.
-    private static final String USERNAME = "mesor";
-    private static final String PASSWORD = "mesorufca1506";
+//    private static final String USERNAME = "sql10190138";   // online
+    private static final String USERNAME = "mesor";   // localhost
     
+    // Obsoleto
+//    private static final String USERNAME = "mxdvirtualage084";
+
+//    private static final String PASSWORD = "EPFGjwYGyq";    // online
+    private static final String PASSWORD = "mesorufca1506";   // localhost
+    
+    // Obsoleto
+//    private static final String PASSWORD = "r1sk305qr7dwn";
+
     // gerencia a conexão.
     public static Connection connection = null;
     
@@ -555,7 +581,6 @@ public class Consulta {
      * Adiciona uma linha à entidade INTERVENCAO do banco de dados com as
      * informações dadas pelo usuário.
      * 
-     * @param cod
      * @param categoria
      * @param atividade
      * @param inicio
@@ -567,42 +592,41 @@ public class Consulta {
      * @param idDem
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertIntervencao(String cod, String categoria,
-                String atividade, java.util.Date inicio, java.util.Date termino,
-                int idUni, int idSub, int idCp, int idPte, int idDem) {
+    public static int insertIntervencao(String categoria, String atividade,
+                java.util.Date inicio, java.util.Date termino, int idUni,
+                int idSub, int idCp, int idPte, int idDem) {
         /* Timestamp: formato SQL "data (yyyy-MM-dd) + hora (HH:mm:ss) */
         java.sql.Timestamp sqlInicio = new java.sql.Timestamp(inicio.getTime());
         
         int resultado = 0;
         try {
-            inserirIntervencao.setString(1, cod);
-            inserirIntervencao.setString(2, categoria);
-            inserirIntervencao.setString(3, atividade);
-            inserirIntervencao.setTimestamp(4, sqlInicio);
+            inserirIntervencao.setString(1, categoria);
+            inserirIntervencao.setString(2, atividade);
+            inserirIntervencao.setTimestamp(3, sqlInicio);
             // Se data e hora de término da intervenção não forem informadas,
             // insere NULL.
             if(termino == null) {
-                inserirIntervencao.setNull(5, java.sql.Types.TIMESTAMP);                
+                inserirIntervencao.setNull(4, java.sql.Types.TIMESTAMP);                
             } else {
                 java.sql.Timestamp sqlTermino;
                 sqlTermino = new java.sql.Timestamp(termino.getTime());
-                inserirIntervencao.setTimestamp(5, sqlTermino);
+                inserirIntervencao.setTimestamp(4, sqlTermino);
             }
-            inserirIntervencao.setInt(6, idUni);
+            inserirIntervencao.setInt(5, idUni);
             // Se a subunidade, o componente, a parte e/ou a demanda
             // não forem informados, insere NULL.
             if(idSub == 0) {
-                inserirIntervencao.setNull(7, java.sql.Types.INTEGER);}
-            else {inserirIntervencao.setInt(7, idSub);}
+                inserirIntervencao.setNull(6, java.sql.Types.INTEGER);}
+            else {inserirIntervencao.setInt(6, idSub);}
             if(idCp == 0) {
-                inserirIntervencao.setNull(8, java.sql.Types.INTEGER);}
-            else {inserirIntervencao.setInt(8, idCp);}
+                inserirIntervencao.setNull(7, java.sql.Types.INTEGER);}
+            else {inserirIntervencao.setInt(7, idCp);}
             if(idPte == 0) {
-                inserirIntervencao.setNull(9, java.sql.Types.INTEGER);}
-            else {inserirIntervencao.setInt(9, idPte);}
+                inserirIntervencao.setNull(8, java.sql.Types.INTEGER);}
+            else {inserirIntervencao.setInt(8, idPte);}
             if(idDem == 0) {
-                inserirIntervencao.setNull(10, java.sql.Types.INTEGER);}
-            else {inserirIntervencao.setInt(10, idDem);}
+                inserirIntervencao.setNull(9, java.sql.Types.INTEGER);}
+            else {inserirIntervencao.setInt(9, idDem);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirIntervencao.executeUpdate();
@@ -848,13 +872,16 @@ public class Consulta {
      * @param remuneracao
      * @param estadoCivil
      * @param endereco
+     * @param cidade
      * @param estado
+     * @param contato
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
     public static int insertInterventor(int idTime, String nome, String sexo,
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
                 String cargo, String formacao, float remuneracao,
-                String estadoCivil, String endereco, String estado) {
+                String estadoCivil, String endereco, String cidade,
+                String estado, int contato) {
 
         int resultado = 0;        
         try {
@@ -892,9 +919,15 @@ public class Consulta {
             if(endereco.isEmpty()) {
                 inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
             } else {inserirInterventor.setString(10, endereco);}
-            if(estado.isEmpty()) {
+            if(cidade.isEmpty()) {
                 inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(11, estado);}
+            } else {inserirInterventor.setString(11, cidade);}
+            if(estado.isEmpty()) {
+                inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(12, estado);}
+            if(contato == 0) {
+                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
+            } else {inserirInterventor.setInt(13, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirInterventor.executeUpdate();
@@ -1042,12 +1075,34 @@ public class Consulta {
     }
     
     /**
-     * Conecta ao banco de dados.
+     * Tenta conctar ao banco de dados e captura possíveis exceções, exibindo
+     * diálogo de "erro".
      */
-    public static void conectar() {
+    private static void testarConexão() {
         try {
             connection = DriverManager.getConnection(
                         BD_URL, USERNAME, PASSWORD);
+        } // fim do try.
+        catch(SQLException sqlException) {
+            /* Se houver erro, exibe mensagem de erro */
+            JOptionPane mPane = new JOptionPane();
+            mPane.setMessage(sqlException.getLocalizedMessage());
+            mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
+            mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
+
+            JDialog mDialog = mPane.createDialog(mPane, "Erro");
+            mDialog.pack();
+            mDialog.setVisible(true);
+            mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);            
+        }
+    }
+    
+    /**
+     * Conecta ao banco de dados e cria os preparedStatements
+     */
+    public static void conectar() {
+        try {
+            testarConexão();
             
             /* Definição de métodos para a classe SISTEMA */
             inserirSistema = connection.prepareStatement(
@@ -1130,9 +1185,9 @@ public class Consulta {
             /* Definição de métodos para a classe INTERVENÇÃO */
             inserirIntervencao = connection.prepareStatement(
                 "INSERT INTO intervencao" +
-                    "(cod, categoria, atividade, inicio, termino, id_unidade, "
+                    "(categoria, atividade, inicio, termino, id_unidade, "
                     + "id_subunidade, id_componente, id_parte, id_demanda)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
             
             alterarIntervencao = connection.prepareStatement(
@@ -1147,8 +1202,9 @@ public class Consulta {
             inserirInterventor = connection.prepareStatement(
                 "INSERT INTO interventor" +
                     "(id_equipe, nome, sexo, nascimento, admissao, cargo,"
-                    + "formacao, remuneracao, estado_civil, endereco, estado)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    + "formacao, remuneracao, estado_civil, endereco, cidade,"
+                    + "estado, contato)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
             
             /* Definição de métodos para a classe EQUIPE */
@@ -1177,6 +1233,18 @@ public class Consulta {
                         Statement.RETURN_GENERATED_KEYS);
         } // fim do try.
         catch(SQLException sqlException) {
+            /* Se houver erro, exibe mensagem de erro */
+            JOptionPane mPane = new JOptionPane();
+            mPane.setMessage("Ocorreu um erro na conexão com o banco de dados.");
+            mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
+            mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
+
+            JDialog mDialog = mPane.createDialog(mPane, "Aviso");
+            mDialog.pack();
+            mDialog.setVisible(true);
+            mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            
+            /* Printa no prompt a exceção */
             sqlException.printStackTrace();
         } // fim do catch.
     }

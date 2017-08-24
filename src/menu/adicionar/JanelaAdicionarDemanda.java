@@ -111,7 +111,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
-            cbxSistema.addItemListener(new ItemEventSistema());
+            cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelDemanda(), BorderLayout.EAST);
@@ -412,25 +412,6 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
     // -------------------------------------------------------------------------
     // Classes.
     // -------------------------------------------------------------------------
-    
-    /**
-     * Atualiza o conteúdo da tabela de Unidades de acordo com o sistema
-     * selecionado no {@code JComboBox cbxSistema} através de uma consulta SQL
-     * pelas unidades daquele sistema. Caso nenhum sistema seja selecionado, ou
-     * seja, o item vazio do {@code JComboBox cbxSistema} - índice zero - seja
-     * selecionado, então, a tabela mostrará todas as unidades do banco,
-     * independente do sistema.
-     */
-    public class ItemEventSistema implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                try {
-                    pnlUnidade.buscarUnidade(cbxSistema.getSelectedIndex());
-                } catch(SQLException ex) { ex.printStackTrace();}
-            }
-        }
-    }
     
     /**
      * Determina o modo da falha de acordo com o JCheckBox selecionado.

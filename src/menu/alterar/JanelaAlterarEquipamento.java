@@ -171,6 +171,8 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
         pnlPrincipal = new JPanel(new BorderLayout());
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+            /* Adiciona o ItemListener a cbxSistema */
+            cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));            
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlTabela, BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);

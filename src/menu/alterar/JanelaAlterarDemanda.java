@@ -189,7 +189,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
-            cbxSistema.addItemListener(new ItemEventSistema());
+            cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(painelAbas(), BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);

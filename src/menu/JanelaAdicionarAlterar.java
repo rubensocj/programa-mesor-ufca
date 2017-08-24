@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import menu.painel.PainelEquipamento;
 
 /**
  * JanelaAdicionarAlterar.java
@@ -202,6 +205,37 @@ public abstract class JanelaAdicionarAlterar {
      * Executa a operação - adição, alteração, exclusão, etc.
      */
     public void confirmar() {}
+
+    // -------------------------------------------------------------------------
+    // Classes de EventListeners.
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Altera o conteúdo da tabela de Unidades de acordo com o sistema
+     * selecionado no {@code JComboBox cbxSistema} através de uma consulta SQL
+     * pelas unidades daquele sistema. Caso nenhum sistema seja selecionado, ou
+     * seja, o item vazio do {@code JComboBox cbxSistema} - índice zero - seja
+     * selecionado, então, a tabela mostrará todas as unidades do banco,
+     * independente do sistema.
+     */
+    public class ItemEventSistema implements ItemListener {
+        
+        private final PainelEquipamento pnlUnidade;
+        
+        public ItemEventSistema(PainelEquipamento pnlUnidade) {
+            this.pnlUnidade = pnlUnidade;
+        }
+        
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                try {
+                    this.pnlUnidade.buscarUnidade(cbxSistema.getSelectedIndex());
+                } catch(SQLException ex) { ex.printStackTrace();}
+            }
+        }
+        
+    }
     
     // -------------------------------------------------------------------------
     // Classes abstratas.

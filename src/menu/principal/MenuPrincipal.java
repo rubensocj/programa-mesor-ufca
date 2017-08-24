@@ -36,7 +36,7 @@ public class MenuPrincipal extends JFrame {
         
     private final String eventSelected = "ActionEvent";
 
-    public JMenuBar criaBarraMenu() {
+    private JMenuBar criaBarraMenu() {
         // Cria a barra de menu
         barraMenu = new JMenuBar();
         barraMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -110,6 +110,10 @@ public class MenuPrincipal extends JFrame {
 
         return barraMenu;
     }
+    
+//    private JPanel criaMenuSistema() {
+//        
+//    }
     
     /**
      * Cria o conteiner que guarda os componentes menores do menu principal.

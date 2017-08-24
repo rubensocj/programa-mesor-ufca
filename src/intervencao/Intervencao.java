@@ -187,11 +187,10 @@ public class Intervencao {
             }                
         } catch (ParseException ex) { ex.printStackTrace();}
         
-        n = consulta.insertIntervencao(this.codigo(), this.getCategoria(),
-                    this.getAtividade(), dataInicioDate, dataTerminoDate,
-                    this.unidade.getIdBD(), this.subunidade.getIdBD(), 
-                    this.componente.getIdBD(), this.parte.getIdBD(),
-                    this.demanda.getIdBD());
+        n = Consulta.insertIntervencao(categoria, atividade, dataInicioDate,
+                    dataTerminoDate, this.unidade.getIdBD(),
+                    this.subunidade.getIdBD(), this.componente.getIdBD(),
+                    this.parte.getIdBD(), this.demanda.getIdBD());
     }
     
     /**
@@ -220,7 +219,7 @@ public class Intervencao {
             }                
         } catch (ParseException ex) { ex.printStackTrace();}
         
-        n = consulta.uptadeIntervencao(categoria, atividade, dataInicioDate,
+        n = Consulta.uptadeIntervencao(categoria, atividade, dataInicioDate,
                     dataTerminoDate, this.demanda.getIdBD(), this.idBD);
     }
 }
