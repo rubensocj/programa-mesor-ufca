@@ -187,22 +187,32 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
                 "Selecionar...", "Corretiva", "Preventiva"});
         cbxCategoria.setPrototypeDisplayValue("XXXXX");
         cbxCategoria.addItemListener(new ItemEventCategoria());
+        cbxCategoria.setPreferredSize(new Dimension(220, 20));
         
         cbxAtividade = new JComboBox(new Object[] {});
         cbxAtividade.setPrototypeDisplayValue("XXXXX");
         cbxAtividade.setEnabled(false);
+        cbxAtividade.setPreferredSize(new Dimension(220, 20));
+        
         lblCategoria = new JLabel(" Categoria: *");
         lblAtividade = new JLabel(" Atividade:  *");
         lblAtividade.setEnabled(false);
         
-        JPanel pnlCategoriaAtividade = new JPanel(new GridLayout(0,2,3,3));
+        JPanel pnlAtividadeCategoria1 = new JPanel(new GridLayout(0,1,0,8));
+        pnlAtividadeCategoria1.add(lblCategoria);
+        pnlAtividadeCategoria1.add(lblAtividade);
+        
+        JPanel pnlAtividadeCategoria2 = new JPanel(new GridLayout(0,1,0,4));
+        pnlAtividadeCategoria2.add(cbxCategoria);
+        pnlAtividadeCategoria2.add(cbxAtividade);
+        
+        JPanel pnlCategoriaAtividade = new JPanel(
+                    new FlowLayout(FlowLayout.LEFT));
         pnlCategoriaAtividade.setBorder(BorderFactory.createTitledBorder(
                                 BorderFactory.createEtchedBorder(),
                                             "Informações gerais"));
-        pnlCategoriaAtividade.add(lblCategoria);
-        pnlCategoriaAtividade.add(cbxCategoria);
-        pnlCategoriaAtividade.add(lblAtividade);
-        pnlCategoriaAtividade.add(cbxAtividade);
+        pnlCategoriaAtividade.add(pnlAtividadeCategoria1);
+        pnlCategoriaAtividade.add(pnlAtividadeCategoria2);
         
         /* Data de início da intervenção */
         lblDataInicio = new JLabel("Data: *");

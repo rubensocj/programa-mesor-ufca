@@ -13,11 +13,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import java.sql.SQLException;
 
 import conexaoSql.ModeloTabela;
+import menu.DivisorSplitPane;
 
 /**
  * PainelEquipamento.java
@@ -68,14 +68,13 @@ public class PainelEquipamento {
     private final JPanel pnlSub;
     private final JPanel pnlComp;
     private final JPanel pnlPte;
-    private final JPanel pnlDivisoes;
     
     private final JPanel pnlSelecao;
     private final JPanel pnlSelecionadosExcluir;
     private final JPanel pnlUniFinal;
     
-    private final JSplitPane splitPane;
-    private final BasicSplitPaneDivider divisor;
+    private final JSplitPane sptPaneUniSub, sptPaneSubCmp, sptPaneCmpPte;
+    private final DivisorSplitPane divUniSub, divSubCmp, divCmpPte;
     
     private final JButton btnExcluir = new JButton("Excluir item");
     
@@ -330,45 +329,40 @@ public class PainelEquipamento {
         pnlPte.add(lblPte, BorderLayout.PAGE_START);
         pnlPte.add(pPane, BorderLayout.CENTER);
 
-        // Painel divisões (subunidade, componente e parte)
-        pnlDivisoes = new JPanel(new GridLayout(0,1));
-        pnlDivisoes.add(pnlSub);
-        pnlDivisoes.add(pnlComp);
-        pnlDivisoes.add(pnlPte);
-                
         // Painel Unidade
         JPanel pnlUni = new JPanel(new BorderLayout(0,5));
         pnlUni.add(lblUni, BorderLayout.NORTH);
-        pnlUni.add(uPane, BorderLayout.CENTER);        
-                        
-        // SpliPanel horizontal Unidade / Subunidade, Componente, Parte
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                                   pnlUni, pnlDivisoes);
-        splitPane.setOpaque(true);
-        splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(290);
-        
-        /** 
-         * Pega o divisor do JSplitPane como objeto
-         * da classe BasicSplitPaneDivider, usando getComponent(index)
-         */
-        divisor = (BasicSplitPaneDivider) splitPane.getComponent(2);
-        
-        // Define a largura, em pixel, do divisor
-        int largura = 5;
-        divisor.setDividerSize(largura);
-        
-        // Define a nova cor da borda externa do divisor
-        Color cor = new Color(172, 172, 172);
-        
+        pnlUni.add(uPane, BorderLayout.CENTER);
+
         /**
-         * Define a nova borda do divisor do JSplitPane, 
-         * com a cor e a largura especificadas
+         * Monta a combinação de 3 JSplitPanes
+         *
+         * 1º vertical (sptPaneCmpPte) para tabelas componente e parte
+         * 2º vertical (sptPaneSubCmp) para tabela subunidade e sptPaneCmpPte
+         * 3º horizontal (sptPaneUniSub) para a tabela unidade e sptPaneSubCmp
          */
-        divisor.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 1, cor),
-                BorderFactory.createEmptyBorder(0, largura, 0, 0)));
-                
+        sptPaneCmpPte = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+                                   pnlComp, pnlPte);
+        sptPaneCmpPte.setOpaque(true);
+//        sptPaneCmpPte.addMouseListener(new DivisorSplitPaneListener(sptPaneCmpPte));
+        sptPaneCmpPte.setOneTouchExpandable(true);
+        sptPaneCmpPte.setDividerLocation(170);
+        divCmpPte = new DivisorSplitPane(false, sptPaneCmpPte);
+        
+        sptPaneSubCmp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+                                   pnlSub, sptPaneCmpPte);
+        sptPaneSubCmp.setOpaque(true);
+        sptPaneSubCmp.setOneTouchExpandable(true);
+        sptPaneSubCmp.setDividerLocation(150);        
+        divSubCmp = new DivisorSplitPane(false, sptPaneSubCmp);
+        
+        sptPaneUniSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
+                                   pnlUni, sptPaneSubCmp);
+        sptPaneUniSub.setOpaque(true);
+        sptPaneUniSub.setOneTouchExpandable(true);
+        sptPaneUniSub.setDividerLocation(290);
+        divUniSub = new DivisorSplitPane(true, sptPaneUniSub);
+
         // PainelEquipamento "Itens selecionados"
         pnlSelecao = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlSelecao.add(lblSelecionados);
@@ -383,7 +377,7 @@ public class PainelEquipamento {
         pnlUniFinal = new JPanel(new BorderLayout(10,0));
         pnlUniFinal.setBorder(BorderFactory.createTitledBorder(
                             BorderFactory.createEtchedBorder(), "Equipamento"));
-        pnlUniFinal.add(splitPane, BorderLayout.CENTER);
+        pnlUniFinal.add(sptPaneUniSub, BorderLayout.CENTER);
         pnlUniFinal.add(pnlSelecionadosExcluir, BorderLayout.PAGE_END);
         pnlUniFinal.setOpaque(true);
     }
