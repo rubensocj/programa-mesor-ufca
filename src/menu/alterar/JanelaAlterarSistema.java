@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import javax.swing.border.BevelBorder;
 
 import menu.adicionar.JanelaAdicionarSistema;
-import menu.painel.PainelSistema;
+import menu.painel.elementos.PainelSistema;
 
 /**
  * JanelaAdicionarEquipamento.Java

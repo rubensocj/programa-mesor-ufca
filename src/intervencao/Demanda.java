@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Demanda.java

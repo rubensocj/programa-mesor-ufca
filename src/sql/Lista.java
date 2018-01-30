@@ -1,10 +1,8 @@
-package conexaoSql;
+package sql;
 
 import javax.swing.*;
 
-import java.sql.Connection;
 import java.sql.Statement;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -36,6 +34,7 @@ public class Lista extends AbstractListModel {
     
     private JList lista; //, listaAtributos;
     private Vector<String> vetorResultado;
+    private String[] arrayResultado;
     
     /**
      * Construtor.
@@ -46,6 +45,7 @@ public class Lista extends AbstractListModel {
         
 //        connection = DriverManager.getConnection(
 //                    BD_URL, USERNAME, PASSWORD);
+        Consulta.conectar();
         statement = Consulta.connection.createStatement(
                     ResultSet.CONCUR_READ_ONLY,
                     ResultSet.TYPE_SCROLL_INSENSITIVE);
@@ -104,7 +104,7 @@ public class Lista extends AbstractListModel {
      */
     public Vector<String> toVector() throws SQLException {
         vetorResultado = new Vector();
-        vetorResultado.addElement("");
+//        vetorResultado.addElement("");
         int numColuna = metaData.getColumnCount();
         
         resultSet.beforeFirst();
@@ -114,6 +114,43 @@ public class Lista extends AbstractListModel {
             }
         }
         return vetorResultado;
+    }
+    
+//    public Object get(int i) throws SQLException {
+//        return toArray()[i];
+//    }
+    public int size() throws SQLException {
+        return toVector().size();
+    }
+    
+    public Object get(int i) throws SQLException {
+        return toVector().get(i);
+    }
+    
+    public String getString(int i) throws SQLException {
+        return (String) toVector().get(i);
+    }
+    
+    /**
+     * Monta um array com o resultado da consulta.
+     * 
+     * @return Um array.
+     * @throws SQLException 
+     */
+    public String[] toArray() throws SQLException {
+        arrayResultado = new String[numLinhas];
+        
+        int numColuna = metaData.getColumnCount();
+        
+        resultSet.first();
+        while(resultSet.next()) {
+            int j = resultSet.getRow();
+            arrayResultado[j - 1] = resultSet.getString(j - 1);
+//            for (int i = 1; i <= numColuna; i++) {
+//                arrayResultado[i - 1] = resultSet.getString(i);
+//            }
+        }
+        return arrayResultado;
     }
     
     @Override

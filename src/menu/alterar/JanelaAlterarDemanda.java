@@ -18,12 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import menu.painel.PainelEquipamento;
-import menu.painel.PainelDemanda;
+import menu.painel.elementos.PainelEquipamento;
+import menu.painel.elementos.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarDemanda;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 
 /**
  * JanelaAlterarDemanda.java

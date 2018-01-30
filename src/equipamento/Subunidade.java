@@ -2,7 +2,7 @@ package equipamento;
 
 import java.util.Vector;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Subunidade.java
@@ -22,11 +22,17 @@ public class Subunidade {
      * Construtores.
      */
     public Subunidade() {}
+    
     public Subunidade(String pDescricao) {
         setDescricao(pDescricao);
     }
+    
+    public Subunidade(String pDescricao, int id) {
+        setDescricao(pDescricao);
+        setIdBD(id);
+    }
+    
     public Subunidade(String pDescricao, Componente pComponente) {
-        
         setDescricao(pDescricao);
         setComponente(pComponente);
     }

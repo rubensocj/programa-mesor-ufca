@@ -9,7 +9,7 @@ import java.text.*;
 
 import java.util.Date;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Intervencao.Java

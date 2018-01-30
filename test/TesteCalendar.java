@@ -28,6 +28,9 @@ public class TesteCalendar {
                    
         // Inicializa o calendário
         Calendar calendario = new GregorianCalendar();
+        Date d = new Date();
+        System.out.println();
+        System.out.println(calendario.get(Calendar.YEAR));
         // Seta o ano
         //calendario.set(Calendar.YEAR, 1900);
 //        System.out.println(calendario.getDisplayNames(Calendar.MONTH, Calendar.SHORT_STANDALONE, Locale.getDefault()));
@@ -36,7 +39,7 @@ public class TesteCalendar {
 //            System.out.println(calendario.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
 //        }
 //        System.out.println("\n");
-        System.out.println(calendario.getDisplayNames(Calendar.MONTH, Calendar.NARROW_FORMAT, Locale.getDefault()));
+        System.out.println(calendario.getDisplayNames(Calendar.YEAR, Calendar.NARROW_FORMAT, Locale.getDefault()));
         int i = 0;
         String[] keys = new String[12];
 //        while(i < 12) {
@@ -48,7 +51,7 @@ public class TesteCalendar {
         
         
         System.out.println(calendario.getDisplayNames(
-                Calendar.MONTH, Calendar.SHORT_STANDALONE, Locale.getDefault()));
+                Calendar.YEAR, Calendar.SHORT_STANDALONE, Locale.getDefault()));
         
         // Seta os valores iniciais
         calendario.set(Calendar.MONTH, 0);

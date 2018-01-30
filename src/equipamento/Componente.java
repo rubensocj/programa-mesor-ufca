@@ -2,7 +2,7 @@ package equipamento;
 
 import java.util.Vector;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Componente.java
@@ -22,9 +22,16 @@ public class Componente {
      * Construtores.
      */
     public Componente() {}
+    
     public Componente(String pDescricao) {
         setDescricao(pDescricao);
     }
+    
+    public Componente(String pDescricao, int id) {
+        setDescricao(pDescricao);
+        setIdBD(id);
+    }
+    
     public Componente(String pDescricao, Parte pParte) {
         setDescricao(pDescricao);
         setParte(pParte);

@@ -17,11 +17,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import menu.HoraFormatada;
-import menu.painel.PainelEquipamento;
-import menu.painel.PainelDemanda;
+import menu.painel.elementos.PainelEquipamento;
+import menu.painel.elementos.PainelDemanda;
 import menu.JanelaAdicionarAlterar;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 
 public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
     

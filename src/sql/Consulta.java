@@ -1,4 +1,4 @@
-package conexaoSql;
+package sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -1078,7 +1078,7 @@ public class Consulta {
      * Tenta conctar ao banco de dados e captura possíveis exceções, exibindo
      * diálogo de "erro".
      */
-    private static void testarConexão() {
+    public static void testarConexão() {
         try {
             connection = DriverManager.getConnection(
                         BD_URL, USERNAME, PASSWORD);

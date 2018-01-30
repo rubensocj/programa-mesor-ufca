@@ -15,13 +15,13 @@ import java.io.IOException;
 
 import java.util.*;
 
-import menu.painel.PainelEquipamento;
+import menu.painel.elementos.PainelEquipamento;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarEquipamento;
 
 import java.sql.SQLException;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 
 /**
  * JanelaAlterarEquipamento.java

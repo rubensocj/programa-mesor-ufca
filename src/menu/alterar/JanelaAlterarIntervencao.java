@@ -18,12 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import menu.painel.PainelEquipamento;
-import menu.painel.PainelIntervencao;
+import menu.painel.elementos.PainelEquipamento;
+import menu.painel.elementos.PainelIntervencao;
 import menu.JanelaAdicionarAlterar;
 import menu.adicionar.JanelaAdicionarIntervencao;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 
 /**
  * JanelaAlterarIntervencao.java

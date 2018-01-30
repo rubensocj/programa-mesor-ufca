@@ -1,4 +1,4 @@
-package menu.painel;
+package menu.painel.elementos;
 
 import equipamento.Unidade;
 import equipamento.Subunidade;
@@ -15,9 +15,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 import menu.DivisorSplitPane;
+import menu.JanelaAdicionarAlterar;
 
 /**
  * PainelEquipamento.java
@@ -73,8 +78,13 @@ public class PainelEquipamento {
     private final JPanel pnlSelecionadosExcluir;
     private final JPanel pnlUniFinal;
     
+    private JTextField tfdBuscaUni, tfdBuscaSub, tfdBuscaCmp, tfdBuscaPte;
+    private JButton btnBuscaUni, btnBuscaSub, btnBuscaCmp, btnBuscaPte;
+    
     private final JSplitPane sptPaneUniSub, sptPaneSubCmp, sptPaneCmpPte;
     private final DivisorSplitPane divUniSub, divSubCmp, divCmpPte;
+    
+    private TableRowSorter<TableModel> ordUni, ordSub, ordCmp, ordPte;
     
     private final JButton btnExcluir = new JButton("Excluir item");
     
@@ -105,9 +115,18 @@ public class PainelEquipamento {
         
         // Cria as TABELAS com informações do banco de dados.
         try {
-            // Unidade
-            tabUnidade = new JTable(new ModeloTabela(
-                        "SELECT * FROM unidade;"));
+            // Cria o modelo da tabela pela classe ModeloTabela
+            ModeloTabela modeloUni = new ModeloTabela("SELECT * FROM unidade;");
+            
+            // Cria objeto da classe TableRowSorter, para ordenar os valores
+            // das linhas com o clique no cabeçalho da coluna
+            ordUni = new TableRowSorter<>(modeloUni);
+
+            // Cria a tabela Unidade
+            tabUnidade = new JTable(modeloUni);
+            
+            // Define o ordenador para esta coluna
+            tabUnidade.setRowSorter(ordUni);
             
             tabUnidade.setCellSelectionEnabled(false);
             atualizarAparenciaDaTabela(TAB_UNIDADE);
@@ -314,24 +333,28 @@ public class PainelEquipamento {
         tabParte.setPreferredScrollableViewportSize(dim);
         
         // Cria os paineis e organiza o painel maior.
+        
+        inicializaEConfiguraBusca();
+        
         // Subunidade
         pnlSub = new JPanel(new BorderLayout(0,5));
-        pnlSub.add(lblSub, BorderLayout.PAGE_START);
+        pnlSub.add(painelBusca(lblSub, tfdBuscaSub, btnBuscaSub), BorderLayout.PAGE_START);
         pnlSub.add(sPane, BorderLayout.CENTER);
         
         // Componente
         pnlComp = new JPanel(new BorderLayout(0,5));
-        pnlComp.add(lblComp, BorderLayout.PAGE_START);
+        pnlComp.add(painelBusca(lblComp, tfdBuscaCmp, btnBuscaCmp), BorderLayout.PAGE_START);
         pnlComp.add(cPane, BorderLayout.CENTER);
         
         // Parte
         pnlPte = new JPanel(new BorderLayout(0,5));
-        pnlPte.add(lblPte, BorderLayout.PAGE_START);
+        pnlPte.add(painelBusca(lblPte, tfdBuscaPte, btnBuscaPte), BorderLayout.PAGE_START);
         pnlPte.add(pPane, BorderLayout.CENTER);
 
         // Painel Unidade
+        
         JPanel pnlUni = new JPanel(new BorderLayout(0,5));
-        pnlUni.add(lblUni, BorderLayout.NORTH);
+        pnlUni.add(painelBusca(lblUni, tfdBuscaUni, btnBuscaUni), BorderLayout.NORTH);
         pnlUni.add(uPane, BorderLayout.CENTER);
 
         /**
@@ -546,6 +569,12 @@ public class PainelEquipamento {
                 tabSubunidade.getColumnModel().getColumn(0).setCellRenderer(render);
                 tabSubunidade.getColumnModel().getColumn(2).setCellRenderer(render);
 
+                // Inicializa e define o ordenador das colunas
+                // Ordenas as colunas em ordem crescente ou decrescente
+                ordSub = new TableRowSorter<>(
+                            tabSubunidade.getModel());
+                tabSubunidade.setRowSorter(ordSub);
+                
                 break;
                 
             case TAB_COMPONENTE:
@@ -561,6 +590,12 @@ public class PainelEquipamento {
                 tabComponente.getColumnModel().getColumn(0).setCellRenderer(render);
                 tabComponente.getColumnModel().getColumn(2).setCellRenderer(render);
 
+                // Inicializa e define o ordenador das colunas
+                // Ordenas as colunas em ordem crescente ou decrescente
+                ordCmp = new TableRowSorter<>(
+                            tabComponente.getModel());
+                tabComponente.setRowSorter(ordCmp);
+
                 break;
                 
             case TAB_PARTE:
@@ -575,6 +610,12 @@ public class PainelEquipamento {
 
                 tabParte.getColumnModel().getColumn(0).setCellRenderer(render);
                 tabParte.getColumnModel().getColumn(2).setCellRenderer(render);
+
+                // Inicializa e define o ordenador das colunas
+                // Ordenas as colunas em ordem crescente ou decrescente
+                ordPte = new TableRowSorter<>(
+                            tabParte.getModel());
+                tabParte.setRowSorter(ordPte);
 
                 break;
                 
@@ -686,5 +727,128 @@ public class PainelEquipamento {
         tabelaSelecionada = "";
         
         selecao.setText("");
+    }
+    
+    /**
+     * Inicializa os campos de busca nas tabelas e os botões realizam a busca.
+     */
+    private void inicializaEConfiguraBusca(){
+        // Inicializa JTextFields
+        tfdBuscaUni = new JTextField();
+        tfdBuscaSub = new JTextField();
+        tfdBuscaCmp = new JTextField();
+        tfdBuscaPte = new JTextField();
+        
+        tfdBuscaUni.setColumns(10);
+        tfdBuscaSub.setColumns(10);
+        tfdBuscaCmp.setColumns(10);
+        tfdBuscaPte.setColumns(10);
+        
+        // Inicializa JButtons
+        btnBuscaUni = new JButton(new ImageIcon(
+            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        btnBuscaSub = new JButton(new ImageIcon(
+            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        btnBuscaCmp = new JButton(new ImageIcon(
+            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        btnBuscaPte = new JButton(new ImageIcon(
+            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        
+        // Define o tamanho dos botões
+        btnBuscaUni.setPreferredSize(new Dimension(20,20));
+        btnBuscaSub.setPreferredSize(new Dimension(20,20));
+        btnBuscaCmp.setPreferredSize(new Dimension(20,20));
+        btnBuscaPte.setPreferredSize(new Dimension(20,20));
+        
+        // Define os ActionListeners
+        btnBuscaUni.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = tfdBuscaUni.getText();
+                if(texto.length() == 0) {
+                    ordUni.setRowFilter(null);
+                } else {
+                    try {
+                        // Atribui o filtro nas linhas usando RowFilter
+                        // (?i) torna a busca case insensitive
+                        ordUni.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                    } catch(PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        btnBuscaSub.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = tfdBuscaSub.getText();
+                if(texto.length() == 0) {
+                    ordSub.setRowFilter(null);
+                } else {
+                    try {
+                        // Atribui o filtro nas linhas usando RowFilter
+                        // (?i) torna a busca case insensitive
+                        ordSub.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                    } catch(PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        btnBuscaCmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = tfdBuscaCmp.getText();
+                if(texto.length() == 0) {
+                    ordCmp.setRowFilter(null);
+                } else {
+                    try {
+                        // Atribui o filtro nas linhas usando RowFilter
+                        // (?i) torna a busca case insensitive
+                        ordCmp.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                    } catch(PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        btnBuscaPte.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = tfdBuscaPte.getText();
+                if(texto.length() == 0) {
+                    ordPte.setRowFilter(null);
+                } else {
+                    try {
+                        // Atribui o filtro nas linhas usando RowFilter
+                        // (?i) torna a busca case insensitive
+                        ordPte.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                    } catch(PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+    
+    /**
+     * 
+     * @param lbl
+     * @param tfd
+     * @param btn
+     * @return 
+     */
+    private JPanel painelBusca(JLabel lbl, JTextField tfd, JButton btn) {
+        JPanel pnlBusca1 = new JPanel(new FlowLayout());
+        pnlBusca1.add(tfd);
+        pnlBusca1.add(btn);
+        
+        JPanel pnlBusca = new JPanel(new BorderLayout());
+        pnlBusca.add(pnlBusca1, BorderLayout.EAST);
+        pnlBusca.add(lbl, BorderLayout.WEST);
+        return pnlBusca;
     }
 }

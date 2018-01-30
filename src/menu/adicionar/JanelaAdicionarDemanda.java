@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import menu.HoraFormatada;
-import menu.painel.PainelEquipamento;
+import menu.painel.elementos.PainelEquipamento;
 import menu.JanelaAdicionarAlterar;
 
 /**

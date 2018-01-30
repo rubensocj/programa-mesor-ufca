@@ -1,4 +1,4 @@
-package menu.painel;
+package menu.painel.elementos;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 import intervencao.Intervencao;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
@@ -39,6 +39,7 @@ public class PainelIntervencao {
     
     private final JScrollPane iPane;
     private final JButton btnExcluir = new JButton("Excluir item");
+    private String query;
     
     /**
      * Construtor.
@@ -101,11 +102,76 @@ public class PainelIntervencao {
         pnlIntFinal.setOpaque(true);  
     }
     
+    public PainelIntervencao(int nivel, String id) {
+        
+        /** Define o nivel taxonomico da consulta SQL e o id do item */
+        setNivelTaxonomico(nivel, id);
+        
+        /** Renderizador de célula da tabela */
+        render = new DefaultTableCellRenderer();
+        render.setHorizontalAlignment(JLabel.CENTER);
+        
+        /** Cria a tabela com uma consulta em SQL */
+        try {
+            tabIntervencao = new JTable(new ModeloTabela(query));
+            
+            atualizarAparenciaDaTabela();
+            
+        } catch (SQLException ex) { ex.getErrorCode();}
+        
+        /**
+         * Cria o JScrollPane da tabela.
+         */
+        iPane = new JScrollPane(tabIntervencao,
+                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        tabIntervencao.setFillsViewportHeight(true);
+        
+        pnlInt = new JPanel(new FlowLayout());
+        pnlInt.add(iPane);
+        pnlInt.setOpaque(true);
+        
+        // PainelIntervenção final
+        pnlIntFinal = new JPanel(new BorderLayout());
+        pnlIntFinal.add(pnlInt, BorderLayout.CENTER);
+        pnlIntFinal.add(pnlSelecionadosExcluir, BorderLayout.PAGE_END);
+        pnlIntFinal.setOpaque(true);
+    }
+    
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
     
     /**
+     * Define o nível taxonômico da tabela do banco de dados. Determina sobre 
+     * qual tabela a consulta por demandas será realizada: 
+     * sistema, unidade, subunidade, etc.
+     * 
+     * @param nivel
+     * @param id 
+     */
+    private void setNivelTaxonomico(int nivel, String id) {
+        String n = null;
+        switch(nivel) {
+            case 2: n = "id_unidade"; break;
+            case 3: n = "id_subunidade"; break;
+            case 4: n = "id_componente"; break;
+            case 5: n = "id_parte"; break;
+        }
+        
+        setQuery("SELECT * FROM intervencao WHERE " + n + " = " + id);
+    }
+    
+    /**
+     * Define a consulta sql a ser realizada
+     * @param q 
+     */
+    private void setQuery(String q) {
+        query = q;
+    }
+    
+    /**
+     * Define se este painel tem a opção de excluir intervenções
      */
     public void setEditavel() {
         btnExcluir.addActionListener(new ActionListener() {
@@ -137,6 +203,14 @@ public class PainelIntervencao {
      */
     public JPanel painelTabelas() {
         return pnlIntFinal;
+    }
+    
+    /**
+     * 
+     * @return Um JPanel com a tabela.
+     */
+    public JTable getTabela() {
+        return tabIntervencao;
     }
     
     /**

@@ -1,4 +1,4 @@
-package menu.painel;
+package menu.painel.elementos;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 
 /**
  * PainelDemanda.java

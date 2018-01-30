@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Unidade.java
@@ -42,6 +42,14 @@ public class Unidade {
     public Unidade() {
         this.formatoSQLDate = new SimpleDateFormat("yyyy-MM-dd");
     }
+    
+    public Unidade(String classe, int id) {
+        this.formatoSQLDate = new SimpleDateFormat("yyyy-MM-dd");
+        
+        setClasse(classe);
+        setIdBD(id);
+    }
+    
     public Unidade(String categoria, String classe, String tipo,
             String fabricante, String identificacao, String localizacao,
             String dataAquisicao, String operacional, String dataInicio,

@@ -13,12 +13,13 @@ import menu.adicionar.JanelaAdicionarDemanda;
 import menu.adicionar.JanelaAdicionarSistema;
 import menu.adicionar.JanelaAdicionarInterventor;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import r.CamadaR;
 
 /**
  * MenuPrincipal.java
@@ -38,6 +39,11 @@ public class MenuPrincipal extends JFrame {
         
     private final String eventSelected = "ActionEvent";
 
+    /**
+     *
+     */
+    public static final PainelPrincipal PAINEL_PRINCIPAL = new PainelPrincipal();
+    
     private JMenuBar criaBarraMenu() {
         // Cria a barra de menu
         barraMenu = new JMenuBar();
@@ -126,11 +132,12 @@ public class MenuPrincipal extends JFrame {
      * @return Um Conteiner
      */
     public Container criaConteiner() {
-        JPanel conteiner = new JPanel();
-
-        conteiner.setLayout(new BorderLayout());
-        conteiner.setOpaque(true);
-        return conteiner;
+//        JPanel conteiner = new JPanel();
+//
+//        conteiner.setLayout(new BorderLayout());
+//        conteiner.setOpaque(true);
+//        conteiner.add(PAINEL_PRINCIPAL);
+        return PAINEL_PRINCIPAL;
     }
     
     /**
@@ -155,7 +162,8 @@ public class MenuPrincipal extends JFrame {
          * onde "metodoAdicionar()" é um método que retorne "JPanel"
          */
         
-        menuprincipal.setSize(300,150);
+//        menuprincipal.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        menuprincipal.setSize(1000,700);
         menuprincipal.setVisible(true);
         menuprincipal.setResizable(true);        
         menuprincipal.setLocationRelativeTo(null);
@@ -309,6 +317,7 @@ public class MenuPrincipal extends JFrame {
      */
     public static void main(String[] args) {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
+//        CamadaR.main(args);
         mostraMenuPrincipal();
         }
 }

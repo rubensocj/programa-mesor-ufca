@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package menu.principal;
+package menu.principal.sistema;
 
 /**
  * MenuSistema.java

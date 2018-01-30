@@ -6,7 +6,7 @@ package intervencao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 public class Interventor {
     

@@ -24,8 +24,8 @@ public class DivisorSplitPane {
     private final BasicSplitPaneDivider divisor;
     /**
      * Construtores.
-     * @param p
-     * @param d
+     * @param p - TRUE: horizontal; FALSE: vertical;
+     * @param d - JSplitPane
      */
     public DivisorSplitPane(boolean p, JSplitPane d) {
         

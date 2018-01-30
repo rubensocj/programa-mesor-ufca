@@ -1,6 +1,6 @@
 package equipamento;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 
 /**
  * Parte.java
@@ -19,8 +19,14 @@ public class Parte {
      * Construtores.
      */
     public Parte() {}
+    
     public Parte(String pDescricao) {
         setDescricao(pDescricao);     
+    }
+    
+    public Parte(String pDescricao, int id) {
+        setDescricao(pDescricao);
+        setIdBD(id);
     }
 
     // -------------------------------------------------------------------------

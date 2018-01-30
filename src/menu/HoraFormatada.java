@@ -7,6 +7,9 @@
 package menu;
 
 import java.awt.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import javax.swing.*;
 
 /**
@@ -84,5 +87,23 @@ public class HoraFormatada extends JPanel {
     public void setEnabled(boolean enabled) {
         cb1.setEnabled(enabled);
         cb2.setEnabled(enabled);
+    }
+    
+    /**
+     * Método estático público que calcula a data atual e retorna como string
+     * 
+     * @return String com a data de hoje
+     */
+    public static String hoje() {
+        Calendar c = Calendar.getInstance(Locale.getDefault());
+        String ano = String.valueOf(c.get(Calendar.YEAR));
+        String dia = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+        String mes;
+        
+        int i = c.get(Calendar.MONTH) + 1;
+        mes = (i < 10) ? "0".concat(String.valueOf(i)) : String.valueOf(i);
+        
+        String hoje = dia + mes + ano;
+        return hoje;
     }
 }

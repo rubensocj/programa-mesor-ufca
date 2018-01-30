@@ -1,6 +1,6 @@
 package equipamento;
 
-import conexaoSql.Consulta;
+import sql.Consulta;
 import java.util.Vector;
 
 /**

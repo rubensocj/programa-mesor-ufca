@@ -1,5 +1,6 @@
-package menu.painel;
+package menu.painel.elementos;
 
+import equipamento.Unidade;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,9 +10,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 import intervencao.Demanda;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,37 +27,36 @@ import java.awt.event.MouseListener;
  * @version 1.0 2/2/2017
  * @author Rubens Jr
  */
-public class PainelDemanda {
+public class PainelDemanda extends JPanel {
     
     public JTable tabDemanda;
     
-    private final DefaultTableCellRenderer render;
+    private DefaultTableCellRenderer render;
     private ModeloTabela modelo;
     
-    private final JPanel pnlDemFinal;
+    private JPanel pnlDemFinal;
     private JPanel pnlSelecionadosExcluir = new JPanel(new BorderLayout());
     
-    private final JScrollPane dPane;
+    private  JScrollPane dPane;
     
     public Demanda demanda = new Demanda();
     
-    private final JButton btnExcluir = new JButton("Excluir item");
-    private final JPanel pnlDem;
+    private JButton btnExcluir = new JButton("Excluir item");
+    private JPanel pnlDem;
     
+    public static int NIVEL_SISTEMA = 0, NIVEL_UNIDADE = 1, NIVEL_SUBUNIDADE = 2,
+                NIVEL_COMPONENTE = 3, NIVEL_PARTE = 4;
+    private String query;
     /**
      * Construtor.
      */
     public PainelDemanda() {
         
-        /**
-         * Renderizador de célula da tabela.
-         */
+        /** Renderizador de célula da tabela */
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /**
-         * Cria a tabela com uma consulta em SQL.
-         */
+        /** Cria a tabela com uma consulta em SQL */
         try {
             tabDemanda = new JTable(new ModeloTabela("SELECT * FROM demanda"));
             atualizarAparenciaDaTabela();            
@@ -80,9 +82,7 @@ public class PainelDemanda {
             @Override
             public void mouseExited(MouseEvent e) {}});
             
-        /**
-         * Cria o JScrollPane da tabela.
-         */
+        /** Cria o JScrollPane da tabela */
         dPane = new JScrollPane(tabDemanda,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -99,11 +99,65 @@ public class PainelDemanda {
         pnlDemFinal.setOpaque(true);     
     }
     
+    public PainelDemanda(int nivel, String id) {
+        
+        /** Define o nivel taxonomico da consulta SQL e o id do item */
+        setNivelTaxonomico(nivel, id);
+        
+        /** Renderizador de célula da tabela */
+        render = new DefaultTableCellRenderer();
+        render.setHorizontalAlignment(JLabel.CENTER);
+        
+        /** Cria a tabela com uma consulta em SQL */
+        try {
+            tabDemanda = new JTable(new ModeloTabela(query));
+            atualizarAparenciaDaTabela();            
+        } catch (SQLException ex) { ex.getErrorCode();}
+        
+        /** Cria o JScrollPane da tabela */
+        dPane = new JScrollPane(tabDemanda,
+                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        tabDemanda.setFillsViewportHeight(true);
+        pnlDemFinal = new JPanel(new FlowLayout());
+        pnlDemFinal.add(dPane);
+        pnlDemFinal.setOpaque(true);        
+    }
+    
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
     
     /**
+     * Define o nível taxonômico da tabela do banco de dados. Determina sobre 
+     * qual tabela a consulta por demandas será realizada: 
+     * sistema, unidade, subunidade, etc.
+     * 
+     * @param nivel
+     * @param id 
+     */
+    private void setNivelTaxonomico(int nivel, String id) {
+        String n = null;
+        switch(nivel) {
+            case 2: n = "id_unidade"; break;
+            case 3: n = "id_subunidade"; break;
+            case 4: n = "id_componente"; break;
+            case 5: n = "id_parte"; break;
+        }
+        
+        setQuery("SELECT * FROM demanda WHERE " + n + " = " + id);
+    }
+    
+    /**
+     * Define a consulta sql a ser realizada
+     * @param q 
+     */
+    private void setQuery(String q) {
+        query = q;
+    }
+    
+    /**
+     * Define se este painel tem a opção de excluir demandas
      */
     public void setEditavel() {
         btnExcluir.addActionListener(new ActionListener() {
@@ -135,6 +189,14 @@ public class PainelDemanda {
      */
     public JPanel painelTabelas() {
         return pnlDemFinal;
+    }
+    
+    /**
+     * 
+     * @return Um JPanel com a tabela.
+     */
+    public JTable getTabela() {
+        return tabDemanda;
     }
     
     /**
@@ -204,12 +266,9 @@ public class PainelDemanda {
      */
     public void atualizarAparenciaDaTabela() {
 
-        tabDemanda.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tabDemanda.getTableHeader().setReorderingAllowed(false);
         tabDemanda.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        tabDemanda.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
         tabDemanda.getColumnModel().getColumn(0).setPreferredWidth(40);
         tabDemanda.getColumnModel().getColumn(1).setPreferredWidth(160);
         tabDemanda.getColumnModel().getColumn(2).setPreferredWidth(60);
@@ -255,5 +314,15 @@ public class PainelDemanda {
      */
     public void tamanhoDaTabela(Dimension dim) {
         dPane.setPreferredSize(dim);
+    }
+    
+    // -------------------------------------------------------------------------
+    // Métodos Override
+    // -------------------------------------------------------------------------
+    
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 }

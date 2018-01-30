@@ -1,6 +1,6 @@
-package menu.painel;
+package menu.painel.elementos;
 
-import conexaoSql.ModeloTabela;
+import sql.ModeloTabela;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

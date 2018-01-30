@@ -21,9 +21,9 @@ import javax.swing.ImageIcon;
 
 import menu.adicionar.JanelaAdicionarEquipe;
 import menu.JanelaAdicionarAlterar;
-import menu.painel.PainelEquipe;
+import menu.painel.elementos.PainelEquipe;
 
-import conexaoSql.Lista;
+import sql.Lista;
 import intervencao.Interventor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

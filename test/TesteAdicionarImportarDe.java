@@ -26,17 +26,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TesteAdicionarImportarDe {
     
-    private Path caminho;
-    private String[][] stringArray;
-    private JTable tabela;
-    private DefaultTableModel modelo;
-    private Object[] cabecalho;
-    public enum Cabecalho {SISTEMA, UNIDADE, DEMANDA, INTERVENCAO}
-    File file;
-    Files files;
-    FileSystem fileSystem;
-    List<String> list;
-    BasicFileAttributes info;
+    private static Path caminho;
+    private static Object[][] stringArray;
+    private static Object[][] corpoTabela;
+    private static JTable tabela;
+    private static DefaultTableModel modelo;
+    private static Object[] cabecalho;
+    public static enum Cabecalho {SISTEMA, UNIDADE, DEMANDA, INTERVENCAO, PRIMEIRA_LINHA}
+    static File file;
+    static Files files;
+    static FileSystem fileSystem;
+    static List<String> list;
+    static BasicFileAttributes info;
     
     /**
      * Construtor
@@ -53,8 +54,8 @@ public class TesteAdicionarImportarDe {
      * 
      * @param caminho 
      */
-    public void setPath(String caminho) {
-        this.caminho = Paths.get(caminho);
+    private static void setPath(String caminho) {
+        TesteAdicionarImportarDe.caminho = Paths.get(caminho);
     }
     
     /**
@@ -67,7 +68,7 @@ public class TesteAdicionarImportarDe {
      */
     public List<String> setLista(Charset charset) 
                 throws IOException {
-        this.list = Files.readAllLines(this.caminho, charset);
+        TesteAdicionarImportarDe.list = Files.readAllLines(TesteAdicionarImportarDe.caminho, charset);
         return list;
     }
     
@@ -82,15 +83,15 @@ public class TesteAdicionarImportarDe {
      * @return Um array bidimensional.
      * @throws IOException 
      */
-    public String[][] toStringArray() throws IOException {
-        this.stringArray = new String[this.list.size()][];
+    private static void toStringArray() throws IOException {
+        TesteAdicionarImportarDe.stringArray = new String[TesteAdicionarImportarDe.list.size()][];
         int a = 0;
-        for(String l:this.list) {
+        for(String l:TesteAdicionarImportarDe.list) {
             stringArray[a] = l.split(",");
             a++;
         }
         
-        return stringArray;
+//        return stringArray;
     }
     
     /**
@@ -101,20 +102,26 @@ public class TesteAdicionarImportarDe {
      */
     public JTable toTable(TesteAdicionarImportarDe.Cabecalho cabecalho) {
         switch(cabecalho) {
-            case SISTEMA: this.cabecalho = new Object[] {"Descrição"};
+            case SISTEMA: TesteAdicionarImportarDe.cabecalho = new Object[] {"Descrição"};
                 break;
                 
-            case UNIDADE: this.cabecalho = new Object[] {
+            case UNIDADE: TesteAdicionarImportarDe.cabecalho = new Object[] {
                 "Classe","Tipo", "Fabricante", "Identificação", "Categoria",
                 "Localização", "Data de aquisição", "Data de aquisição",
                 "Modo operacional", "Data início de operação"};
                 break;
                 
+            case PRIMEIRA_LINHA: TesteAdicionarImportarDe.cabecalho = stringArray[0];
+                corpoTabela = new Object[][] {stringArray[1], stringArray[2],
+                                stringArray[3], stringArray[4], stringArray[5]};
+                break;
+                
             default: break;
         }
         
-        modelo = new DefaultTableModel(this.stringArray, this.cabecalho);
-        this.tabela = new JTable(modelo);
+        modelo = new DefaultTableModel(TesteAdicionarImportarDe.corpoTabela,
+                    TesteAdicionarImportarDe.cabecalho);
+        TesteAdicionarImportarDe.tabela = new JTable(modelo);
         
         return tabela;
     }
@@ -125,11 +132,12 @@ public class TesteAdicionarImportarDe {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         TesteAdicionarImportarDe ts = new TesteAdicionarImportarDe();
-        ts.setPath("C:\\Users\\Rubens Jr\\Desktop\\sistema.csv");
+        TesteAdicionarImportarDe.setPath("C:\\Users\\Rubens Jr\\Documents\\NetBeansProjects\\Programa\\parametersAndICs_table.txt");
         ts.setLista(Charset.defaultCharset());
         
-        System.out.println(ts.fileSystem);
-        System.out.println(ts.caminho.getFileName());
+        
+        System.out.println(TesteAdicionarImportarDe.fileSystem);
+        System.out.println(TesteAdicionarImportarDe.caminho.getFileName());
         
 //        ts.list.add("g, h, i");
 //        Files.write(ts.caminho, ts.list, Charset.defaultCharset());
@@ -145,15 +153,18 @@ public class TesteAdicionarImportarDe {
 //        a[0] = new String[] {"a", "b"};
 //        a[1] = new String[] {"c", "d"};
 //        System.out.println(Arrays.toString(a[0]));
-        try {
-//            for(String l:ts.list) System.out.println(l);
-//            System.out.println(ts.list.get(1));
-//            System.out.println("#########");
-            System.out.println(Arrays.deepToString(ts.toStringArray()));
-        } catch (Exception ex) {}
+//        try {
+////            for(String l:ts.list) System.out.println(l);
+////            System.out.println(ts.list.get(1));
+////            System.out.println("#########");
+//            System.out.println(Arrays.deepToString(ts.toStringArray()));
+//        } catch (Exception ex) {}
+//        
+
+        toStringArray();
         
         JFrame frm = new JFrame("Teste tabela importar");
-        JScrollPane scr = new JScrollPane(ts.toTable(Cabecalho.UNIDADE),
+        JScrollPane scr = new JScrollPane(ts.toTable(Cabecalho.PRIMEIRA_LINHA),
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scr.setPreferredSize(new Dimension(500,500));

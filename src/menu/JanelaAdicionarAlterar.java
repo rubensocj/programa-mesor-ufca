@@ -1,6 +1,6 @@
 package menu;
 
-import conexaoSql.Lista;
+import sql.Lista;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
-import menu.painel.PainelEquipamento;
+import menu.painel.elementos.PainelEquipamento;
 
 /**
  * JanelaAdicionarAlterar.java
@@ -233,8 +233,7 @@ public abstract class JanelaAdicionarAlterar {
                     this.pnlUnidade.buscarUnidade(cbxSistema.getSelectedIndex());
                 } catch(SQLException ex) { ex.printStackTrace();}
             }
-        }
-        
+        }        
     }
     
     // -------------------------------------------------------------------------
