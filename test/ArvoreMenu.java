@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import sql.Lista;
+import mesor.sql.Lista;
 /**
  *
  * @author Rubens Oliveira da Cunha Júnior
@@ -26,8 +26,8 @@ public class ArvoreMenu {
     static JScrollPane scrPaneTree;
     
     static JLabel jlab;
-    static sql.Lista listaSistemas;
-    static sql.Lista[] listaUnidades;
+    static mesor.sql.Lista listaSistemas;
+    static mesor.sql.Lista[] listaUnidades;
     
     static int s, t;
     
@@ -46,7 +46,7 @@ public class ArvoreMenu {
                     
             // A classe Query realiza uma determinada consulta SQL
             // Neste caso, retorna a contagem de linhas da tabela UNIDADE
-            t = sql.Query.consultaSQLInt("SELECT COUNT(*) FROM unidade;");
+            t = mesor.sql.Query.consultaSQLInt("SELECT COUNT(*) FROM unidade;");
             System.out.println(String.valueOf(t));
             
             // Cria os arrays de nós fazendo as consultas ao banco

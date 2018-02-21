@@ -2,10 +2,10 @@
  * Autor Rubens Oliveira da Cunha Júnior
  */
 
-import equipamento.Unidade;
-import equipamento.Subunidade;
-import equipamento.Parte;
-import equipamento.Componente;
+import mesor.equipamento.Unidade;
+import mesor.equipamento.Subunidade;
+import mesor.equipamento.Parte;
+import mesor.equipamento.Componente;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

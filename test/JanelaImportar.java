@@ -1,5 +1,5 @@
 
-import menu.JanelaAdicionarAlterar;
+import mesor.menu.JanelaAdicionarAlterar;
 
 /**
  * JanelaImportar.java

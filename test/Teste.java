@@ -4,10 +4,10 @@
  */
 
 import java.sql.PreparedStatement;
-import equipamento.Componente;
-import equipamento.Parte;
-import equipamento.Subunidade;
-import equipamento.Unidade;
+import mesor.equipamento.Componente;
+import mesor.equipamento.Parte;
+import mesor.equipamento.Subunidade;
+import mesor.equipamento.Unidade;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;

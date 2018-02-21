@@ -1,13 +1,10 @@
-
+package mesor.r;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import mesor.r.SerieTemporal;
-import java.awt.Component;
-import java.awt.GraphicsConfiguration;
 import java.io.BufferedReader;
 
 import java.nio.charset.Charset;
@@ -19,20 +16,13 @@ import org.rosuda.JRI.Rengine;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.RVector;
 
-import org.rosuda.javaGD.GDInterface;
-import org.rosuda.javaGD.JGDBufferedPanel;
-import org.rosuda.javaGD.GDCanvas;
-import org.rosuda.javaGD.JGDPanel;
-import org.rosuda.javaGD.JavaGD;
-
 import java.io.IOException;
-import javax.swing.JFrame;
 
 /**
  *
  * @author Rubens Oliveira da Cunha Júnior
  */
-public class CopiaCamadaR extends GDInterface {
+public class CamadaR {
 
     static SerieTemporal str = new SerieTemporal("Subunidade", 15);
 
@@ -71,58 +61,30 @@ public class CopiaCamadaR extends GDInterface {
     // Caminho usado para salvar arquivo parametersAndICs_table.txt
     public static final String R_USERS_PUBLIC = "C:/Users/Public/";
     
-    
-    JFrame f;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // Inicia a REngine
         rIniciarREngine();
-        
+
         // Compila o arquivo MK_WGRP.R
-//        rCompilarArquivoMK_WGRP();
+        rCompilarArquivoMK_WGRP();
         
         // Importação dos dados vindos do banco e conversão para objetos R
-//        rGetSeriesTemporais(str);
+        rGetSeriesTemporais(str);
 
         // Estudo WGRP e geração dos resultados em tabeça e imagem
-//        rEstudoWGRP();
+        rEstudoWGRP();
         
 //        System.out.println("\n** ---------------------------\n\n TENTANDO FINALIZAR O R...");
 //        re.end();
-//        System.out.println("\nPronto...");
+        System.out.println("\nPronto...");
 
         // Encerra a JVM
 //        Runtime.getRuntime().exit(1);
 //        System.exit(0);
     }
-    
-    @Override
-    public void gdOpen(double w, double h) {
-        if (f!=null) gdClose();
-        f = new JFrame("JavaGD Example");
-//        f.addWindowListener(this);      
-        c = new JGDBufferedPanel(w, h);
-        f.getContentPane().add((GDCanvas) c);
-        f.pack();
-        f.setVisible(true);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-    
-//    @Override
-//    public void gdActivate() {
-//        active = true;
-//    }
-    
-//    @Override
-//    public void gdNewPage(int devNr) { // new API: provides the device Nr.
-//        this.devNr=devNr;
-//        if (c!=null) {
-//            c.reset();
-//            c.setDeviceNumber(devNr);
-//        }
-//}
 
     /**
      * Verifica se as condições necessárias para a inicialização da sessão R

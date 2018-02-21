@@ -2,13 +2,13 @@
  *
  * @author Rubens Oliveira da Cunha Júnior
  */
-import menu.adicionar.JanelaAdicionarIntervencao;
-import equipamento.Unidade;
+import mesor.menu.adicionar.JanelaAdicionarIntervencao;
+import mesor.equipamento.Unidade;
 import java.awt.*;
 import java.text.ParseException;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
-import menu.HoraFormatada;
+import mesor.menu.HoraFormatada;
 
 public class Teste3 {
     private JPanel pnlUniGeral, pnlUni1, pnlUniOp, pnlUni2, pnlSubInfo, pnl1,

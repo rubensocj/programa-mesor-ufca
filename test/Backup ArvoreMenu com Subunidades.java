@@ -6,7 +6,7 @@ package menu.principal.sistema;
  * and open the template in the editor.
  */
 
-import equipamento.Unidade;
+import mesor.equipamento.Unidade;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,16 +18,16 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import menu.painel.aba.PainelConteudo;
-import menu.painel.elementos.PainelDemanda;
+import mesor.menu.painel.aba.PainelConteudo;
+import mesor.menu.painel.taxonomia.PainelDemanda;
 
-import static menu.principal.PainelPrincipal.pnlAbaNordeste;
-import static menu.principal.PainelPrincipal.pnlAbaSudeste;
+import static mesor.menu.principal.PainelPrincipal.pnlAbaNordeste;
+import static mesor.menu.principal.PainelPrincipal.pnlAbaSudeste;
 
-import r.Plot;
-import r.TabelaParametrosEICs;
+import mesor.r.Plot;
+import mesor.r.TabelaParametrosEICs;
 
-import sql.Lista;
+import mesor.sql.Lista;
 /**
  *
  * @author Rubens Oliveira da Cunha J�nior
@@ -42,11 +42,11 @@ public class ArvoreMenu {
     static JScrollPane scrPaneTree;
     
     static JLabel jlab;
-    static sql.Lista lsSistemas;
-    static sql.Lista[] lsUni;
-    static sql.Lista[] lsUniCod;
-    static sql.Lista lsSub;
-    static sql.Lista[] listaSubunidadesCodigos;
+    static mesor.sql.Lista lsSistemas;
+    static mesor.sql.Lista[] lsUni;
+    static mesor.sql.Lista[] lsUniCod;
+    static mesor.sql.Lista lsSub;
+    static mesor.sql.Lista[] listaSubunidadesCodigos;
     
     static int s, u, sb;
     
@@ -71,11 +71,11 @@ public class ArvoreMenu {
                     
             // A classe Query realiza uma determinada consulta SQL
             // Neste caso, retorna a contagem de linhas da tabela UNIDADE
-            u = sql.Query.consultaSQLInt("SELECT COUNT(*) FROM unidade;");
+            u = mesor.sql.Query.consultaSQLInt("SELECT COUNT(*) FROM unidade;");
             System.out.println(String.valueOf(u));
                     
             // Neste caso, retorna a contagem de linhas da tabela SUBUNIDADE
-            sb = sql.Query.consultaSQLInt("SELECT COUNT(*) FROM subunidade;");
+            sb = mesor.sql.Query.consultaSQLInt("SELECT COUNT(*) FROM subunidade;");
             System.out.println(String.valueOf(sb));
             
             // Cria os arrays de n�s fazendo as consultas ao banco
@@ -140,7 +140,7 @@ public class ArvoreMenu {
                 DefaultMutableTreeNode no = new DefaultMutableTreeNode(
                                 (Object) uniIdStr + " - " + uniDescricao, true);
 
-                int numSubunidade = sql.Query.consultaSQLInt(
+                int numSubunidade = mesor.sql.Query.consultaSQLInt(
                     "SELECT COUNT(*) FROM subunidade WHERE id_unidade = " + uniIdStr);
                 
                 lsSub = new Lista(
