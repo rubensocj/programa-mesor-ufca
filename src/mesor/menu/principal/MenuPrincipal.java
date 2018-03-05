@@ -148,7 +148,7 @@ public class MenuPrincipal extends JFrame {
 //        /* Conecta ao banco de dados */
 //        Consulta.conectar();
         
-        JFrame menuprincipal = new JFrame("Menu principal");
+        JFrame menuprincipal = new JFrame("MESOR Intervention Manager");
         menuprincipal.setLayout(new BorderLayout());
         menuprincipal.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
