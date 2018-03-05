@@ -21,8 +21,8 @@ public class Consulta {
     
     // Virtual host
 //    private static final String V_HOST = "sql10.freesqldatabase.com"; // online
-//    private static final String V_HOST = "localhost"; // localhost
-    private static final String V_HOST = "sql38.main-hosting.eu"; // remoto
+    private static final String V_HOST = "localhost"; // localhost
+//    private static final String V_HOST = "sql38.main-hosting.eu"; // remoto
     
     // Obsoletos
 //    private static final String V_HOST = "db4free.net";
@@ -34,8 +34,8 @@ public class Consulta {
     private static final String BD_HOST = V_HOST + ":3306";
     // Nome do banco de dados.
 //    private static final String BD_NAME = "sql10190138";    // online
-//        private static final String BD_NAME = "bdprograma";   // localhost
-        private static final String BD_NAME = "u789035304_mesor";   // remoto
+        private static final String BD_NAME = "bdprograma";   // localhost
+//        private static final String BD_NAME = "u789035304_mesor";   // remoto
 
     // Obsoleto
 //    private static final String BD_NAME = "bdmesorprograma";
@@ -45,15 +45,15 @@ public class Consulta {
     
     // Acesso ao servidor: usuário e senha.
 //    private static final String USERNAME = "sql10190138";   // online
-//    private static final String USERNAME = "mesor";   // localhost
-    private static final String USERNAME = "u789035304_mesor";   // remoto
+    private static final String USERNAME = "mesor";   // localhost
+//    private static final String USERNAME = "u789035304_mesor";   // remoto
     
     // Obsoleto
 //    private static final String USERNAME = "mxdvirtualage084";
 
 //    private static final String PASSWORD = "EPFGjwYGyq";    // online
-//    private static final String PASSWORD = "mesorufca1506";   // localhost
-    private static final String PASSWORD = "mesor54321";   // remoto
+    private static final String PASSWORD = "mesorufca1506";   // localhost
+//    private static final String PASSWORD = "mesor54321";   // remoto
     
     // Obsoleto
 //    private static final String PASSWORD = "r1sk305qr7dwn";
@@ -100,7 +100,8 @@ public class Consulta {
                 alterarComponente = null,
                 alterarParte = null,
                 alterarDemanda = null,
-                alterarIntervencao = null;
+                alterarIntervencao = null,
+                alterarInterventor = null;
     
     /**
      * Consulta em SQL previamente preparada que exclui do banco de dados
@@ -111,7 +112,8 @@ public class Consulta {
                 deletarComponente = null,
                 deletarParte = null,
                 deletarDemanda = null,
-                deletarIntervencao = null;
+                deletarIntervencao = null,
+                deletarInterventor = null;
     
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
@@ -869,7 +871,6 @@ public class Consulta {
      * Adiciona uma linha à entidade INTERVENTOR do banco de dados com as
      * informações dadas pelo usuário.
      * 
-     * @param idTime
      * @param nome
      * @param sexo
      * @param dataNascimento
@@ -884,7 +885,7 @@ public class Consulta {
      * @param contato
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertInterventor(int idTime, String nome, String sexo,
+    public static int insertInterventor(String nome, String sexo,
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
                 String cargo, String formacao, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
@@ -892,53 +893,158 @@ public class Consulta {
 
         int resultado = 0;        
         try {
-            inserirInterventor.setInt(1, idTime);
-            inserirInterventor.setString(2, nome);
+            inserirInterventor.setString(1, nome);
             // Se sexo, data de nascimento, data de admissão, cargo, formação,
             // estado civil e/ou estado não forem informados, insere NULL.
             if(sexo.isEmpty()) {
-                inserirInterventor.setNull(3, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(3, sexo);}
+                inserirInterventor.setNull(2, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(2, sexo);}
             if(dataNascimento == null) {
-                inserirInterventor.setNull(4, java.sql.Types.DATE);                
+                inserirInterventor.setNull(3, java.sql.Types.DATE);                
             } else {
                 java.sql.Date sqlDataNasc;
                 sqlDataNasc = new java.sql.Date(dataNascimento.getTime());
-                inserirInterventor.setDate(4, sqlDataNasc);
+                inserirInterventor.setDate(3, sqlDataNasc);
             }
             if(dataAdmissao == null) {
-                inserirInterventor.setNull(5, java.sql.Types.DATE);                
+                inserirInterventor.setNull(4, java.sql.Types.DATE);                
             } else {
                 java.sql.Date sqlDataAdms;
                 sqlDataAdms = new java.sql.Date(dataAdmissao.getTime());
-                inserirInterventor.setDate(5, sqlDataAdms);
+                inserirInterventor.setDate(4, sqlDataAdms);
             }
             if(cargo.isEmpty()) {
-                inserirInterventor.setNull(6, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(6, cargo);}
+                inserirInterventor.setNull(5, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(5, cargo);}
             if(formacao.isEmpty()) {
-                inserirInterventor.setNull(7, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(7, formacao);}
-            inserirInterventor.setFloat(8, remuneracao);
+                inserirInterventor.setNull(6, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(6, formacao);}
+            inserirInterventor.setFloat(7, remuneracao);
             if(estadoCivil.isEmpty()) {
-                inserirInterventor.setNull(9, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(9, estadoCivil);}
+                inserirInterventor.setNull(8, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(8, estadoCivil);}
             if(endereco.isEmpty()) {
-                inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(10, endereco);}
+                inserirInterventor.setNull(9, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(9, endereco);}
             if(cidade.isEmpty()) {
-                inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(11, cidade);}
+                inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(10, cidade);}
             if(estado.isEmpty()) {
-                inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(12, estado);}
+                inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(11, estado);}
             if(contato == 0) {
-                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
-            } else {inserirInterventor.setInt(13, contato);}
+                inserirInterventor.setNull(12, java.sql.Types.INTEGER);
+            } else {inserirInterventor.setInt(12, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirInterventor.executeUpdate();
             inserirInterventor.getQueryTimeout();
+            
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Altera uma linha selecionada da entidade DEMANDA do banco de dados com as
+     * novas informações dadas pelo usuário.
+     * 
+     * @param nome
+     * @param sexo
+     * @param dataNascimento
+     * @param dataAdmissao
+     * @param cargo
+     * @param formacao
+     * @param remuneracao
+     * @param estadoCivil
+     * @param endereco
+     * @param cidade
+     * @param estado
+     * @param contato
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int updateInterventor(String nome, String sexo,
+                java.util.Date dataNascimento, java.util.Date dataAdmissao,
+                String cargo, String formacao, float remuneracao,
+                String estadoCivil, String endereco, String cidade,
+                String estado, int contato) {
+        
+        int resultado = 0;
+        try {
+            alterarInterventor.setString(1, nome);
+            // Se sexo, data de nascimento, data de admissão, cargo, formação,
+            // estado civil e/ou estado não forem informados, insere NULL.
+            if(sexo.isEmpty()) {
+                alterarInterventor.setNull(2, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(2, sexo);}
+            if(dataNascimento == null) {
+                alterarInterventor.setNull(3, java.sql.Types.DATE);                
+            } else {
+                java.sql.Date sqlDataNasc;
+                sqlDataNasc = new java.sql.Date(dataNascimento.getTime());
+                alterarInterventor.setDate(3, sqlDataNasc);
+            }
+            if(dataAdmissao == null) {
+                alterarInterventor.setNull(4, java.sql.Types.DATE);                
+            } else {
+                java.sql.Date sqlDataAdms;
+                sqlDataAdms = new java.sql.Date(dataAdmissao.getTime());
+                alterarInterventor.setDate(4, sqlDataAdms);
+            }
+            if(cargo.isEmpty()) {
+                alterarInterventor.setNull(5, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(5, cargo);}
+            if(formacao.isEmpty()) {
+                alterarInterventor.setNull(6, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(6, formacao);}
+            alterarInterventor.setFloat(7, remuneracao);
+            if(estadoCivil.isEmpty()) {
+                alterarInterventor.setNull(8, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(8, estadoCivil);}
+            if(endereco.isEmpty()) {
+                alterarInterventor.setNull(9, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(9, endereco);}
+            if(cidade.isEmpty()) {
+                alterarInterventor.setNull(10, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(10, cidade);}
+            if(estado.isEmpty()) {
+                alterarInterventor.setNull(11, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(11, estado);}
+            if(contato == 0) {
+                alterarInterventor.setNull(12, java.sql.Types.INTEGER);
+            } else {alterarInterventor.setInt(12, contato);}
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = alterarInterventor.executeUpdate();
+            alterarInterventor.getQueryTimeout();
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade INTERVENTOR do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteInterventor(int id) {
+        
+        int resultado = 0;        
+        try {
+            deletarInterventor.setInt(1, id);
+                        
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarInterventor.executeUpdate();
+            deletarInterventor.getQueryTimeout();
             
         } // fim do try.
         catch(SQLException sqlException) {
@@ -1214,11 +1320,22 @@ public class Consulta {
             /* Definição de métodos para a classe INTERVENTOR */
             inserirInterventor = connection.prepareStatement(
                 "INSERT INTO interventor" +
-                    "(id_equipe, nome, sexo, nascimento, admissao, cargo,"
-                    + "formacao, remuneracao, estado_civil, endereco, cidade,"
-                    + "estado, contato)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    "(nome, sexo, nascimento, admissao, cargo, formacao, "
+                    + "remuneracao, estado_civil, endereco, cidade, estado, "
+                    + "contato)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
+            
+            alterarInterventor = connection.prepareStatement(
+                "UPDATE interventor SET " +
+                    "nome = ?, sexo = ?, nascimento = ?, admissao = ?, " + 
+                    "cargo = ?, formacao = ?, remuneracao = ?, " +
+                    "estado_civil = ?, endereco = ?, cidade = ?, estado = ?, " +
+                    "contato = ? WHERE id = ?",
+                        Statement.RETURN_GENERATED_KEYS);
+            
+            deletarInterventor = connection.prepareStatement(
+                "DELETE FROM interventor WHERE id = ?");
             
             /* Definição de métodos para a classe EQUIPE */
             inserirEquipe = connection.prepareStatement(

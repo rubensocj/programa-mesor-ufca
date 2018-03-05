@@ -16,8 +16,10 @@ import mesor.intervencao.Equipe;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.painel.taxonomia.PainelInterventor;
 
 /**
  * JanelaAdicionarEquipe.java
@@ -40,7 +42,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
     
     public JFormattedTextField tfdNascimento, tfdAdmissao, tfdRemuneracao;
     
-    public JComboBox cbxEstado;
+    public JComboBox cbxEstado, cbxSexo, cbxECivil;
     
     public JTable tabEquipe;
     
@@ -50,6 +52,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                 listaExpRequeridas;
     
     public Equipe equipe = new Equipe();
+    public PainelInterventor pnlIntv = new PainelInterventor();
     public Interventor interventor;
     
     public JPanel pnlBtnEqp;
@@ -321,11 +324,24 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
             mf.setValidCharacters("0123456789");
         } catch (ParseException ex) { ex.printStackTrace();}
         
+        // Cria a JComboBox de seleção do sexo
+        cbxSexo = new JComboBox(new Object[] {
+                    "Selecionar...", "Feminino", "Masculino", "Outro"});
+        cbxSexo.setEditable(false);
+        cbxSexo.setPreferredSize(new Dimension(275, 20));
+        
+        // Cria a JComboBox de seleção do estado civil
+        cbxECivil = new JComboBox(new Object[] {
+                    "Selecionar...", "Solteiro(a)", "Casado(a)", "Separado(a)",
+                    "Divorciado(a)", "Viúvo(a)", "Outro"});
+        cbxECivil.setEditable(false);
+        cbxECivil.setPreferredSize(new Dimension(275, 20));
+        
         // Cria a JComboBox de seleção do estado
         cbxEstado = new JComboBox(new Object[] {
-            "Selecionar...","AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS",
-            "MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP",
-            "SE","TO"});
+            "Selecionar...","AC","AL","AP","AM","BA","CE","DF","ES","GO","MA",
+            "MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR",
+            "SC","SP","SE","TO"});
         cbxEstado.setEditable(false);
         cbxEstado.setPreferredSize(new Dimension(275, 20));
         
@@ -346,13 +362,13 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         
         JPanel pnlEqp2 = new JPanel(new GridLayout(0,1,0,4));
         pnlEqp2.add(tfdNome);
-        pnlEqp2.add(tfdSexo);
+        pnlEqp2.add(cbxSexo);
         pnlEqp2.add(tfdNascimento);
         pnlEqp2.add(tfdAdmissao);
         pnlEqp2.add(tfdCargo);
         pnlEqp2.add(tfdFormacao);
         pnlEqp2.add(tfdRemuneracao);
-        pnlEqp2.add(tfdEstadoCivil);
+        pnlEqp2.add(cbxECivil);
         pnlEqp2.add(tfdEndereco);
         pnlEqp2.add(tfdCidade);
         pnlEqp2.add(cbxEstado);
@@ -367,31 +383,29 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         btnAddInterventor.setPreferredSize(new Dimension(90, 20));
         btnAddInterventor.addActionListener(new AddInterventor());
         
-        // Botão "Remover" interventor.
-        btnRemInterventor = new JButton("Remover");
-        btnRemInterventor.setPreferredSize(new Dimension(90, 20));
-        btnRemInterventor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(tabEquipe.getSelectedRowCount() == 1) {
-                    modeloTabInterventor.removeRow(tabEquipe.getSelectedRow());
-                    limparTexto();
-                }
-            }
-        });
+//        // Botão "Remover" interventor.
+//        btnRemInterventor = new JButton("Remover");
+//        btnRemInterventor.setPreferredSize(new Dimension(90, 20));
+//        btnRemInterventor.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if(tabEquipe.getSelectedRowCount() == 1) {
+//                    modeloTabInterventor.removeRow(tabEquipe.getSelectedRow());
+//                    limparTexto();
+//                }
+//            }
+//        });
 
         // Painel com botões.
         pnlBtnEqp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnlBtnEqp.add(btnAddInterventor);
-        pnlBtnEqp.add(btnRemInterventor);
+//        pnlBtnEqp.add(btnRemInterventor);
         
         // Painel "Interventor".
         JPanel pnlEqp4 = new JPanel(new BorderLayout());
         pnlEqp4.setOpaque(true);
         pnlEqp4.add(pnlEqp3, BorderLayout.NORTH);
         pnlEqp4.add(pnlBtnEqp, BorderLayout.CENTER);
-        pnlEqp4.setBorder(BorderFactory.createTitledBorder(
-                            BorderFactory.createEtchedBorder(), "Interventor"));
         
         // Painel auxiliar com FlowLayout
         JPanel pnlEqp5 = new JPanel(new FlowLayout());
@@ -409,11 +423,11 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
     public JPanel painelTabelaInterventores() {
         tabEquipe = new JTable();
         
-        JScrollPane ePane = new JScrollPane(tabEquipe,
+        JScrollPane ePane = new JScrollPane(pnlIntv.painelTabelas(),
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabEquipe.setFillsViewportHeight(true);
-        tabEquipe.setPreferredScrollableViewportSize(new Dimension(500, 350));
+        tabEquipe.setPreferredScrollableViewportSize(new Dimension(600, 400));
         tabEquipe.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tabEquipe.setCellSelectionEnabled(false);
         tabEquipe.setShowGrid(true);
@@ -448,51 +462,48 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         tabEquipe.getColumnModel().getColumn(8).setPreferredWidth(280);
         tabEquipe.getColumnModel().getColumn(9).setPreferredWidth(150);
         
-        /**
-         * MouseListener define as informações da linha selecionada como texto
-         * dos jtextfields do painelInterventor.
-         */
-        tabEquipe.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(tabEquipe.getSelectedRowCount() == 1) {
-                    tfdNome.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),0)));
-                    tfdSexo.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),1)));
-                    tfdNascimento.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),2)));
-                    tfdAdmissao.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),3)));
-                    tfdCargo.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),4)));
-                    tfdFormacao.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),5)));
-                    tfdRemuneracao.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),6)));
-                    tfdEstadoCivil.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),7)));
-                    tfdEndereco.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),8)));
-                    tfdCidade.setText(String.valueOf(
-                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),9)));
-                }
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}}); // Fim do MouseListener
+//        /**
+//         * MouseListener define as informações da linha selecionada como texto
+//         * dos jtextfields do painelInterventor.
+//         */
+//        tabEquipe.addMouseListener(new MouseListener() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                if(tabEquipe.getSelectedRowCount() == 1) {
+//                    tfdNome.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),0)));
+//                    tfdSexo.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),1)));
+//                    tfdNascimento.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),2)));
+//                    tfdAdmissao.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),3)));
+//                    tfdCargo.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),4)));
+//                    tfdFormacao.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),5)));
+//                    tfdRemuneracao.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),6)));
+//                    tfdEstadoCivil.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),7)));
+//                    tfdEndereco.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),8)));
+//                    tfdCidade.setText(String.valueOf(
+//                        tabEquipe.getValueAt(tabEquipe.getSelectedRow(),9)));
+//                }
+//            }
+//            @Override
+//            public void mousePressed(MouseEvent e) {}
+//            @Override
+//            public void mouseReleased(MouseEvent e) {}
+//            @Override
+//            public void mouseEntered(MouseEvent e) {}
+//            @Override
+//            public void mouseExited(MouseEvent e) {}}); // Fim do MouseListener
                 
         JPanel pnlTabEqp = new JPanel(new FlowLayout());
         pnlTabEqp.setOpaque(true);
         pnlTabEqp.add(ePane);
-        pnlTabEqp.setBorder(BorderFactory.createTitledBorder(
-                            BorderFactory.createEtchedBorder(),
-                            "Interventores"));
         return pnlTabEqp;
     }
         
@@ -525,22 +536,30 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                 // Se não houver erro, executa a operação.                    
                 interventor = new Interventor();
                 interventor.setNome(tfdNome.getText());
-                interventor.setSexo(tfdSexo.getText());
+                interventor.setSexo(cbxSexo.getSelectedItem().toString());
                 interventor.setNascimento(tfdNascimento.getText());
                 interventor.setAdmissao(tfdAdmissao.getText());
                 interventor.setCargo(tfdCargo.getText());
                 interventor.setFormacao(tfdFormacao.getText());
                 interventor.setRemuneracao(tfdRemuneracao.getText());
-                interventor.setEstadoCivil(tfdEstadoCivil.getText());
+                interventor.setEstadoCivil(cbxECivil.getSelectedItem().toString());
                 interventor.setEndereco(tfdEndereco.getText());
+                interventor.setEstado(cbxEstado.getSelectedItem().toString());
                 interventor.setCidade(tfdCidade.getText());
+                interventor.setContato(tfdContato.getText());
 
                 /**
                  * Converte os textos no formato String inseridos nos
                  * JTextFields do painel interventor em variáveis do tipo
                  * Object para a tabela adicioná-los a tabela da equipe.
                  */
-                modeloTabInterventor.addRow(interventor.toObject());
+                try {
+                    interventor.sqlInserir();
+                    pnlIntv.reiniciarTabela();
+                    pnlIntv.atualizarAparenciaDaTabela();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
                 limparTexto();
             }

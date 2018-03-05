@@ -106,31 +106,5 @@ public class Equipe {
         for(String hr : this.getVetorHabilidade()) {
             n = Consulta.insertHabilidade(Consulta.idEquipe, hr);
         }
-        // Insere as habilidades requeridas uma a uma na entidade "habilidadesrequeridas"
-        for(Interventor it : this.getVetorInterventor()) {
-            try {
-                // Converte os dados String para Date e Int
-                
-                // Se a não for informado a data, não faz nada.
-                // sqlDataNascimento = null
-                // sqlDataAdmissao = null
-                if(it.getNascimento().contains(" ")) {}
-                else {
-                    // Se a data for informada, formata-as
-                    sqlDataNascimento = formatoData.parse(it.getNascimento());
-                    sqlDataAdmissao = formatoData.parse(it.getAdmissao());
-                }                
-                // Formata a remuneração
-                sqlRemuneracao = Float.parseFloat(
-                        it.getRemuneracao().replace(".", "").replace(",", "."));
-            } catch (java.text.ParseException ex) {
-                ex.printStackTrace();
-            } // Fim do try-catch
-            n = Consulta.insertInterventor(Consulta.idEquipe, it.getNome(),
-                        it.getSexo(), sqlDataNascimento, sqlDataAdmissao,
-                        it.getCargo(), it.getFormacao(), sqlRemuneracao,
-                        it.getEstadoCivil(), it.getEndereco(), it.getCidade(),
-                        it.getEstado(), it.getContato());
-        }
     }
 }

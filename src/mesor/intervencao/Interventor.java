@@ -4,6 +4,7 @@
 
 package mesor.intervencao;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import mesor.sql.Consulta;
@@ -21,18 +22,31 @@ public class Interventor {
     private String endereco;
     private String cidade;
     private String estado;
-    private int contato;
+    private String contato;
+    
+    private int idBD = 0;   // Parâmetros do banco de dados: id.
     
     Consulta consulta = new Consulta();
-    SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-    Date sqlData;
+    
+    private SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+    private Date sqlData;    
+    private final SimpleDateFormat formatoSQLDate;
+    private Date sqlDataNasc, sqlDataAdm;
     int sqlIntIntervalo, sqlIntDem;
     
-    public Interventor() {}
+    private float fRem = 0.0f;
+    private int fCont = 0;
+    
+    public Interventor() {
+        this.formatoSQLDate = new SimpleDateFormat("yyyy-MM-dd");
+    }
+    
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Interventor(String pNome, String pSexo, String pNasc, String pAdms,
             String pCargo, String pForma, String pRem, String pEst, String pEnd,
-            String pCidade, String pEstado, int pContato) {
+            String pCidade, String pEstado, String pContato) {
+        
+        this.formatoSQLDate = new SimpleDateFormat("yyyy-MM-dd");
         
         setNome(pNome);
         setSexo(pSexo);
@@ -53,13 +67,26 @@ public class Interventor {
         this.nome = pNome;
     }
     public void setSexo(String pSexo) {
+        if(pSexo.equals("Selecionar...")) pSexo = "";
         this.sexo = pSexo;
     }
     public void setNascimento(String pNasc) {
-        this.dataNascimento = pNasc;
+        if(pNasc.contains(" ")) {
+            this.dataNascimento = "";
+        } else {
+            this.dataNascimento = pNasc.substring(6,10).concat(
+            "-" + pNasc.substring(3,5)).concat(
+            "-" + pNasc.substring(0,2));
+        }
     }
     public void setAdmissao(String pAdms) {
-        this.dataAdmissao = pAdms;
+        if(pAdms.contains(" ")) {
+            this.dataAdmissao = "";
+        } else {
+            this.dataAdmissao = pAdms.substring(6,10).concat(
+            "-" + pAdms.substring(3,5)).concat(
+            "-" + pAdms.substring(0,2));
+        }
     }
     public void setCargo(String pCargo) {
         this.cargo = pCargo;
@@ -68,9 +95,17 @@ public class Interventor {
         this.formacao = pForma;
     }
     public void setRemuneracao(String pRem) {
+        if(!pRem.equals("0,00")) {
+            String[] s = pRem.split(",");
+            if(pRem.contains(".")) {
+                s[0] = s[0].replaceAll("\\.", "");
+            }
+            fRem = Float.parseFloat(s[0].concat(".").concat(s[1]));
+        }
         this.remuneracao = pRem;
     }
     public void setEstadoCivil(String pEst) {
+        if(pEst.equals("Selecionar...")) pEst = "";
         this.estadoCivil = pEst;
     }
     public void setEndereco(String pEnd) {
@@ -80,10 +115,15 @@ public class Interventor {
         this.cidade = pCidade;
     }
     public void setEstado(String pEstado) {
+        if(pEstado.length() > 2) pEstado = "";
         this.estado = pEstado;
     }
-    public void setContato(int pContato) {
+    public void setContato(String pContato) {
         this.contato = pContato;
+        if(!contato.equals("")) fCont = (int) Integer.parseInt(this.contato);
+    }
+    public void setIdBD(int id) {
+        this.idBD = id;
     }
     
     // Métodos get
@@ -121,7 +161,10 @@ public class Interventor {
         return estado;
     }
     public int getContato() {
-        return contato;
+        return fCont;
+    }
+    public int getIdBD() {
+        return idBD;
     }
     
     // Exibe o interventor no formato Object[]
@@ -132,5 +175,75 @@ public class Interventor {
         getEstadoCivil(), getEndereco(), getCidade(), getEstado(),
         getContato()};
         return obj;
+    }
+    
+    /**
+     * 
+     * @param dataString
+     * @return Um Date formatado.
+     * @throws ParseException 
+     */
+    private Date converterData(String dataString) throws ParseException {
+        sqlData = null;
+        
+        if(dataString.equals("")) {
+            sqlData = null; // Se não houver data de aquisição, sqlData = null.
+        } else {
+            sqlData = formatoSQLDate.parse(dataString);
+        }
+        
+        return sqlData;
+    }
+    
+    /**
+     * Insere informações no banco de dados.
+     */
+    public void sqlInserir() {
+        sqlDataNasc = null;
+        sqlDataAdm = null;
+        
+        try {
+            sqlDataNasc = converterData(this.dataNascimento);
+            sqlDataAdm = converterData(this.dataAdmissao);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        
+        int n;
+        // Insere na entidade "unidade".
+        n = Consulta.insertInterventor(this.nome, this.sexo,
+                sqlDataNasc, sqlDataAdm, this.cargo, this.formacao,
+                this.fRem, this.estadoCivil, this.endereco, this.cidade,
+                this.estado, this.fCont);
+    }
+    
+    /**
+     * Altera informações no banco de dados.
+     */
+    public void sqlAlterar() {
+        sqlDataNasc = null;
+        sqlDataAdm = null;
+        
+        try {
+            sqlDataNasc = converterData(this.dataNascimento);
+            sqlDataAdm = converterData(this.dataAdmissao);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        
+        int n;
+        // Insere na entidade "interventor".
+        n = Consulta.updateInterventor(this.nome, this.sexo,
+                sqlDataNasc, sqlDataAdm, this.cargo, this.formacao,
+                this.fRem, this.estadoCivil, this.endereco, this.cidade,
+                this.estado, this.fCont);
+    }
+    
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n;
+        n = Consulta.deleteInterventor(this.idBD);
     }
 }
