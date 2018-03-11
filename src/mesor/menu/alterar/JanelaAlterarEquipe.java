@@ -160,7 +160,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         pnlEqpInterventor = new PainelEquipe(PainelEquipe.Tabela.interventor);
         pnlEqpInterventor.tamanhoDaTabela(new Dimension(350, 200));
         pnlEqpInterventor.atualizarAparenciaDaTabela();
-        pnlEqpInterventor.habilitarTabela(false);
+        pnlEqpInterventor.habilitarTabela();
         /**
          * MouseListener define as informações da linha selecionada como texto
          * dos jtextfields do painelInterventor.
@@ -315,7 +315,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
             equipe.setInterventor(interventor);
         }
         
-        equipe.adicionaEquipe();
+        equipe.sqlInserir();
     }
     
     @Override
@@ -377,8 +377,8 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         public void actionPerformed(ActionEvent event) {
             if(pnlEqpGeral.tabEquipe.getSelectedRowCount() != 0) {
                 habilitarEdicao(true);
-                pnlEqpInterventor.habilitarTabela(true);
-                pnlEqpGeral.habilitarTabela(false);
+                pnlEqpInterventor.habilitarTabela();
+                pnlEqpGeral.habilitarTabela();
                 
                 modeloListaObjEspecificos.removeAllElements();
                 modeloListaExpRequeridas.removeAllElements();
@@ -469,8 +469,8 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         public void actionPerformed(ActionEvent event) {
             habilitarEdicao(false);
             tfdObjetivoGeral.setText("");
-            pnlEqpInterventor.habilitarTabela(false);
-            pnlEqpGeral.habilitarTabela(true);
+            pnlEqpInterventor.habilitarTabela();
+            pnlEqpGeral.habilitarTabela();
             
             modeloListaObjEspecificos.removeAllElements();
             modeloListaExpRequeridas.removeAllElements();

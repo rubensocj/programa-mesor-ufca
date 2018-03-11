@@ -12,28 +12,29 @@ public class Equipe {
     
     private String objGeral;
     
-    @SuppressWarnings("UseOfObsoleteCollectionType")
     private final Vector<String> objEspecificos = new Vector(),
                                  habRequeridas = new Vector(),
                                  expRequeridas = new Vector();
     
-    @SuppressWarnings("UseOfObsoleteCollectionType")
     private final Vector<Interventor> interventores = new Vector();
+    
+    private Intervencao intervencao;
+    
+    private String codigo; // Parâmetros do banco de dados: codigo, id.
+    private int idBD;
     
     Consulta consulta = new Consulta();
     SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
     
     // Construtores
     public Equipe() {}
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public Equipe(String pObjGeral, String pObjEspecifico, String pHabRequerida,
-                String pExpRequerida, Interventor pInterventor) {
+                String pExpRequerida) {
         
         setObjetivoGeral(pObjGeral);
         setObjetivoEspecifico(pObjEspecifico);
         setHabilidade(pHabRequerida);
         setExperiencia(pExpRequerida);
-        setInterventor(pInterventor);
     }
 
     // Métodos set
@@ -51,6 +52,12 @@ public class Equipe {
     }
     public void setInterventor(Interventor pInterventor) {
         this.interventores.addElement(pInterventor);
+    }
+    public void setIntervencao(Intervencao pIntervencao) {
+        this.intervencao = pIntervencao;
+    }
+    public void setIdBD(int idBD) {
+        this.idBD = idBD;
     }
 
     // Métodos get
@@ -85,26 +92,43 @@ public class Equipe {
     public Vector<Interventor> getVetorInterventor() {
         return interventores;
     }
+    public Intervencao getIntervencao() {
+        return intervencao;
+    }
+    public int getIdBD() {
+        return idBD;
+    }
     
-    // Método que adiciona as informações ao BD
-    public void adicionaEquipe() {
-        java.util.Date sqlDataNascimento = null, sqlDataAdmissao = null;
-        float sqlRemuneracao = 0;
-        
+    /**
+     * Insere informações no banco de dados.
+     */
+    public void sqlInserir() {
         int n;
         // Insere na entidade "equipe"
-        n = Consulta.insertTime(this.objGeral, 0);
-        // Insere os objetivos expecíficos um a um na entidade "objetivosespecificos"
+        n = Consulta.insertEquipe(this.objGeral);
+        // Insere um a um na entidade "objetivosespecificos"
         for(String ob : this.getVetorObjEspecifico()) {
             n = Consulta.insertObjetivoEspecifico(Consulta.idEquipe, ob);
         }
-        // Insere as experiências requeridas uma a uma na entidade "experienciasrequeridas"
+        // Insere uma a uma na entidade "experienciasrequeridas"
         for(String er : this.getVetorExperiencia()) {
             n = Consulta.insertExperiencia(Consulta.idEquipe, er);
         }
-        // Insere as habilidades requeridas uma a uma na entidade "habilidadesrequeridas"
+        // Insere uma a uma na entidade "habilidadesrequeridas"
         for(String hr : this.getVetorHabilidade()) {
             n = Consulta.insertHabilidade(Consulta.idEquipe, hr);
         }
+        // Insere um a um na entidade "aux_equipe"
+        for(Interventor it : this.getVetorInterventor()) {
+            n = Consulta.vincularEquipe(Consulta.idEquipe, it.getIdBD());
+        }
+    }
+    
+    /**
+     * Altera a intervencao vinculada a esta equipe
+     */
+    public void sqlVincularIntervencao() {
+        int n;
+        n = Consulta.vincularIntervencao(this.getIdBD(), this.intervencao.getIdBD());
     }
 }

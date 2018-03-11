@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 
 import javax.swing.JDialog;
@@ -60,7 +59,6 @@ public class Consulta {
 
     // gerencia a conexão.
     public static Connection connection = null;
-    
     private static ResultSet resultSet = null;
     
     // lida com a conexão com o BD
@@ -115,6 +113,8 @@ public class Consulta {
                 deletarIntervencao = null,
                 deletarInterventor = null;
     
+    private static PreparedStatement vincularEquipe = null,
+                vincularIntervencao = null;
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
     // -------------------------------------------------------------------------
@@ -877,6 +877,7 @@ public class Consulta {
      * @param dataAdmissao
      * @param cargo
      * @param formacao
+     * @param esp
      * @param remuneracao
      * @param estadoCivil
      * @param endereco
@@ -887,7 +888,7 @@ public class Consulta {
      */
     public static int insertInterventor(String nome, String sexo,
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
-                String cargo, String formacao, float remuneracao,
+                String cargo, String formacao, String esp, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
                 String estado, int contato) {
 
@@ -919,22 +920,25 @@ public class Consulta {
             if(formacao.isEmpty()) {
                 inserirInterventor.setNull(6, java.sql.Types.VARCHAR);
             } else {inserirInterventor.setString(6, formacao);}
-            inserirInterventor.setFloat(7, remuneracao);
+            if(esp.isEmpty()) {
+                inserirInterventor.setNull(7, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(7, esp);}
+            inserirInterventor.setFloat(8, remuneracao);
             if(estadoCivil.isEmpty()) {
-                inserirInterventor.setNull(8, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(8, estadoCivil);}
-            if(endereco.isEmpty()) {
                 inserirInterventor.setNull(9, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(9, endereco);}
-            if(cidade.isEmpty()) {
+            } else {inserirInterventor.setString(9, estadoCivil);}
+            if(endereco.isEmpty()) {
                 inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(10, cidade);}
-            if(estado.isEmpty()) {
+            } else {inserirInterventor.setString(10, endereco);}
+            if(cidade.isEmpty()) {
                 inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(11, estado);}
+            } else {inserirInterventor.setString(11, cidade);}
+            if(estado.isEmpty()) {
+                inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(12, estado);}
             if(contato == 0) {
-                inserirInterventor.setNull(12, java.sql.Types.INTEGER);
-            } else {inserirInterventor.setInt(12, contato);}
+                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
+            } else {inserirInterventor.setInt(13, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirInterventor.executeUpdate();
@@ -959,6 +963,7 @@ public class Consulta {
      * @param dataAdmissao
      * @param cargo
      * @param formacao
+     * @param esp
      * @param remuneracao
      * @param estadoCivil
      * @param endereco
@@ -969,7 +974,7 @@ public class Consulta {
      */
     public static int updateInterventor(String nome, String sexo,
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
-                String cargo, String formacao, float remuneracao,
+                String cargo, String formacao, String esp, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
                 String estado, int contato) {
         
@@ -999,24 +1004,27 @@ public class Consulta {
                 alterarInterventor.setNull(5, java.sql.Types.VARCHAR);
             } else {alterarInterventor.setString(5, cargo);}
             if(formacao.isEmpty()) {
-                alterarInterventor.setNull(6, java.sql.Types.VARCHAR);
-            } else {alterarInterventor.setString(6, formacao);}
-            alterarInterventor.setFloat(7, remuneracao);
+                inserirInterventor.setNull(6, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(6, formacao);}
+            if(esp.isEmpty()) {
+                inserirInterventor.setNull(7, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(7, esp);}
+            inserirInterventor.setFloat(8, remuneracao);
             if(estadoCivil.isEmpty()) {
-                alterarInterventor.setNull(8, java.sql.Types.VARCHAR);
-            } else {alterarInterventor.setString(8, estadoCivil);}
+                inserirInterventor.setNull(9, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(9, estadoCivil);}
             if(endereco.isEmpty()) {
-                alterarInterventor.setNull(9, java.sql.Types.VARCHAR);
-            } else {alterarInterventor.setString(9, endereco);}
+                inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(10, endereco);}
             if(cidade.isEmpty()) {
-                alterarInterventor.setNull(10, java.sql.Types.VARCHAR);
-            } else {alterarInterventor.setString(10, cidade);}
+                inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(11, cidade);}
             if(estado.isEmpty()) {
-                alterarInterventor.setNull(11, java.sql.Types.VARCHAR);
-            } else {alterarInterventor.setString(11, estado);}
+                inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(12, estado);}
             if(contato == 0) {
-                alterarInterventor.setNull(12, java.sql.Types.INTEGER);
-            } else {alterarInterventor.setInt(12, contato);}
+                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
+            } else {inserirInterventor.setInt(13, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarInterventor.executeUpdate();
@@ -1067,7 +1075,7 @@ public class Consulta {
      * @param idIntervencao
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertTime(String objetivoGeral, int idIntervencao) {
+    public static int insertEquipe(String objetivoGeral) {
         
         int resultado = 0;        
         try {
@@ -1077,7 +1085,6 @@ public class Consulta {
              * intervenção for vinculada a esta equipe, o campo será alterado.
              */
             inserirEquipe.setString(1, objetivoGeral);
-            inserirEquipe.setNull(2, java.sql.Types.INTEGER);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirEquipe.executeUpdate();
@@ -1161,15 +1168,15 @@ public class Consulta {
      * Adiciona uma linha à entidade EXPERIENCIASSREQUERIDAS do banco de dados
      * com as informações dadas pelo usuário.
      * 
-     * @param idTime
+     * @param idEquipe
      * @param descricao
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
-    public static int insertExperiencia(int idTime, String descricao) {
+    public static int insertExperiencia(int idEquipe, String descricao) {
         
         int resultado = 0;        
         try {
-            inserirExperienciaRequerida.setInt(1, idTime);
+            inserirExperienciaRequerida.setInt(1, idEquipe);
             if(descricao.isEmpty()) {
                 inserirExperienciaRequerida.setNull(2,java.sql.Types.VARCHAR);
             } else {inserirExperienciaRequerida.setString(2, descricao);}
@@ -1178,13 +1185,59 @@ public class Consulta {
             resultado = inserirExperienciaRequerida.executeUpdate();
             inserirExperienciaRequerida.getQueryTimeout();
             
-        } // fim do try.
-        catch(SQLException sqlException) {
+        } catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
-        } // fim do catch.
+        }
         
         return resultado;
+    }
+    
+    /**
+     * Adiciona uma linha à entidade AUX_EQUIPE do banco de dados
+     * com as informações dadas pelo usuário.
+     * 
+     * @param idEquipe
+     * @param idIntv
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int vincularEquipe(int idEquipe, int idIntv) {
+        
+        int res = 0;
+        try {
+            vincularEquipe.setInt(1, idEquipe);
+            vincularEquipe.setInt(2, idIntv);
+            
+            res = vincularEquipe.executeUpdate();
+            vincularEquipe.getQueryTimeout();
+        } catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    /**
+     * Adiciona uma linha à entidade AUX_INTERVENCAO do banco de dados
+     * com as informações dadas pelo usuário.
+     * 
+     * @param idEquipe
+     * @param idIntv
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int vincularIntervencao(int idEquipe, int idIntv) {
+        
+        int res = 0;
+        try {
+            vincularIntervencao.setInt(1, idEquipe);
+            vincularIntervencao.setInt(2, idIntv);
+            
+            res = vincularIntervencao.executeUpdate();
+            vincularIntervencao.getQueryTimeout();
+        } catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        
+        return res;
     }
     
     /**
@@ -1226,10 +1279,9 @@ public class Consulta {
             /* Definição de métodos para a classe SISTEMA */
             inserirSistema = connection.prepareStatement(
                 "INSERT INTO sistema (nome, descricao) VALUES (?, ?);");
-            
             alterarSistema = connection.prepareStatement(
                 "UPDATE sistema SET nome = ?, descricao = ? WHERE id = ?;");
-            
+
             /* Definição de métodos para a classe UNIDADE */
             inserirUnidade = connection.prepareStatement(
                 "INSERT INTO unidade " + 
@@ -1238,14 +1290,12 @@ public class Consulta {
                     "data_inicio_operacao, id_sistema) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                     Statement.RETURN_GENERATED_KEYS);
-            
             alterarUnidade = connection.prepareStatement(
                 "UPDATE unidade SET " +
                     "classe = ?, tipo = ?, fabricante = ?, identificacao = ?, "+
                     "categoria = ?, localizacao = ?, data_aquisicao = ?, " +
                     "modo_operacional = ?, data_inicio_operacao = ? " +
                 "WHERE id = ?;");
-            
             deletarUnidade = connection.prepareStatement(
                 "DELETE FROM unidade WHERE id = ?;");
             
@@ -1254,10 +1304,8 @@ public class Consulta {
                 "INSERT INTO subunidade" +
                     "(descricao, id_unidade) VALUES (?, ?);",
                     Statement.RETURN_GENERATED_KEYS);
-            
             alterarSubunidade = connection.prepareStatement(
                 "UPDATE subunidade SET descricao = ? WHERE id = ?");
-            
             deletarSubunidade = connection.prepareStatement(
                 "DELETE FROM subunidade WHERE id = ?;");            
             
@@ -1266,10 +1314,8 @@ public class Consulta {
                 "INSERT INTO componente" +
                     "(descricao, id_subunidade)" +
                 "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
-            
             alterarComponente = connection.prepareStatement(
                 "UPDATE componente SET descricao = ? WHERE id = ?");
-            
             deletarComponente = connection.prepareStatement(
                 "DELETE FROM componente WHERE id = ?;");
             
@@ -1278,10 +1324,8 @@ public class Consulta {
                 "INSERT INTO parte" +
                     "(descricao, id_componente)" +
                 "VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
-            
             alterarParte = connection.prepareStatement(
                 "UPDATE parte SET descricao = ? WHERE id = ?");
-            
             deletarParte = connection.prepareStatement(
                 "DELETE FROM parte WHERE id = ?;");
             
@@ -1292,12 +1336,10 @@ public class Consulta {
                     + "id_unidade, id_subunidade, id_componente, id_parte)"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             alterarDemanda = connection.prepareStatement(
                 "UPDATE demanda SET " +
                     "data = ?, modo = ?, impacto = ?, causa = ?, " +
                     "modo_operacional = ? WHERE id = ?");
-            
             deletarDemanda = connection.prepareStatement(
                 "DELETE FROM demanda WHERE id = ?");
 
@@ -1308,12 +1350,10 @@ public class Consulta {
                     + "id_subunidade, id_componente, id_parte, id_demanda)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             alterarIntervencao = connection.prepareStatement(
                 "UPDATE intervencao SET " +
                     "categoria = ?, atividade = ?, inicio = ?, termino = ?, "
                     + "id_demanda = ? WHERE id = ?");
-
             deletarIntervencao = connection.prepareStatement(
                 "DELETE FROM intervencao WHERE id = ?");
             
@@ -1321,47 +1361,51 @@ public class Consulta {
             inserirInterventor = connection.prepareStatement(
                 "INSERT INTO interventor" +
                     "(nome, sexo, nascimento, admissao, cargo, formacao, "
-                    + "remuneracao, estado_civil, endereco, cidade, estado, "
-                    + "contato)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    + "especializacao, remuneracao, estado_civil, endereco, "
+                    + "cidade, estado, contato)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             alterarInterventor = connection.prepareStatement(
                 "UPDATE interventor SET " +
                     "nome = ?, sexo = ?, nascimento = ?, admissao = ?, " + 
-                    "cargo = ?, formacao = ?, remuneracao = ?, " +
-                    "estado_civil = ?, endereco = ?, cidade = ?, estado = ?, " +
-                    "contato = ? WHERE id = ?",
+                    "cargo = ?, formacao = ?, especializacao = ?, " +
+                    "remuneracao = ?, estado_civil = ?, endereco = ?, " +
+                    "cidade = ?, estado = ?, contato = ? WHERE id = ?",
                         Statement.RETURN_GENERATED_KEYS);
-            
             deletarInterventor = connection.prepareStatement(
                 "DELETE FROM interventor WHERE id = ?");
             
             /* Definição de métodos para a classe EQUIPE */
             inserirEquipe = connection.prepareStatement(
-                "INSERT INTO equipe" +
-                    "(objetivo_geral, id_intervencao)" +
-                    "VALUES (?, ?);",
+                "INSERT INTO equipe (objetivo_geral) VALUES (?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             inserirObjetivoEspecifico = connection.prepareStatement(
                 "INSERT INTO objetivos_especificos" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             inserirHabilidadeRequerida = connection.prepareStatement(
                 "INSERT INTO habilidades_requeridas" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-            
             inserirExperienciaRequerida = connection.prepareStatement(
                 "INSERT INTO experiencias_requeridas" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
-        } // fim do try.
+            
+            /* Definição de métodos para a relação EQUIPE-INTERVENTOR */
+            vincularEquipe = connection.prepareStatement(
+                "INSERT INTO aux_equipe (id_equipe, id_interventor) " + 
+                    "VALUES (?, ?)");
+            
+            /* Definição de métodos para a relação EQUIPE-INTERVENCAO */
+            vincularIntervencao = connection.prepareStatement(
+                "INSERT INTO aux_intervencao (id_equipe, id_intervencao) " +
+                    "VALUES (?, ?)");
+            
+        }
         catch(SQLException sqlException) {
             /* Se houver erro, exibe mensagem de erro */
             JOptionPane mPane = new JOptionPane();
@@ -1386,10 +1430,10 @@ public class Consulta {
         try {
             connection.close();
             conectado = false;
-        } // fim do try.
+        }
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
             System.exit(1);
-        } // fim do catch.
+        }
     }
 }

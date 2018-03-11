@@ -17,6 +17,7 @@ public class Interventor {
     private String dataAdmissao;
     private String cargo;
     private String formacao;
+    private String especializacao;
     private String remuneracao;
     private String estadoCivil;
     private String endereco;
@@ -43,8 +44,8 @@ public class Interventor {
     
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Interventor(String pNome, String pSexo, String pNasc, String pAdms,
-            String pCargo, String pForma, String pRem, String pEst, String pEnd,
-            String pCidade, String pEstado, String pContato) {
+            String pCargo, String pForma, String pEsp, String pRem, String pEst,
+            String pEnd, String pCidade, String pEstado, String pContato) {
         
         this.formatoSQLDate = new SimpleDateFormat("yyyy-MM-dd");
         
@@ -54,6 +55,7 @@ public class Interventor {
         setAdmissao(pAdms);
         setCargo(pCargo);
         setFormacao(pForma);
+        setEspecializacao(pEsp);
         setRemuneracao(pRem);
         setEstadoCivil(pEst);
         setEndereco(pEnd);
@@ -94,6 +96,9 @@ public class Interventor {
     public void setFormacao(String pForma) {
         this.formacao = pForma;
     }
+    public void setEspecializacao(String pEsp) {
+        this.especializacao = pEsp;
+    }
     public void setRemuneracao(String pRem) {
         if(!pRem.equals("0,00")) {
             String[] s = pRem.split(",");
@@ -120,7 +125,7 @@ public class Interventor {
     }
     public void setContato(String pContato) {
         this.contato = pContato;
-        if(!contato.equals("")) fCont = (int) Integer.parseInt(this.contato);
+        fCont = (int) Integer.parseInt(this.contato);
     }
     public void setIdBD(int id) {
         this.idBD = id;
@@ -144,6 +149,9 @@ public class Interventor {
     }
     public String getFormacao() {
         return formacao;
+    }
+    public String getEspecializacao() {
+        return especializacao;
     }
     public String getRemuneracao() {
         return remuneracao;
@@ -211,8 +219,8 @@ public class Interventor {
         
         int n;
         // Insere na entidade "unidade".
-        n = Consulta.insertInterventor(this.nome, this.sexo,
-                sqlDataNasc, sqlDataAdm, this.cargo, this.formacao,
+        n = Consulta.insertInterventor(this.nome, this.sexo, sqlDataNasc,
+                sqlDataAdm, this.cargo, this.formacao, this.especializacao,
                 this.fRem, this.estadoCivil, this.endereco, this.cidade,
                 this.estado, this.fCont);
     }
@@ -233,8 +241,8 @@ public class Interventor {
         
         int n;
         // Insere na entidade "interventor".
-        n = Consulta.updateInterventor(this.nome, this.sexo,
-                sqlDataNasc, sqlDataAdm, this.cargo, this.formacao,
+        n = Consulta.updateInterventor(this.nome, this.sexo, sqlDataNasc,
+                sqlDataAdm, this.cargo, this.formacao, this.especializacao,
                 this.fRem, this.estadoCivil, this.endereco, this.cidade,
                 this.estado, this.fCont);
     }

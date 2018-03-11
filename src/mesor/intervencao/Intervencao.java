@@ -45,9 +45,7 @@ public class Intervencao {
     /* Data de início e término da intervenção */
     private String inicio, termino;
             
-    /**
-     * Falha ocorrida no equipamento, aplicável apenas em intervenção corretiva.
-     */
+    //Falha ocorrida no equipamento, aplicável apenas em intervenção corretiva.
     private Demanda demanda;
     
     // Item de equipamento onde ocorreu a intervenção
@@ -164,7 +162,7 @@ public class Intervencao {
     /**
      * Insere informações no banco de dados.
      */
-    public void adicionaIntervencao() {
+    public void sqlInserir() {
         int n;
         
         /**
@@ -196,7 +194,7 @@ public class Intervencao {
     /**
      * Altera informações no banco de dados.
      */
-    public void alteraIntervencao() {
+    public void sqlAlterar() {
         int n;
         
         /**

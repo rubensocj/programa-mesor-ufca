@@ -15,11 +15,14 @@ import java.io.File;
 import java.io.IOException;
 
 import java.sql.SQLException;
+import mesor.intervencao.Equipe;
 
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelDemanda;
 import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.painel.taxonomia.PainelEquipe;
+import mesor.sql.Consulta;
 
 import mesor.sql.ModeloTabela;
 
@@ -27,6 +30,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
     
     public PainelEquipamento pnlUnidade = new PainelEquipamento();
     public PainelDemanda pnlDemanda = new PainelDemanda();
+    public PainelEquipe pnlEquipe = new PainelEquipe(300,100);
     
     public JPanel pnlTabelaDemanda;
     
@@ -166,14 +170,23 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
             demanda.setIdBD((int) pnlDemanda.tabDemanda.getValueAt(
                         pnlDemanda.tabDemanda.getSelectedRow(), 0));
         }
+        intervencao.setDemanda(demanda);
         
         System.out.println(intervencao.toString());
         
-        intervencao.setDemanda(demanda);
-
-        // CHAMA MÉTODO QUE INSERE NO BANCO DE DADOS
-        intervencao.adicionaIntervencao();
-    } // Fim do método confirmar()
+        intervencao.sqlInserir();
+        intervencao.setIdBD(Consulta.idIntervencao);
+        
+        // Se uma equipe for selecionada durante a adição da intervenção,
+        // adiciona-se uma linha a tabela aux_intervencao indicando esta relação
+        if(pnlEquipe.tabEquipe.getSelectedRowCount() != 0) {
+            Equipe equipe = new Equipe();
+            equipe.setIdBD((int) pnlEquipe.tabEquipe.getValueAt(
+                                    pnlEquipe.tabEquipe.getSelectedRow(), 0));
+            equipe.setIntervencao(intervencao);
+            equipe.sqlVincularIntervencao();
+        }
+    }
     
     // -------------------------------------------------------------------------
     // Métodos.
@@ -326,6 +339,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
         JPanel pnlIntervencao2 = new JPanel(new BorderLayout());
         pnlIntervencao2.add(pnlIntervencao1, BorderLayout.NORTH);
         pnlIntervencao2.add(painelDemanda(), BorderLayout.CENTER);
+        pnlIntervencao2.add(pnlEquipe.painelTabelas(), BorderLayout.SOUTH);
         
         // Painel Propriedades
         JPanel pnlIntervencao3 = new JPanel(new FlowLayout());
@@ -335,7 +349,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
     
     public JPanel painelDemanda() {
         /* Painel com a tabela das demandas */
-        pnlDemanda.tamanhoDaTabela(new Dimension(300,250));
+        pnlDemanda.tamanhoDaTabela(new Dimension(300,150));
         pnlDemanda.habilitarTabela(false);
         pnlTabelaDemanda = pnlDemanda.painelTabelas();
         
@@ -431,6 +445,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
         
         return pnlDemanda1;
     }
+    
     
     // -------------------------------------------------------------------------
     // Classes.

@@ -204,6 +204,19 @@ public class PainelInterventor {
     }
     
     /**
+     * 
+     * @param t
+     * @return Um JPanel com as tabelas.
+     */
+    public JPanel painelTabelas(boolean t) {
+        if(t == true) {
+            tabInterventor.setSelectionMode(
+                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        }
+        return pnlIntvFinal;
+    }
+    
+    /**
      * Atualiza parâmetros da tabela como renderizador das células e largura das
      * colunas.
      * 
@@ -220,21 +233,22 @@ public class PainelInterventor {
         tabInterventor.getColumnModel().getColumn(4).setPreferredWidth(100);
         tabInterventor.getColumnModel().getColumn(5).setPreferredWidth(200);
         tabInterventor.getColumnModel().getColumn(6).setPreferredWidth(200);
-        tabInterventor.getColumnModel().getColumn(7).setPreferredWidth(100);
-        tabInterventor.getColumnModel().getColumn(8).setPreferredWidth(150);
-        tabInterventor.getColumnModel().getColumn(9).setPreferredWidth(250);
+        tabInterventor.getColumnModel().getColumn(7).setPreferredWidth(200);
+        tabInterventor.getColumnModel().getColumn(8).setPreferredWidth(100);
+        tabInterventor.getColumnModel().getColumn(9).setPreferredWidth(150);
         tabInterventor.getColumnModel().getColumn(10).setPreferredWidth(250);
-        tabInterventor.getColumnModel().getColumn(11).setPreferredWidth(60);
-        tabInterventor.getColumnModel().getColumn(12).setPreferredWidth(100);
+        tabInterventor.getColumnModel().getColumn(11).setPreferredWidth(250);
+        tabInterventor.getColumnModel().getColumn(12).setPreferredWidth(60);
+        tabInterventor.getColumnModel().getColumn(13).setPreferredWidth(100);
 
         tabInterventor.getColumnModel().getColumn(0).setCellRenderer(render);
         tabInterventor.getColumnModel().getColumn(2).setCellRenderer(render);
         tabInterventor.getColumnModel().getColumn(3).setCellRenderer(render);
         tabInterventor.getColumnModel().getColumn(4).setCellRenderer(render);
-        tabInterventor.getColumnModel().getColumn(7).setCellRenderer(render);
         tabInterventor.getColumnModel().getColumn(8).setCellRenderer(render);
-        tabInterventor.getColumnModel().getColumn(11).setCellRenderer(render);
+        tabInterventor.getColumnModel().getColumn(9).setCellRenderer(render);
         tabInterventor.getColumnModel().getColumn(12).setCellRenderer(render);
+        tabInterventor.getColumnModel().getColumn(13).setCellRenderer(render);
     }
     
     /**
@@ -300,7 +314,7 @@ public class PainelInterventor {
      * @param btn
      * @return 
      */
-    private JPanel painelBusca(JLabel lbl, JTextField tfd, JButton btn) {
+    public static JPanel painelBusca(JLabel lbl, JTextField tfd, JButton btn) {
         JPanel pnlBusca1 = new JPanel(new FlowLayout());
         pnlBusca1.add(tfd);
         pnlBusca1.add(btn);

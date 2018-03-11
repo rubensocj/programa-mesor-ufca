@@ -17,6 +17,11 @@ import mesor.intervencao.Equipe;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.JanelaAdicionarAlterar;
 import mesor.menu.painel.taxonomia.PainelInterventor;
@@ -33,12 +38,12 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
             pnlExperienciasRequeridas;
     
     public JLabel lblNome, lblSexo, lblNascimento, lblAdmissao, lblCargo,
-            lblFormacao, lblRemuneracao, lblEstadoCivil, lblEndereco, lblCidade,
-            lblEstado, lblContato;
+            lblFormacao, lblEsp, lblRemuneracao, lblEstadoCivil, lblEndereco,
+            lblCidade, lblEstado, lblContato;
     
     public JTextField tfdObjetivoGeral, tfdObjEspecificos, tfdHabRequeridas,
             tfdExpRequeridas, tfdNome, tfdSexo, tfdCargo, tfdFormacao,
-            tfdEstadoCivil, tfdEndereco, tfdCidade, tfdContato;
+            tfdEsp, tfdEstadoCivil, tfdEndereco, tfdCidade, tfdContato;
     
     public JFormattedTextField tfdNascimento, tfdAdmissao, tfdRemuneracao;
     
@@ -166,6 +171,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         tfdAdmissao.setText("");
         tfdCargo.setText("");
         tfdFormacao.setText("");
+        tfdEsp.setText("");
         tfdRemuneracao.setText("0,00");
         tfdEstadoCivil.setText("");
         tfdEndereco.setText("");
@@ -194,20 +200,22 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                         String.valueOf(tabEquipe.getValueAt(it, 4)));
             interventor.setFormacao(
                         String.valueOf(tabEquipe.getValueAt(it, 5)));
-            interventor.setRemuneracao(
+            interventor.setEspecializacao(
                         String.valueOf(tabEquipe.getValueAt(it, 6)));
-            interventor.setEstadoCivil(
+            interventor.setRemuneracao(
                         String.valueOf(tabEquipe.getValueAt(it, 7)));
-            interventor.setEndereco(
+            interventor.setEstadoCivil(
                         String.valueOf(tabEquipe.getValueAt(it, 8)));
-            interventor.setCidade(
+            interventor.setEndereco(
                         String.valueOf(tabEquipe.getValueAt(it, 9)));
+            interventor.setCidade(
+                        String.valueOf(tabEquipe.getValueAt(it, 10)));
             
             // Adiciona o interventor ao Vetor de interventores.
             equipe.setInterventor(interventor);
         }
         
-        equipe.adicionaEquipe();
+        equipe.sqlInserir();
     }
     
     // -------------------------------------------------------------------------
@@ -243,6 +251,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         lblAdmissao = new JLabel("Data de admissão: ");
         lblCargo = new JLabel("Cargo: ");
         lblFormacao = new JLabel("Formação: ");
+        lblEsp = new JLabel("Especializações: ");
         lblRemuneracao = new JLabel("Remuneração: ");
         lblEstadoCivil = new JLabel("Estado civil: ");
         lblEndereco = new JLabel("Endereço: ");
@@ -253,7 +262,16 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         tfdNome = new JTextField(20);   tfdEstadoCivil = new JTextField(20);
         tfdSexo = new JTextField(20);   tfdEndereco = new JTextField(20);
         tfdCargo = new JTextField(20);  tfdFormacao = new JTextField(20);
-        tfdCidade = new JTextField(20); tfdContato = new JTextField(20);
+        tfdEsp = new JTextField(20);    tfdCidade = new JTextField(20);
+        
+//        MaskFormatter mask = null;
+//        try {
+//            mask = new MaskFormatter("###########");
+//        } catch (ParseException ex) {
+//            ex.printStackTrace();
+//        }
+//        mask.setValidCharacters("0123456789");
+        tfdContato = new JTextField(20);
         
         // Define o fomato numérico do JFormattedTextField tfdRemuneração.
         DecimalFormat formatoDecimal = new DecimalFormat();
@@ -353,6 +371,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         pnlEqp1.add(lblAdmissao);
         pnlEqp1.add(lblCargo);
         pnlEqp1.add(lblFormacao);
+        pnlEqp1.add(lblEsp);
         pnlEqp1.add(lblRemuneracao);
         pnlEqp1.add(lblEstadoCivil);
         pnlEqp1.add(lblEndereco);
@@ -367,6 +386,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
         pnlEqp2.add(tfdAdmissao);
         pnlEqp2.add(tfdCargo);
         pnlEqp2.add(tfdFormacao);
+        pnlEqp2.add(tfdEsp);
         pnlEqp2.add(tfdRemuneracao);
         pnlEqp2.add(cbxECivil);
         pnlEqp2.add(tfdEndereco);
@@ -520,18 +540,18 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
             if(tfdNome.getText().isEmpty() || 
                         tfdNome.getText().startsWith(" ")) {
 
-                mensagemErroInterventor = "Informe um nome válido.";
-
-                /* Se houver erro, exibe mensagem de erro */
-                JOptionPane mPane = new JOptionPane();
-                mPane.setMessage(mensagemErroInterventor);
-                mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
-                mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-
-                JDialog mDialog = mPane.createDialog(mPane, "Aviso");
-                mDialog.pack();
-                mDialog.setVisible(true);
-                mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                DialogoAviso.show("Informe um nome válido");
+                
+            }
+            
+            String regex1 = "[a-zA-Z]";
+            String regex2 = "\\s";
+            Pattern p1 = Pattern.compile(regex1);
+            Pattern p2 = Pattern.compile(regex2);
+            Matcher m1 = p1.matcher(tfdContato.getText());
+            Matcher m2 = p2.matcher(tfdContato.getText());
+            if(m1.find() || m2.find()) {
+                DialogoAviso.show("Informe um contato válido");
             } else {
                 // Se não houver erro, executa a operação.                    
                 interventor = new Interventor();
@@ -541,6 +561,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                 interventor.setAdmissao(tfdAdmissao.getText());
                 interventor.setCargo(tfdCargo.getText());
                 interventor.setFormacao(tfdFormacao.getText());
+                interventor.setEspecializacao(tfdEsp.getText());
                 interventor.setRemuneracao(tfdRemuneracao.getText());
                 interventor.setEstadoCivil(cbxECivil.getSelectedItem().toString());
                 interventor.setEndereco(tfdEndereco.getText());
@@ -554,7 +575,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                  * Object para a tabela adicioná-los a tabela da equipe.
                  */
                 try {
-                    interventor.sqlInserir();
+//                    interventor.sqlInserir();
                     pnlIntv.reiniciarTabela();
                     pnlIntv.atualizarAparenciaDaTabela();
                 } catch (SQLException e) {

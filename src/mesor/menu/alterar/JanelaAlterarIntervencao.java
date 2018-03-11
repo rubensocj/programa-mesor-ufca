@@ -269,7 +269,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
 
             intervencao.setDemanda(demanda);
             
-            intervencao.alteraIntervencao();
+            intervencao.sqlAlterar();
              
             limparTexto();
             
