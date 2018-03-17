@@ -17,10 +17,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import mesor.equipamento.Sistema;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
+import mesor.sql.ModeloLista;
 
 /**
  * JanelaAdicionarAlterar.java
@@ -57,8 +60,9 @@ public abstract class JanelaAdicionarAlterar {
         "C:\\Users\\Rubens Jr\\Documents\\NetBeansProjects\\Programa";
     
     public JComboBox cbxSistema;
-    private Lista lista;
+    private JList lista;
     private JPanel pnlSistema;
+    private ModeloLista mLista;
     
     /**
      * Construtores.
@@ -120,11 +124,13 @@ public abstract class JanelaAdicionarAlterar {
      */
     public final JPanel painelSistema() throws SQLException {
         // Inicializa a lista com a consulta SQL e define o modelo da JComboBox
+        mLista = null;
         try {
-            lista = new Lista("SELECT nome FROM sistema");
+            mLista = new ModeloLista("SELECT id, nome FROM sistema");
         } catch (SQLException ex) {ex.printStackTrace();}
-        cbxSistema = new JComboBox(lista.toVector());
+        cbxSistema = new JComboBox(mLista.toArray());
         cbxSistema.setPreferredSize(new Dimension(275, 20));
+        cbxSistema.setSelectedIndex(0);
         
         JLabel lblSistema = new JLabel("Sistema: ");
         
@@ -221,6 +227,8 @@ public abstract class JanelaAdicionarAlterar {
     public class ItemEventSistema implements ItemListener {
         
         private final PainelEquipamento pnlUnidade;
+        private int index, idSistema;
+        private Sistema s;
         
         public ItemEventSistema(PainelEquipamento pnlUnidade) {
             this.pnlUnidade = pnlUnidade;
@@ -230,8 +238,12 @@ public abstract class JanelaAdicionarAlterar {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 try {
-                    this.pnlUnidade.buscarUnidade(cbxSistema.getSelectedIndex());
+                    index = cbxSistema.getSelectedIndex();
+                    idSistema = mLista.arraySistema[index].getIdBD();
+                    s = new Sistema(idSistema);
+                    this.pnlUnidade.buscarUnidade(s.getIdBD());
                 } catch(SQLException ex) { ex.printStackTrace();}
+                System.out.println(s.getIdBD());
             }
         }        
     }

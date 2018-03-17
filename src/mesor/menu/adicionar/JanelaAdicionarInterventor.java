@@ -551,7 +551,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
             Matcher m1 = p1.matcher(tfdContato.getText());
             Matcher m2 = p2.matcher(tfdContato.getText());
             if(m1.find() || m2.find()) {
-                DialogoAviso.show("Informe um contato válido");
+                DialogoAviso.show("Informe um contato válido. Utilize apenas números.");
             } else {
                 // Se não houver erro, executa a operação.                    
                 interventor = new Interventor();
@@ -575,7 +575,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
                  * Object para a tabela adicioná-los a tabela da equipe.
                  */
                 try {
-//                    interventor.sqlInserir();
+                    interventor.sqlInserir();
                     pnlIntv.reiniciarTabela();
                     pnlIntv.atualizarAparenciaDaTabela();
                 } catch (SQLException e) {

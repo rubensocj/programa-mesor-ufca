@@ -24,6 +24,11 @@ public class Sistema {
      * Construtores.
      */
     public Sistema() {}
+    public Sistema(int id) { setIdBD(id);}
+    public Sistema(int id, String nome) {
+        setIdBD(id);
+        setNome(nome);
+    }
     public Sistema(String nome, String descricao) {
         setDescricao(descricao);
         setNome(nome);
@@ -48,6 +53,9 @@ public class Sistema {
     }
     
     /* Métodos getters */    
+    public String getNome() {
+        return nome;
+    }
     public String getDescricao() {
         return descricao;
     }
