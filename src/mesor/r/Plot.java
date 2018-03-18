@@ -61,7 +61,7 @@ public class Plot extends JPanel {
      */
     public Plot() {
         try {
-            img = ImageIO.read(new File(mesor.menu.JanelaAdicionarAlterar.LOCAL + "wgrp_plot.png"));
+            img = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "wgrp_plot.png"));
         } catch (IOException e) {e.printStackTrace();}
         
 //        btn.addActionListener(new ActionListener() {
@@ -123,7 +123,7 @@ public class Plot extends JPanel {
         try {
             // Cria a imagem a partir do arquivo
             // Pega o aspect ratio da imagem importada
-            BufferedImage p = ImageIO.read(new File(mesor.menu.JanelaAdicionarAlterar.LOCAL + "\\wgrp_plot.png"));
+            BufferedImage p = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "\\wgrp_plot.png"));
             h1 = p.getHeight(null);
             w1 = p.getWidth(null);
             ratio = h1/w1;

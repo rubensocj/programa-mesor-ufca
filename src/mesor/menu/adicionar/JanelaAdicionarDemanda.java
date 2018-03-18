@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * JanelaAdicionarDemanda.Java
@@ -24,7 +24,7 @@ import mesor.menu.JanelaAdicionarAlterar;
  * @version 1.0 8/2/2017
  * @author Rubens Jr
  */
-public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
+public class JanelaAdicionarDemanda extends Janela {
     
     public JLabel lblData, lblHora, lblImpacto, lblCondicaoOperacao;
     
@@ -35,6 +35,8 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
     public HoraFormatada horaFormatada;
     
     public PainelEquipamento pnlUnidade = new PainelEquipamento();
+    
+    public ItemEventSistema eventSistema = new ItemEventSistema(pnlUnidade);
     
     public JPanel pnlHoraFormatada;
         
@@ -111,7 +113,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
-            cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
+            cbxSistema.addItemListener(eventSistema);
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelDemanda(), BorderLayout.EAST);
@@ -433,7 +435,7 @@ public class JanelaAdicionarDemanda extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class Salvar extends JanelaAdicionarAlterar.ActionSalvar {
+    private class Salvar extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";

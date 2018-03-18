@@ -21,7 +21,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * MenuJTree.java
@@ -84,7 +84,7 @@ public class MenuJTree extends JPanel implements TreeSelectionListener {
         // -------------------------------------------------------------------------
         private void configuraBotao() {
             this.btnFechar = new JButton();
-            this.btnFechar.setIcon(new ImageIcon(JanelaAdicionarAlterar.LOCAL + "\\icone\\fechar_2.png"));
+            this.btnFechar.setIcon(new ImageIcon(Janela.LOCAL + "\\icone\\fechar_2.png"));
             this.btnFechar.setOpaque(false);
             this.btnFechar.setBackground(new Color(178, 178, 178));
             this.btnFechar.setBorder(BorderFactory.createEmptyBorder());

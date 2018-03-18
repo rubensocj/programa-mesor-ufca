@@ -22,7 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * PainelEquipe.java
@@ -228,7 +228,7 @@ public class PainelEquipe {
         
         // Inicializa JButtons
         btnBuscaEqp = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+            Janela.LOCAL + "\\icone\\busca.png"));
         
         // Define o tamanho dos botões
         btnBuscaEqp.setPreferredSize(new Dimension(20,20));

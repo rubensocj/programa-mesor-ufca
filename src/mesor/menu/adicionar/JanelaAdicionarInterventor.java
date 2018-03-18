@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mesor.menu.DialogoAviso;
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 import mesor.menu.painel.taxonomia.PainelInterventor;
 
 /**
@@ -32,7 +32,7 @@ import mesor.menu.painel.taxonomia.PainelInterventor;
  * @versio 1.0 16/02/2017
  * @author Rubens Jr
  */
-public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
+public class JanelaAdicionarInterventor extends Janela {
     
     public JPanel pnlObjetivosEspecificos, pnlHabilidadesRequeridas,
             pnlExperienciasRequeridas;
@@ -531,7 +531,7 @@ public class JanelaAdicionarInterventor extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class AddInterventor extends JanelaAdicionarAlterar.ActionSalvar {
+    private class AddInterventor extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent event) {
             /* Lida com erros de dados do usuário */

@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 import java.io.File;
 import java.io.IOException;
@@ -99,8 +99,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
         btnEscolher = new JButton();
         btnEscolher.addActionListener(new Escolher());
         btnEscolher.setPreferredSize(new Dimension(35, 25));
-        btnEscolher.setIcon(
-                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_direita.png"));
+        btnEscolher.setIcon(Janela.criarIcon("/res/icone/seta_dupla_direita.png"));
         
         /**
          * Botão "Voltar" limpa o texto dos JTextFields e cancela a alteração.
@@ -108,8 +107,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
         btnVoltar = new JButton();
         btnVoltar.addActionListener(new Voltar());
         btnVoltar.setPreferredSize(new Dimension(35, 25));
-        btnVoltar.setIcon(
-                    new ImageIcon(LOCAL + "\\icone\\seta_dupla_esquerda.png"));
+        btnVoltar.setIcon(Janela.criarIcon("/res/icone/seta_dupla_esquerda.png"));
         
         /* Botão "Salvar alterações" executa a operação */
         btnSalvarAlteracao = new JButton("Salvar alterações");
@@ -173,7 +171,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionEscolher
      */
-    private class Escolher extends JanelaAdicionarAlterar.ActionEscolher {
+    private class Escolher extends Janela.ActionEscolher {
         @Override
         public void actionPerformed(ActionEvent event) {
             if(pnlSistema.tabSistema.getSelectedRowCount() == 1) {
@@ -217,7 +215,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class Salvar extends JanelaAdicionarAlterar.ActionSalvar {
+    private class Salvar extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";
@@ -247,7 +245,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionVoltar
      */
-    private class Voltar extends JanelaAdicionarAlterar.ActionVoltar {
+    private class Voltar extends Janela.ActionVoltar {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(pnlSistema.tabSistema.getSelectedRowCount() == 1) {

@@ -14,11 +14,15 @@ import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
 
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mesor.menu.principal.PainelPrincipal;
+import mesor.sql.ModeloLista;
 
 /**
  * JanelaAdicionarEquipamento.Java
@@ -26,7 +30,7 @@ import java.sql.SQLException;
  * @version 1.0 31/01/2017
  * @author Rubens Jr
  */
-public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
+public class JanelaAdicionarEquipamento extends Janela {
     
     public JPanel pnlUniGeral, pnlUni1, pnlUniOp, pnlUni2, pnlSubInfo, pnl1,
         pnl2, pnlCompInfo, pnl3, pnl4, pnlParte, pnl5, pnl6, pnlFinal,
@@ -49,6 +53,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
     
     public Unidade unidade = new Unidade();    
     private final String eventSelected = "ActionEvent";
+    private final ItemEventSistema eventSistema = new ItemEventSistema(null);
     
     /**
      * Construtor.
@@ -120,6 +125,7 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         pnlPrincipal = new JPanel(new BorderLayout());
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
+            cbxSistema.addItemListener(eventSistema);
         } catch (SQLException ex) {ex.printStackTrace();}
         pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
         pnlPrincipal.add(painelSubunidades(), BorderLayout.CENTER);
@@ -157,9 +163,14 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
         unidade.setDataAquisicao(dataAquisicao);
         unidade.setModoOperacional((String) cbxModo.getSelectedItem());
         unidade.setDataInicioOperacao(dataInicio);
-        unidade.setSistema(cbxSistema.getSelectedIndex());
+        unidade.setSistema(eventSistema.getSistema().getIdBD());
 
         unidade.sqlInserir();
+        try {
+            PainelPrincipal.treeSistema.atualizaNoSistema();
+        } catch (SQLException ex) {
+            Logger.getLogger(JanelaAdicionarEquipamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // -------------------------------------------------------------------------
@@ -430,13 +441,11 @@ public class JanelaAdicionarEquipamento extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class Salvar extends JanelaAdicionarAlterar.ActionSalvar {
+    private class Salvar extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";
-            if(cbxSistema.getSelectedIndex() == 0) {
-                mensagemErro = "Informe um sistema.";                
-            } else if(tfdUniClasse.getText().isEmpty()) {
+            if(tfdUniClasse.getText().isEmpty()) {
                 mensagemErro = "Informe uma classe de equipamento válida.";                    
             } else if(tfdUniTipo.getText().isEmpty()) {
                 mensagemErro = "Informe um tipo de equipamento válido.";

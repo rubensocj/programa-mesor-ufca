@@ -19,7 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import static mesor.menu.JanelaAdicionarAlterar.LOCAL;
+import static mesor.menu.Janela.LOCAL;
 import mesor.r.CamadaR;
 
 /**

@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import javax.swing.border.BevelBorder;
  * @version 1.0 31/01/2017
  * @author Rubens Jr
  */
-public class JanelaAdicionarSistema extends JanelaAdicionarAlterar {
+public class JanelaAdicionarSistema extends Janela {
     
     public JPanel pnSisGeral;    
     public JLabel lblSisNome, lblSisDescricao;
@@ -155,7 +155,7 @@ public class JanelaAdicionarSistema extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class Salvar extends JanelaAdicionarAlterar.ActionSalvar {
+    private class Salvar extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";

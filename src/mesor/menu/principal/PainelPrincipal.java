@@ -43,7 +43,7 @@ public class PainelPrincipal extends JPanel {
     private static JScrollPane paneOeste, paneNordeste, paneSudeste;
     private static JSplitPane sptHorizontal, sptVertical;
     
-    private static ArvoreMenu treeSistema;
+    public static ArvoreMenu treeSistema;
     public JButton btnTeste = new JButton("Adicionar aba");
     
     /**
@@ -63,7 +63,7 @@ public class PainelPrincipal extends JPanel {
         pnlNordeste.add(pnlAbaNordeste);
         
         pnlOeste = new JPanel(new BorderLayout());
-        pnlOeste.add(treeSistema.getTree(), BorderLayout.CENTER);
+        pnlOeste.add(treeSistema.getPaneTree(), BorderLayout.CENTER);
 
         pnlSudeste = new JPanel(new BorderLayout());
         pnlSudeste.add(pnlAbaSudeste);
@@ -111,6 +111,9 @@ public class PainelPrincipal extends JPanel {
     // Métodos.
     // -------------------------------------------------------------------------
 
+    public static void atualizarArvore() {
+    }
+    
     private static class ActionAdicionarAba implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

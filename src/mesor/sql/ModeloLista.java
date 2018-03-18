@@ -40,8 +40,11 @@ public class ModeloLista extends DefaultListModel {
         
         setQuery(consulta);
         
-        arrayRes = new String[linhas];
-        arraySistema = new Sistema[linhas];
+        arrayRes = new String[linhas+1];
+        arraySistema = new Sistema[linhas+1];
+        
+        arrayRes[0] = "Selecionar...";
+        arraySistema[0] = null;
         
         try {
             resultSet.first();
@@ -49,10 +52,10 @@ public class ModeloLista extends DefaultListModel {
             int k = 1;
             while(k <= linhas) {
 
-                arraySistema[k-1] = new Sistema(resultSet.getInt(1), 
+                arraySistema[k] = new Sistema(resultSet.getInt(1), 
                                             resultSet.getString(2));
                 
-                arrayRes[k-1] = arraySistema[k-1].getNome();
+                arrayRes[k] = arraySistema[k].getNome();
                 resultSet.next();
                 k++;
             }
@@ -131,15 +134,13 @@ public class ModeloLista extends DefaultListModel {
     
     @Override
     public String[] toArray() {
-        arrayRes = new String[linhas];
-        
         try {
             resultSet.first();
             
             int k = 1;
             while(k <= linhas) {
 
-                arrayRes[k-1] = resultSet.getString(2);
+                arrayRes[k] = resultSet.getString(2);
                 resultSet.next();
                 k++;
             }

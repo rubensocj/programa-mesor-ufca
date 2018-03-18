@@ -6,16 +6,11 @@ package mesor.menu.principal.sistema;
  * and open the template in the editor.
  */
 
-import mesor.equipamento.Unidade;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -25,8 +20,6 @@ import mesor.menu.HoraFormatada;
 import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.taxonomia.PainelDemanda;
 import mesor.menu.painel.taxonomia.PainelIntervencao;
-import mesor.menu.principal.MenuPrincipal;
-import mesor.menu.principal.PainelPrincipal;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaNordeste;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaSudeste;
 
@@ -40,32 +33,37 @@ import mesor.sql.Lista;
  */
 public class ArvoreMenu {
     
-    static JTree tree;
-    static DefaultMutableTreeNode noSistema;
-    static DefaultMutableTreeNode[] arrayNOSistema;
-    static DefaultMutableTreeNode[][] arrayNodeUnidade;
+    public JTree tree = new JTree();
+    public DefaultMutableTreeNode noSistema;
+    public DefaultMutableTreeNode[] arrayNOSistema;
+    public DefaultMutableTreeNode[][] arrayNodeUnidade;
     
-    static JScrollPane scrPaneTree;
+    public JScrollPane scrPaneTree;
     
-    static JLabel jlab;
-    static mesor.sql.Lista lsSistemas;
-    static mesor.sql.Lista[] lsUni;
-    static mesor.sql.Lista[] lsUniCod;
+    public JLabel jlab;
+    public mesor.sql.Lista lsSistemas;
+    public mesor.sql.Lista[] lsUni;
+    public mesor.sql.Lista[] lsUniCod;
     
-    static mesor.sql.Lista lsSub;
-    static mesor.sql.Lista lsSubCod;
-    static mesor.sql.Lista lsComp;
-    static mesor.sql.Lista lsCompCod;
-    static mesor.sql.Lista lsPte;
-    static mesor.sql.Lista lsPteCod;
+    public mesor.sql.Lista lsSub;
+    public mesor.sql.Lista lsSubCod;
+    public mesor.sql.Lista lsComp;
+    public mesor.sql.Lista lsCompCod;
+    public mesor.sql.Lista lsPte;
+    public mesor.sql.Lista lsPteCod;
     
-    static int s, u, sb;
+    public int s, u, sb;
     
-    static int NIVEL_SELECAO_NO = 0;
-    static String CODIGO_SELECAO_NO = "";
-    static String NOME_SELECAO_NO = "";
+    public int NIVEL_SELECAO_NO = 0;
+    public String CODIGO_SELECAO_NO = "";
+    public String NOME_SELECAO_NO = "";
+    private DefaultTreeModel m;
     
     public ArvoreMenu() {
+        inicializaNos();
+    }
+    
+    public void inicializaNos() {
         try {
             // Faz consulta SQL e cria uma lista com os dados de uma coluna
             lsSistemas = new Lista("SELECT nome FROM sistema");
@@ -93,6 +91,23 @@ public class ArvoreMenu {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        
+        // Cria nó sistema
+        noSistema = new DefaultMutableTreeNode("Sistemas");
+        
+        // Adiciona os nós dos sistemas à árvore
+        int i = 0;
+        while(i < s) {
+            noSistema.add(arrayNOSistema[i]);
+            i++;
+        }
+        
+        // Cria a tree
+        tree = new JTree(noSistema);
+    }
+    
+    public void atualizaNoSistema() throws SQLException {
+        criarNoDeConsultaSQL();
         
         // Cria nó sistema
         noSistema = new DefaultMutableTreeNode("Sistemas");
@@ -213,16 +228,14 @@ public class ArvoreMenu {
             i++;
         }
     }
-
+    
     /**
      * 
      * @return 
      */
-    public JScrollPane getTree() {
-        // Cria a tree
-        tree = new JTree(noSistema);
+    public JScrollPane getPaneTree() {
         tree.addMouseListener(new cliqueDireito());
-        
+
         // Define o tipo de seleção da tree: seleção única
         tree.getSelectionModel().setSelectionMode(
                     TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -269,9 +282,9 @@ public class ArvoreMenu {
     /**
      * 
      */
-    public static class PopupUnidades extends JPopupMenu {
+    public class PopupUnidades extends JPopupMenu {
     
-        static JMenuItem jmiPrevisao, jmiDemandas, jmiIntervencao,
+        private JMenuItem jmiPrevisao, jmiDemandas, jmiIntervencao,
                         jmiEquipes;
         
         public PopupUnidades() {
@@ -303,7 +316,7 @@ public class ArvoreMenu {
     /**
      * 
      */
-    private static class cliqueDireito extends MouseAdapter {
+    private class cliqueDireito extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             // Verifica se o clique veio do botão direito do mouse
@@ -365,7 +378,7 @@ public class ArvoreMenu {
     /**
      * 
      */
-    private static class ActionPrevisao implements ActionListener {
+    private class ActionPrevisao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             
@@ -383,7 +396,7 @@ public class ArvoreMenu {
         }
     }
     
-    private static class ActionTabelaDemanda implements ActionListener {
+    private class ActionTabelaDemanda implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Cria um painel demanda do item selecionado na tree
@@ -397,7 +410,7 @@ public class ArvoreMenu {
         }
     }
     
-    private static class ActionTabelaIntervencao implements ActionListener {
+    private class ActionTabelaIntervencao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Cria um painel intervenção do item selecionado na tree

@@ -22,7 +22,7 @@ import javax.swing.table.TableRowSorter;
 
 import mesor.sql.ModeloTabela;
 import mesor.menu.DivisorSplitPane;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * PainelEquipamento.java
@@ -745,14 +745,10 @@ public class PainelEquipamento {
         tfdBuscaPte.setColumns(10);
         
         // Inicializa JButtons
-        btnBuscaUni = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
-        btnBuscaSub = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
-        btnBuscaCmp = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
-        btnBuscaPte = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        btnBuscaUni = new JButton(Janela.criarIcon("/res/icone/busca.png"));
+        btnBuscaSub = new JButton(Janela.criarIcon("/res/icone/busca.png"));
+        btnBuscaCmp = new JButton(Janela.criarIcon("/res/icone/busca.png"));
+        btnBuscaPte = new JButton(Janela.criarIcon("/res/icone/busca.png"));
         
         // Define o tamanho dos botões
         btnBuscaUni.setPreferredSize(new Dimension(20,20));

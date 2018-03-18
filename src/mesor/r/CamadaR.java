@@ -325,7 +325,7 @@ public class CamadaR {
      */
     private static void teste() {
         Charset charset = Charset.forName("utf-8");
-        Path file = Paths.get(mesor.menu.JanelaAdicionarAlterar.LOCAL + 
+        Path file = Paths.get(mesor.menu.Janela.LOCAL + 
                     "\\r\\MK_WGRP.R");
                 
         try (BufferedReader reader = Files.newBufferedReader(file, charset)) {

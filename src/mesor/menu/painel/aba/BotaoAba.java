@@ -47,7 +47,7 @@ public class BotaoAba extends JPanel {
         
         // Cria e configura o botão
         JButton btnFechar = new JButton();        
-        btnFechar.setIcon(new ImageIcon(mesor.menu.JanelaAdicionarAlterar.LOCAL + 
+        btnFechar.setIcon(new ImageIcon(mesor.menu.Janela.LOCAL + 
                                 "\\icone\\fechar_2.png"));
         btnFechar.setOpaque(false);
         btnFechar.setBackground(new Color(178,178,178));

@@ -53,7 +53,7 @@ public class TabelaParametrosEICs extends JTable {
         try {
             // Path gerado concatenando o CamadaR.R_PATH com o nome do arquivo
 //            setPath(CamadaR.R_PATH.concat("\\parametersAndICs_table.txt"));
-            setPath(mesor.menu.JanelaAdicionarAlterar.LOCAL + ("\\parametersAndICs_table.txt"));
+            setPath(mesor.menu.Janela.LOCAL + ("\\parametersAndICs_table.txt"));
             
             setModel(criarModeloTabela());
             

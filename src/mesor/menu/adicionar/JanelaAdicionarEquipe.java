@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import mesor.menu.DialogoAviso;
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 import mesor.menu.painel.taxonomia.PainelInterventor;
 
 /**
@@ -29,7 +29,7 @@ import mesor.menu.painel.taxonomia.PainelInterventor;
  * @versio 1.0 16/02/2017
  * @author Rubens Jr
  */
-public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
+public class JanelaAdicionarEquipe extends Janela {
     
     public JPanel pnlObjetivosEspecificos, pnlHabilidadesRequeridas,
             pnlExperienciasRequeridas;
@@ -593,7 +593,7 @@ public class JanelaAdicionarEquipe extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class AddInterventor extends JanelaAdicionarAlterar.ActionSalvar {
+    private class AddInterventor extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent event) {
             /* Lida com erros de dados do usuário */

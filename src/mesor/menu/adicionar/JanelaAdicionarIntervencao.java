@@ -20,13 +20,13 @@ import mesor.intervencao.Equipe;
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelDemanda;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 import mesor.menu.painel.taxonomia.PainelEquipe;
 import mesor.sql.Consulta;
 
 import mesor.sql.ModeloTabela;
 
-public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
+public class JanelaAdicionarIntervencao extends Janela {
     
     public PainelEquipamento pnlUnidade = new PainelEquipamento();
     public PainelDemanda pnlDemanda = new PainelDemanda();
@@ -532,7 +532,7 @@ public class JanelaAdicionarIntervencao extends JanelaAdicionarAlterar {
      * {@inheritDoc}
      * @see menu.JanelaAdicionarAlterar.ActionSalvar
      */
-    private class Salvar extends JanelaAdicionarAlterar.ActionSalvar {
+    private class Salvar extends Janela.ActionSalvar {
         @Override
         public void actionPerformed(ActionEvent e) {
             String mensagemErro = "";

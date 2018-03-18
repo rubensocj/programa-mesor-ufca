@@ -16,7 +16,7 @@ import javax.swing.table.TableRowSorter;
 import mesor.intervencao.Interventor;
 
 import mesor.sql.ModeloTabela;
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * PainelEquipamento.java
@@ -280,8 +280,7 @@ public class PainelInterventor {
         tfdBuscaIntv.setColumns(10);
         
         // Inicializa JButtons
-        btnBuscaIntv = new JButton(new ImageIcon(
-            JanelaAdicionarAlterar.LOCAL + "\\icone\\busca.png"));
+        btnBuscaIntv = new JButton(Janela.criarIcon("/res/icone/busca.png"));
         
         // Define o tamanho dos botões
         btnBuscaIntv.setPreferredSize(new Dimension(20,20));

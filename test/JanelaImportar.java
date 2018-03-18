@@ -1,5 +1,5 @@
 
-import mesor.menu.JanelaAdicionarAlterar;
+import mesor.menu.Janela;
 
 /**
  * JanelaImportar.java
@@ -7,7 +7,7 @@ import mesor.menu.JanelaAdicionarAlterar;
  * @version 1.0 28/02/2017
  * @author Rubens Jr
  */
-public class JanelaImportar extends JanelaAdicionarAlterar {
+public class JanelaImportar extends Janela {
 
     /**
      * Construtores.

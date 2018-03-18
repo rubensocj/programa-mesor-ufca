@@ -5,6 +5,7 @@ import mesor.sql.Lista;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,12 +28,12 @@ import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.sql.ModeloLista;
 
 /**
- * JanelaAdicionarAlterar.java
+ * Janela.java
  *
  * @version 1.0 16/02/2017
  * @author Rubens Jr
  */
-public abstract class JanelaAdicionarAlterar {
+public abstract class Janela {
 
     public JTabbedPane tbdAbas;
     public JPanel pnlPrincipal;
@@ -59,15 +61,15 @@ public abstract class JanelaAdicionarAlterar {
     public static final String LOCAL = // Local no pc com arquivos do programa.
         "C:\\Users\\Rubens Jr\\Documents\\NetBeansProjects\\Programa";
     
-    public JComboBox cbxSistema;
+    public static JComboBox cbxSistema;
     private JList lista;
-    private JPanel pnlSistema;
-    private ModeloLista mLista;
+    private static JPanel pnlSistema;
+    private static ModeloLista mLista;
     
     /**
      * Construtores.
      */
-    public JanelaAdicionarAlterar() {}
+    public Janela() {}
     
     // -------------------------------------------------------------------------
     // Métodos.
@@ -163,7 +165,7 @@ public abstract class JanelaAdicionarAlterar {
         
         montarPainelPrincipal();
         
-        cbxSistema.setSelectedIndex(indiceSistema);
+        cbxSistema.setSelectedIndex(0);
         
         pane = new JOptionPane();
         pane.setMessage(pnlPrincipal);
@@ -224,15 +226,21 @@ public abstract class JanelaAdicionarAlterar {
      * selecionado, então, a tabela mostrará todas as unidades do banco,
      * independente do sistema.
      */
-    public class ItemEventSistema implements ItemListener {
+    public static class ItemEventSistema implements ItemListener {
         
-        private final PainelEquipamento pnlUnidade;
-        private int index, idSistema;
-        private Sistema s;
+        private static PainelEquipamento pnlUnidade;
+        private static int index, idSistema;
+        public static Sistema s = new Sistema();
         
-        public ItemEventSistema(PainelEquipamento pnlUnidade) {
-            this.pnlUnidade = pnlUnidade;
+        public ItemEventSistema(PainelEquipamento pnl) {
+            pnlUnidade = pnl;
         }
+        
+        /**
+         *
+         * @return
+         */
+        public Sistema getSistema() { return s; }
         
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -240,12 +248,20 @@ public abstract class JanelaAdicionarAlterar {
                 try {
                     index = cbxSistema.getSelectedIndex();
                     idSistema = mLista.arraySistema[index].getIdBD();
-                    s = new Sistema(idSistema);
-                    this.pnlUnidade.buscarUnidade(s.getIdBD());
+                    s.setIdBD(idSistema);
+                    if(pnlUnidade != null) {
+                        pnlUnidade.buscarUnidade(s.getIdBD());
+                    }
+                    
+                    System.out.println(s.getIdBD());
                 } catch(SQLException ex) { ex.printStackTrace();}
-                System.out.println(s.getIdBD());
             }
         }        
+    }
+    
+    public static ImageIcon criarIcon(String p) {
+        ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getClass().getResource(p));
+        return icon;
     }
     
     // -------------------------------------------------------------------------
