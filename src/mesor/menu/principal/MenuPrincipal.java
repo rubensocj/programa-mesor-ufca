@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import mesor.menu.Janela;
 import static mesor.menu.Janela.LOCAL;
 import mesor.r.CamadaR;
 
@@ -163,8 +164,7 @@ public class MenuPrincipal extends JFrame {
          * onde "metodoAdicionar()" é um método que retorne "JPanel"
          */
         
-        menuprincipal.setIconImage(
-                    new ImageIcon(LOCAL + "\\icone\\mesor.jpg").getImage());
+        menuprincipal.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
 //        menuprincipal.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         menuprincipal.setSize(1000,700);
         menuprincipal.setVisible(true);
