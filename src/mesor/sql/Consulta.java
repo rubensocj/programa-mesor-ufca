@@ -890,7 +890,7 @@ public class Consulta {
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
                 String cargo, String formacao, String esp, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
-                String estado, int contato) {
+                String estado, String contato) {
 
         int resultado = 0;        
         try {
@@ -936,9 +936,9 @@ public class Consulta {
             if(estado.isEmpty()) {
                 inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
             } else {inserirInterventor.setString(12, estado);}
-            if(contato == 0) {
-                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
-            } else {inserirInterventor.setInt(13, contato);}
+            if(contato.isEmpty()) {
+                inserirInterventor.setNull(13, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(13, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = inserirInterventor.executeUpdate();
@@ -976,7 +976,7 @@ public class Consulta {
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
                 String cargo, String formacao, String esp, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
-                String estado, int contato) {
+                String estado, String contato) {
         
         int resultado = 0;
         try {
@@ -1022,9 +1022,9 @@ public class Consulta {
             if(estado.isEmpty()) {
                 inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
             } else {inserirInterventor.setString(12, estado);}
-            if(contato == 0) {
-                inserirInterventor.setNull(13, java.sql.Types.INTEGER);
-            } else {inserirInterventor.setInt(13, contato);}
+            if(contato.isEmpty()) {
+                inserirInterventor.setNull(13, java.sql.Types.VARCHAR);
+            } else {inserirInterventor.setString(13, contato);}
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarInterventor.executeUpdate();

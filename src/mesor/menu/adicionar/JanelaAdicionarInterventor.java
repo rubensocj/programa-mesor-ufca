@@ -43,9 +43,9 @@ public class JanelaAdicionarInterventor extends Janela {
     
     public JTextField tfdObjetivoGeral, tfdObjEspecificos, tfdHabRequeridas,
             tfdExpRequeridas, tfdNome, tfdSexo, tfdCargo, tfdFormacao,
-            tfdEsp, tfdEstadoCivil, tfdEndereco, tfdCidade, tfdContato;
+            tfdEsp, tfdEstadoCivil, tfdEndereco, tfdCidade;
     
-    public JFormattedTextField tfdNascimento, tfdAdmissao, tfdRemuneracao;
+    public JFormattedTextField tfdNascimento, tfdAdmissao, tfdRemuneracao, tfdContato;
     
     public JComboBox cbxEstado, cbxSexo, cbxECivil;
     
@@ -264,14 +264,14 @@ public class JanelaAdicionarInterventor extends Janela {
         tfdCargo = new JTextField(20);  tfdFormacao = new JTextField(20);
         tfdEsp = new JTextField(20);    tfdCidade = new JTextField(20);
         
-//        MaskFormatter mask = null;
-//        try {
-//            mask = new MaskFormatter("###########");
-//        } catch (ParseException ex) {
-//            ex.printStackTrace();
-//        }
+        MaskFormatter mask = null;
+        try {
+            mask = new MaskFormatter("(##) #####-####");
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 //        mask.setValidCharacters("0123456789");
-        tfdContato = new JTextField(20);
+        tfdContato = new JFormattedTextField(mask);
         
         // Define o fomato numérico do JFormattedTextField tfdRemuneração.
         DecimalFormat formatoDecimal = new DecimalFormat();
@@ -542,17 +542,17 @@ public class JanelaAdicionarInterventor extends Janela {
 
                 DialogoAviso.show("Informe um nome válido");
                 
-            }
-            
-            String regex1 = "[a-zA-Z]";
-            String regex2 = "\\s";
-            Pattern p1 = Pattern.compile(regex1);
-            Pattern p2 = Pattern.compile(regex2);
-            Matcher m1 = p1.matcher(tfdContato.getText());
-            Matcher m2 = p2.matcher(tfdContato.getText());
-            if(m1.find() || m2.find()) {
-                DialogoAviso.show("Informe um contato válido. Utilize apenas números.");
             } else {
+            
+//            String regex1 = "[a-zA-Z]";
+//            String regex2 = "\\s";
+//            Pattern p1 = Pattern.compile(regex1);
+//            Pattern p2 = Pattern.compile(regex2);
+//            Matcher m1 = p1.matcher(tfdContato.getText());
+//            Matcher m2 = p2.matcher(tfdContato.getText());
+//            if(m1.find() || m2.find()) {
+//                DialogoAviso.show("Informe um contato válido. Utilize apenas números.");
+//            } else {
                 // Se não houver erro, executa a operação.                    
                 interventor = new Interventor();
                 interventor.setNome(tfdNome.getText());

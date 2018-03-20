@@ -125,7 +125,7 @@ public class Interventor {
     }
     public void setContato(String pContato) {
         this.contato = pContato;
-        fCont = (int) Integer.parseInt(this.contato);
+//        fCont = (int) Integer.parseInt(this.contato);
     }
     public void setIdBD(int id) {
         this.idBD = id;
@@ -222,7 +222,7 @@ public class Interventor {
         n = Consulta.insertInterventor(this.nome, this.sexo, sqlDataNasc,
                 sqlDataAdm, this.cargo, this.formacao, this.especializacao,
                 this.fRem, this.estadoCivil, this.endereco, this.cidade,
-                this.estado, this.fCont);
+                this.estado, this.contato);
     }
     
     /**
@@ -244,7 +244,7 @@ public class Interventor {
         n = Consulta.updateInterventor(this.nome, this.sexo, sqlDataNasc,
                 sqlDataAdm, this.cargo, this.formacao, this.especializacao,
                 this.fRem, this.estadoCivil, this.endereco, this.cidade,
-                this.estado, this.fCont);
+                this.estado, this.contato);
     }
     
     /**
