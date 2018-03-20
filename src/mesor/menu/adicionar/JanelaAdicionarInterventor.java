@@ -234,7 +234,7 @@ public class JanelaAdicionarInterventor extends Janela {
     public JPanel painelGeralInterventor() {
         pnlNovoInterventor = new JPanel(new BorderLayout());
         pnlNovoInterventor.setOpaque(true);
-        pnlNovoInterventor.add(painelInterventor(), BorderLayout.WEST);
+        pnlNovoInterventor.add(painelAdicionarInterventor(), BorderLayout.WEST);
         pnlNovoInterventor.add(painelTabelaInterventores(), BorderLayout.EAST);
         return pnlNovoInterventor;
     }
@@ -244,7 +244,7 @@ public class JanelaAdicionarInterventor extends Janela {
      * 
      * @return 
      */
-    public JPanel painelInterventor() {
+    private JPanel painelInterventor() {
         lblNome = new JLabel("Nome: *");
         lblSexo = new JLabel("Sexo: ");
         lblNascimento = new JLabel("Data de nascimento: ");
@@ -398,23 +398,14 @@ public class JanelaAdicionarInterventor extends Janela {
         pnlEqp3.add(pnlEqp1);
         pnlEqp3.add(pnlEqp2);
         
+        return pnlEqp3;
+    }
+    
+    public JPanel painelAdicionarInterventor() {
         // Botão "Adicionar" interventor.
         btnAddInterventor = new JButton("Adicionar");
         btnAddInterventor.setPreferredSize(new Dimension(90, 20));
         btnAddInterventor.addActionListener(new AddInterventor());
-        
-//        // Botão "Remover" interventor.
-//        btnRemInterventor = new JButton("Remover");
-//        btnRemInterventor.setPreferredSize(new Dimension(90, 20));
-//        btnRemInterventor.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(tabEquipe.getSelectedRowCount() == 1) {
-//                    modeloTabInterventor.removeRow(tabEquipe.getSelectedRow());
-//                    limparTexto();
-//                }
-//            }
-//        });
 
         // Painel com botões.
         pnlBtnEqp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -424,7 +415,40 @@ public class JanelaAdicionarInterventor extends Janela {
         // Painel "Interventor".
         JPanel pnlEqp4 = new JPanel(new BorderLayout());
         pnlEqp4.setOpaque(true);
-        pnlEqp4.add(pnlEqp3, BorderLayout.NORTH);
+        pnlEqp4.add(painelInterventor(), BorderLayout.NORTH);
+        pnlEqp4.add(pnlBtnEqp, BorderLayout.CENTER);
+        
+        // Painel auxiliar com FlowLayout
+        JPanel pnlEqp5 = new JPanel(new FlowLayout());
+        pnlEqp5.setOpaque(true);
+        pnlEqp5.add(pnlEqp4);
+        
+        return pnlEqp5;
+    }
+    
+    public JPanel painelExcluirInterventor() {
+        // Botão "Remover" interventor.
+        btnRemInterventor = new JButton("Remover");
+        btnRemInterventor.setPreferredSize(new Dimension(90, 20));
+        btnRemInterventor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(pnlIntv.tabInterventor.getSelectedRowCount() == 1) {
+                    modeloTabInterventor.removeRow(pnlIntv.tabInterventor.getSelectedRow());
+                    limparTexto();
+                }
+            }
+        });
+
+        // Painel com botões.
+        pnlBtnEqp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnEqp.add(btnRemInterventor);
+//        pnlBtnEqp.add(btnRemInterventor);
+        
+        // Painel "Interventor".
+        JPanel pnlEqp4 = new JPanel(new BorderLayout());
+        pnlEqp4.setOpaque(true);
+        pnlEqp4.add(painelInterventor(), BorderLayout.NORTH);
         pnlEqp4.add(pnlBtnEqp, BorderLayout.CENTER);
         
         // Painel auxiliar com FlowLayout

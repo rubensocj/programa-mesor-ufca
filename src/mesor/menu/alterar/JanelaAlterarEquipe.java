@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.Arrays;
+import mesor.menu.painel.taxonomia.PainelInterventor;
 
 /**
  * JanelaAlterarEquipe.java
@@ -42,7 +43,8 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     
     private JScrollPane dPane;
     
-    private PainelEquipe pnlEqpGeral, pnlEqpInterventor;
+    private PainelEquipe pnlEqpGeral;
+    private PainelInterventor pnlInterventor;
     
     private Lista listaSQL;
     
@@ -155,48 +157,47 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     
     @Override
     public JPanel painelTabelaEquipe() {
-        pnlEqpInterventor = new PainelEquipe(PainelEquipe.Tabela.interventor);
-        pnlEqpInterventor.tamanhoDaTabela(new Dimension(350, 200));
-        pnlEqpInterventor.atualizarAparenciaDaTabela();
-        pnlEqpInterventor.habilitarTabela();
+        pnlInterventor = new PainelInterventor();
+        pnlInterventor.atualizarAparenciaDaTabela();
+        pnlInterventor.habilitarTabela();
         /**
          * MouseListener define as informações da linha selecionada como texto
          * dos jtextfields do painelInterventor.
          */
-        pnlEqpInterventor.tabEquipe.addMouseListener(new MouseListener() {
+        pnlInterventor.tabInterventor.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(pnlEqpInterventor.tabEquipe.getSelectedRowCount() == 1) {
+                if(pnlInterventor.tabInterventor.getSelectedRowCount() == 1) {
                     tfdNome.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),2)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),2)));
                     tfdSexo.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),3)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),3)));
                     tfdNascimento.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),4)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),4)));
                     tfdAdmissao.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),5)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),5)));
                     tfdCargo.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),6)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),6)));
                     tfdFormacao.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),7)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),7)));
                     tfdRemuneracao.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),8)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),8)));
                     tfdEstadoCivil.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),9)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),9)));
                     tfdEndereco.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),10)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),10)));
                     tfdCidade.setText(String.valueOf(
-                        pnlEqpInterventor.tabEquipe.getValueAt(
-                            pnlEqpInterventor.tabEquipe.getSelectedRow(),11)));
+                        pnlInterventor.tabInterventor.getValueAt(
+                            pnlInterventor.tabInterventor.getSelectedRow(),11)));
                 }
             }
             @Override
@@ -211,12 +212,12 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         JPanel pnlSalvarAlteracao = new JPanel(new FlowLayout(2));
         pnlSalvarAlteracao.add(btnSalvarAlteracao);
         
-        JPanel pnlInterventor = new JPanel(new BorderLayout());
-        pnlInterventor.add(pnlEqpInterventor.painelTabelas(),
+        JPanel pnlIntev = new JPanel(new BorderLayout());
+        pnlIntev.add(pnlInterventor.painelTabelas(),
                                                         BorderLayout.NORTH);
-        pnlInterventor.add(pnlSalvarAlteracao, BorderLayout.CENTER);
+        pnlIntev.add(pnlSalvarAlteracao, BorderLayout.CENTER);
         
-        return pnlInterventor;
+        return pnlIntev;
     }
     
     @Override
@@ -255,7 +256,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         mapaComponentes.put(31, btnRemHabilidade);
         mapaComponentes.put(32, btnRemObjetivo);
         mapaComponentes.put(33, btnRemInterventor);
-        mapaComponentes.put(34, pnlEqpInterventor.tabEquipe);
+        mapaComponentes.put(34, pnlInterventor.painelTabelas());
         mapaComponentes.put(35, tfdObjetivoGeral);
     }
     
@@ -375,7 +376,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         public void actionPerformed(ActionEvent event) {
             if(pnlEqpGeral.tabEquipe.getSelectedRowCount() != 0) {
                 habilitarEdicao(true);
-                pnlEqpInterventor.habilitarTabela();
+                pnlInterventor.habilitarTabela();
                 pnlEqpGeral.habilitarTabela();
                 
                 modeloListaObjEspecificos.removeAllElements();
@@ -436,8 +437,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
                     }
                     
                     /** Tabela de interventores */
-                    pnlEqpInterventor.buscarEquipeInterventor(idEquipe);
-                    pnlEqpInterventor.atualizarAparenciaDaTabela();
+                    pnlInterventor.atualizarAparenciaDaTabela();
                 } catch(SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -467,7 +467,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         public void actionPerformed(ActionEvent event) {
             habilitarEdicao(false);
             tfdObjetivoGeral.setText("");
-            pnlEqpInterventor.habilitarTabela();
+            pnlInterventor.habilitarTabela();
             pnlEqpGeral.habilitarTabela();
             
             modeloListaObjEspecificos.removeAllElements();
@@ -475,11 +475,11 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
             modeloListaHabRequeridas.removeAllElements();
             
             try {
-                pnlEqpInterventor.reiniciarTabela();
+                pnlInterventor.reiniciarTabela();
             } catch(SQLException ex) {
                 ex.printStackTrace();
             }
-            pnlEqpInterventor.atualizarAparenciaDaTabela();
+            pnlInterventor.atualizarAparenciaDaTabela();
         }
     }
 }

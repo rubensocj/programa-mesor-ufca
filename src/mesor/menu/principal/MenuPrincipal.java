@@ -21,6 +21,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import mesor.menu.Janela;
 import static mesor.menu.Janela.LOCAL;
+import mesor.menu.alterar.JanelaAlterarInterventor;
 import mesor.r.CamadaR;
 
 /**
@@ -36,8 +37,9 @@ public class MenuPrincipal extends JFrame {
     private JMenuItem adicionarDemanda, adicionarEquipamento,
                 adicionarIntervencao, adicionarInterventor, adicionarEquipe,
                 adicionarSistema;
-    private JMenuItem alterarDemanda, alterarEquipamento, alterarIntervencao,
-                alterarEquipe, alterarSistema;
+    private JMenuItem alterarDemanda, alterarEquipamento, 
+                alterarIntervencao, alterarInterventor, alterarEquipe,
+                alterarSistema;
         
     private final String eventSelected = "ActionEvent";
 
@@ -85,6 +87,7 @@ public class MenuPrincipal extends JFrame {
         alterarDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
         alterarEquipamento = new JMenuItem("Equipamento", KeyEvent.VK_E);
         alterarIntervencao = new JMenuItem("Intervenção", KeyEvent.VK_I);
+        alterarInterventor = new JMenuItem("Interventor", KeyEvent.VK_N);
         alterarEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
         alterarSistema = new JMenuItem("Sistema", KeyEvent.VK_S);
         
@@ -99,6 +102,7 @@ public class MenuPrincipal extends JFrame {
         alterarEquipamento.addActionListener(new alterarEquipamento());
         alterarDemanda.addActionListener(new alterarDemanda());
         alterarIntervencao.addActionListener(new alterarIntervencao());
+        alterarInterventor.addActionListener(new alterarInterventor());
         alterarEquipe.addActionListener(new alterarEquipe());
         alterarSistema.addActionListener(new alterarSistema());
         
@@ -115,6 +119,7 @@ public class MenuPrincipal extends JFrame {
         menuAlterar.add(alterarEquipamento);
         menuAlterar.add(alterarEquipe);
         menuAlterar.add(alterarIntervencao);
+        menuAlterar.add(alterarInterventor);
         menuAlterar.add(alterarSistema);
         
         // Adiciona o menu "Arquivo" à barra de menus
@@ -274,9 +279,9 @@ public class MenuPrincipal extends JFrame {
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: ALTERAR INTERVENTOR.");
             if (eventSelected.equals("ActionEvent")) {
-                JanelaAlterarIntervencao janela;
-                janela = new JanelaAlterarIntervencao();
-                janela.mostrar("Alterar interventor", 0);
+                JanelaAlterarInterventor janela;
+                janela = new JanelaAlterarInterventor();
+                janela.mostrar("Alterar interventor");
             }
         }
     }
