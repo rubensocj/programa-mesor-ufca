@@ -14,6 +14,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import mesor.intervencao.Interventor;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.ModeloTabela;
 import mesor.menu.Janela;
@@ -147,11 +148,9 @@ public class PainelInterventor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!tabelaSelecionada.equals("")) {
-                    try {
-                        interventor.sqlExcluir();
-                        reiniciarTabela();
-                        atualizarAparenciaDaTabela();
-                    } catch(SQLException ex) { ex.printStackTrace(); }
+                    interventor.sqlExcluir();
+                    reiniciarTabela();
+                    atualizarAparenciaDaTabela();
                 } else {
                     // Bip do mouse ao clicar no botão
                     Toolkit.getDefaultToolkit().beep();
@@ -169,11 +168,14 @@ public class PainelInterventor {
      * Reinicia a tabela através de uma consulta SQL {@code SELECT * FROM
      * demanda}.
      * 
-     * @throws SQLException 
      */
-    public void reiniciarTabela() throws SQLException {
-        modelo = (ModeloTabela) tabInterventor.getModel();
-        modelo.setQuery("SELECT * FROM interventor");
+    public void reiniciarTabela() {
+        try {
+            modelo = (ModeloTabela) tabInterventor.getModel();
+            modelo.setQuery("SELECT * FROM interventor");
+        } catch (SQLException e) {
+            DialogoAviso.show("Erro ao atualizar tabela. " + e.getLocalizedMessage());
+        }
     }
     
     /**

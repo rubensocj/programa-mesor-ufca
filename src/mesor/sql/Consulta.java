@@ -970,13 +970,14 @@ public class Consulta {
      * @param cidade
      * @param estado
      * @param contato
+     * @param id
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
     public static int updateInterventor(String nome, String sexo,
                 java.util.Date dataNascimento, java.util.Date dataAdmissao,
                 String cargo, String formacao, String esp, float remuneracao,
                 String estadoCivil, String endereco, String cidade,
-                String estado, String contato) {
+                String estado, String contato, int id) {
         
         int resultado = 0;
         try {
@@ -1004,27 +1005,28 @@ public class Consulta {
                 alterarInterventor.setNull(5, java.sql.Types.VARCHAR);
             } else {alterarInterventor.setString(5, cargo);}
             if(formacao.isEmpty()) {
-                inserirInterventor.setNull(6, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(6, formacao);}
+                alterarInterventor.setNull(6, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(6, formacao);}
             if(esp.isEmpty()) {
-                inserirInterventor.setNull(7, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(7, esp);}
-            inserirInterventor.setFloat(8, remuneracao);
+                alterarInterventor.setNull(7, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(7, esp);}
+            alterarInterventor.setFloat(8, remuneracao);
             if(estadoCivil.isEmpty()) {
-                inserirInterventor.setNull(9, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(9, estadoCivil);}
+                alterarInterventor.setNull(9, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(9, estadoCivil);}
             if(endereco.isEmpty()) {
-                inserirInterventor.setNull(10, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(10, endereco);}
+                alterarInterventor.setNull(10, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(10, endereco);}
             if(cidade.isEmpty()) {
-                inserirInterventor.setNull(11, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(11, cidade);}
+                alterarInterventor.setNull(11, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(11, cidade);}
             if(estado.isEmpty()) {
-                inserirInterventor.setNull(12, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(12, estado);}
+                alterarInterventor.setNull(12, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(12, estado);}
             if(contato.isEmpty()) {
-                inserirInterventor.setNull(13, java.sql.Types.VARCHAR);
-            } else {inserirInterventor.setString(13, contato);}
+                alterarInterventor.setNull(13, java.sql.Types.VARCHAR);
+            } else {alterarInterventor.setString(13, contato);}
+            alterarInterventor.setInt(14, id);
             
             // executa a operação; retorna número de linhas atualizadas.
             resultado = alterarInterventor.executeUpdate();

@@ -244,7 +244,7 @@ public class Interventor {
         n = Consulta.updateInterventor(this.nome, this.sexo, sqlDataNasc,
                 sqlDataAdm, this.cargo, this.formacao, this.especializacao,
                 this.fRem, this.estadoCivil, this.endereco, this.cidade,
-                this.estado, this.contato);
+                this.estado, this.contato, this.idBD);
     }
     
     /**

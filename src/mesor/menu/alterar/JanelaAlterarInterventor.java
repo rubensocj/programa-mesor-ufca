@@ -13,14 +13,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import mesor.intervencao.Interventor;
+import mesor.menu.DialogoAviso;
 import mesor.menu.Janela;
 import static mesor.menu.Janela.LOCAL;
 import mesor.menu.adicionar.JanelaAdicionarInterventor;
@@ -125,7 +130,6 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
         
         JPanel pnlSalvarAlteracao = new JPanel(new FlowLayout(2));
         pnlSalvarAlteracao.add(btnSalvarAlteracao);
-        
         /**
          * Painel de alteração completo, que agrupa o painel de alterações do
          * interventor e o painel com o botão que salva as alterações feitas.
@@ -133,7 +137,7 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
         JPanel pnlAlterarInterventor = new JPanel(new BorderLayout());
         pnlAlterarInterventor.add(painelExcluirInterventor(), BorderLayout.NORTH);
         pnlAlterarInterventor.add(pnlSalvarAlteracao, BorderLayout.CENTER);
-        
+
         inicializarMapaComponentes();
         mapearComponentes();
         
@@ -202,10 +206,79 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
         edicaoPermitida = escolha;
     }
     
+    @Override
+    public JPanel painelExcluirInterventor() {
+        // Botão "Remover" interventor.
+        btnRemInterventor = new JButton("Remover");
+        btnRemInterventor.setPreferredSize(new Dimension(90, 20));
+        btnRemInterventor.addActionListener(new Excluir());
+
+        // Painel com botões.
+        pnlBtnEqp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnEqp.add(btnRemInterventor);
+//        pnlBtnEqp.add(btnRemInterventor);
+        
+        // Painel "Interventor".
+        JPanel pnlEqp4 = new JPanel(new BorderLayout());
+        pnlEqp4.setOpaque(true);
+        pnlEqp4.add(painelInterventor(), BorderLayout.NORTH);
+        pnlEqp4.add(pnlBtnEqp, BorderLayout.CENTER);
+        
+        // Painel auxiliar com FlowLayout
+        JPanel pnlEqp5 = new JPanel(new FlowLayout());
+        pnlEqp5.setOpaque(true);
+        pnlEqp5.add(pnlEqp4);
+        
+        return pnlEqp5;
+    }
+
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
+    
+    /**
+     * Limpa o texto de JTextFields e JFormattedTextField.
+     */
+    @Override
+    public void limparTexto() {
+        tfdNome.setText("");
+        cbxSexo.setSelectedIndex(0);
+        tfdNascimento.setText("");
+        tfdAdmissao.setText("");
+        tfdCargo.setText("");
+        tfdFormacao.setText("");
+        tfdEsp.setText("");
+        tfdRemuneracao.setText("");
+        tfdRemuneracao.setValue(0.00f);
+        cbxECivil.setSelectedIndex(0);
+        tfdEndereco.setText("");
+        tfdCidade.setText("");
+        cbxEstado.setSelectedIndex(0);
+        tfdContato.setText("");
+    }
 
+    private class Excluir implements ActionListener {
+
+        public Excluir() {
+            
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(pnlIntv.tabInterventor.getSelectedRowCount() != 0){
+                limparTexto();
+                int r = pnlIntv.tabInterventor.getSelectedRow();
+                
+                interventor = new Interventor();
+                interventor.setIdBD((int) pnlIntv.tabInterventor.getValueAt(r, 0));
+                interventor.sqlExcluir();
+                
+                pnlIntv.reiniciarTabela();
+                pnlIntv.atualizarAparenciaDaTabela();
+            }
+        }
+    }
+    
     private class Escolher extends Janela.ActionEscolher {
 
         public Escolher() {
@@ -255,8 +328,8 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
                         String.valueOf(pnlIntv.tabInterventor.getValueAt(r, 6)));
                 tfdEsp.setText(
                         String.valueOf(pnlIntv.tabInterventor.getValueAt(r, 7)));
-                tfdRemuneracao.setText(
-                        String.valueOf(pnlIntv.tabInterventor.getValueAt(r, 8)));
+                tfdRemuneracao.setValue(new Float(
+                        String.valueOf(pnlIntv.tabInterventor.getValueAt(r, 8))));
                 
                 if(pnlIntv.tabInterventor.getValueAt(r, 9) != null) {
                     cbxECivil.setSelectedItem(String.valueOf(
@@ -286,6 +359,10 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(pnlIntv.tabInterventor.getSelectedRowCount() != 0) {
+                pnlIntv.tabInterventor.clearSelection();
+                limparTexto();
+            }
         }
     }
 
@@ -296,6 +373,40 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(pnlIntv.tabInterventor.getSelectedRowCount() == 1) {
+                if(!tfdNome.getText().isEmpty() || 
+                        !tfdNome.getText().startsWith(" ")) {
+                    
+                    int r = pnlIntv.tabInterventor.getSelectedRow();
+                    
+                    interventor = new Interventor();
+                    interventor.setIdBD((int) pnlIntv.tabInterventor.getValueAt(r, 0));
+                    interventor.setNome(tfdNome.getText());
+                    interventor.setSexo(cbxSexo.getSelectedItem().toString());
+                    interventor.setNascimento(tfdNascimento.getText());
+                    interventor.setAdmissao(tfdAdmissao.getText());
+                    interventor.setCargo(tfdCargo.getText());
+                    interventor.setFormacao(tfdFormacao.getText());
+                    interventor.setEspecializacao(tfdEsp.getText());
+                    interventor.setRemuneracao(tfdRemuneracao.getText());
+                    interventor.setEstadoCivil(cbxECivil.getSelectedItem().toString());
+                    interventor.setEndereco(tfdEndereco.getText());
+                    interventor.setEstado(cbxEstado.getSelectedItem().toString());
+                    interventor.setCidade(tfdCidade.getText());
+                    interventor.setContato(tfdContato.getText());
+                    
+                    interventor.sqlAlterar();
+                    
+                    limparTexto();
+                    
+                    pnlIntv.reiniciarTabela();
+                    pnlIntv.atualizarAparenciaDaTabela();
+                } else {
+                    DialogoAviso.show("Informe um nome válido");
+                }
+            } else {
+                DialogoAviso.show("Selecione um interventor");
+            }
         }
     }
     

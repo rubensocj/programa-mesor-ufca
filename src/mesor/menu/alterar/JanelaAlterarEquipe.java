@@ -474,11 +474,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
             modeloListaExpRequeridas.removeAllElements();
             modeloListaHabRequeridas.removeAllElements();
             
-            try {
-                pnlInterventor.reiniciarTabela();
-            } catch(SQLException ex) {
-                ex.printStackTrace();
-            }
+            pnlInterventor.reiniciarTabela();
             pnlInterventor.atualizarAparenciaDaTabela();
         }
     }

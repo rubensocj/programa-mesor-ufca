@@ -82,45 +82,18 @@ public class JanelaAdicionarInterventor extends Janela {
     
     @Override
     public void criarBotoesOpcoes() {
-        btn1 = new JButton("Confirmar");
-        btn2 = new JButton("Cancelar");
-        btn3 = new JButton("Ajuda");
-        options = new Object[] {this.btn1, this.btn2, this.btn3};
+        btn1 = new JButton("OK");
+        btn2 = new JButton("Ajuda");
+        options = new Object[] {this.btn1, this.btn2};
         
         btn1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String mensagemErro = "";
-                if(tabEquipe.getRowCount() == 0) {
-                    mensagemErro = "Adicione ao menos um interventor.";
-                }
-                // Se não houver erro, executa a operação.
-                if(mensagemErro.isEmpty()) {
-                    confirmar();                    
-                    dialog.dispose();
-                } else {
-                    // Se houver erro, exibe mensagem de erro.
-                    JOptionPane mPane = new JOptionPane();
-                    mPane.setMessage(mensagemErro);
-                    mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
-                    mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-
-                    JDialog mDialog = mPane.createDialog(mPane, "Aviso");
-                    mDialog.pack();
-                    mDialog.setVisible(true);
-                    mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                }
-            }
-        });
-        
-        btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
             }
         });
         
-        btn3.addActionListener(new ActionListener() {
+        btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("opção AJUDA selecionada");
@@ -244,7 +217,7 @@ public class JanelaAdicionarInterventor extends Janela {
      * 
      * @return 
      */
-    private JPanel painelInterventor() {
+    public JPanel painelInterventor() {
         lblNome = new JLabel("Nome: *");
         lblSexo = new JLabel("Sexo: ");
         lblNascimento = new JLabel("Data de nascimento: ");
