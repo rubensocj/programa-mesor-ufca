@@ -154,7 +154,7 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
         
         // Painel Final
         pnlPrincipal = new JPanel(new FlowLayout());
-        pnlIntv = new PainelInterventor();
+        pnlIntv = new PainelInterventor(600,400);
         pnlPrincipal.add(pnlIntv.painelTabelas());
         pnlPrincipal.add(pnlAlterar);
         return pnlPrincipal;

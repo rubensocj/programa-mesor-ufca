@@ -1,6 +1,9 @@
 package mesor.menu.alterar;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -16,20 +19,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-
 import mesor.menu.adicionar.JanelaAdicionarEquipe;
 import mesor.menu.Janela;
 import mesor.menu.painel.taxonomia.PainelEquipe;
 
 import mesor.sql.Lista;
 import mesor.intervencao.Interventor;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import mesor.intervencao.Equipe;
+import mesor.menu.DialogoConfirma;
 import mesor.menu.painel.taxonomia.PainelInterventor;
+import mesor.sql.Query;
 
 /**
  * JanelaAlterarEquipe.java
@@ -47,11 +54,18 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     private PainelInterventor pnlInterventor;
     
     private Lista listaSQL;
+    private Lista listaSqlObjetivos, listaSqlIdObj;
+    private Lista listaSqlHabilidades, listaSqlIdHab;
+    private Lista listaSqlExperiencias, ListaSqlIdExp;
+    
+    private final ArrayList modelExpAdd = new ArrayList<>();
     
     /**
      * Construtores.
      */
-     public JanelaAlterarEquipe() {        
+     public JanelaAlterarEquipe() {
+//        modeloListaExpRequeridas.addListDataListener(new ListaListener());
+
         /* Cria os botões antes de montar o painel Principal */
         criarBotoesOpcoes();
         criarBotoesAlterar();
@@ -131,14 +145,38 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     
     @Override
     public JPanel montarPainelPrincipal() {
+        /* Painel com os botões de escolher e voltar */
+        JPanel pnlBtnAlterar = new JPanel(new BorderLayout(0,5));
+        pnlBtnAlterar.add(btnEscolher, BorderLayout.NORTH);
+        pnlBtnAlterar.add(btnVoltar, BorderLayout.CENTER);
+        
+        JPanel pnlSalvarAlteracao = new JPanel(new FlowLayout(2));
+        pnlSalvarAlteracao.add(btnSalvarAlteracao);
+        /**
+         * Painel de alteração completo, que agrupa o painel de alterações do
+         * interventor e o painel com o botão que salva as alterações feitas.
+         */
+        JPanel pnlAlterarEquipe = new JPanel(new BorderLayout());
+        pnlAlterarEquipe.add(painelExcluirEquipe(), BorderLayout.NORTH);
+        pnlAlterarEquipe.add(pnlSalvarAlteracao, BorderLayout.CENTER);
+        
         /**
          * Painel que agrupa o painel com os botões "Escolher" e "Voltar", e o
          * painel de alteração completo (com o botão).
          */
         pnlAlterar = new JPanel(new FlowLayout());
-        pnlAlterar.add(painelListas());
-        pnlAlterar.add(painelInterventor());
+        pnlAlterar.add(pnlAlterarEquipe);
         
+        pnlEqpGeral = new PainelEquipe(312, 200);
+        JPanel pnlEqp = new JPanel(new FlowLayout());
+        pnlEqp.add(pnlEqpGeral.painelTabelas());
+        pnlEqp.add(pnlBtnAlterar);
+        
+        pnlIntv = new PainelInterventor(400, 300);
+        pnlIntv.tabInterventor.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JPanel pnlPnlIntv = new JPanel(new FlowLayout());
+        pnlPnlIntv.add(pnlIntv.painelTabelas());
+
         inicializarMapaComponentes();
         mapearComponentes();
         
@@ -150,74 +188,155 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
          * de escolha e alteração completo à direita.
          */
         pnlPrincipal = new JPanel(new BorderLayout());
-        pnlPrincipal.add(painelTabelaEquipeGeral(), BorderLayout.WEST);
-        pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);        
+        pnlPrincipal.add(pnlEqp, "West");
+        pnlPrincipal.add(pnlAlterar, "Center");        
+        pnlPrincipal.add(pnlPnlIntv, "East");        
         return pnlPrincipal;
     }
     
     @Override
-    public JPanel painelTabelaEquipe() {
-        pnlInterventor = new PainelInterventor();
-        pnlInterventor.atualizarAparenciaDaTabela();
-        pnlInterventor.habilitarTabela();
-        /**
-         * MouseListener define as informações da linha selecionada como texto
-         * dos jtextfields do painelInterventor.
-         */
-        pnlInterventor.tabInterventor.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(pnlInterventor.tabInterventor.getSelectedRowCount() == 1) {
-                    tfdNome.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),2)));
-                    tfdSexo.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),3)));
-                    tfdNascimento.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),4)));
-                    tfdAdmissao.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),5)));
-                    tfdCargo.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),6)));
-                    tfdFormacao.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),7)));
-                    tfdRemuneracao.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),8)));
-                    tfdEstadoCivil.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),9)));
-                    tfdEndereco.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),10)));
-                    tfdCidade.setText(String.valueOf(
-                        pnlInterventor.tabInterventor.getValueAt(
-                            pnlInterventor.tabInterventor.getSelectedRow(),11)));
+    public void confirmar() {
+        int idEquipe = (int) pnlEqpGeral.tabEquipe.getValueAt(pnlEqpGeral.tabEquipe.getSelectedRow(), 0);
+
+        // Define o objetivo geral da equipe
+        equipe.setIdBD(idEquipe);
+        if(!tfdObjetivoGeral.getText().equals(equipe.getObjetivoGeral())) {
+            equipe.setObjetivoGeral(tfdObjetivoGeral.getText());
+            equipe.sqlAlterarObjetivoGeral();
+        }
+        
+        // Experiencias
+        List l1 = listaSqlExperiencias.toList(); // Antigo
+        List l2 = toList(modeloListaExpRequeridas); // Novo
+        if(l1.size() == l2.size()) {    // Tamanhos iguais
+            if(!l1.containsAll(l2)) {
+                // Diferentes
+                for(int er = 0; er < l2.size(); er++) {
+                    equipe.setExperiencia((String) modeloListaExpRequeridas.getElementAt(er),
+                                Integer.parseInt((String) ListaSqlIdExp.get(er)));
                 }
+                equipe.sqlAlterarExperiencia();
             }
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}}); // Fim do MouseListener
+        } else {
+            equipe.sqlExcluirExperiencia();
+            for(int er = 0; er < l2.size(); er++) {
+                equipe.setExperiencia((String) modeloListaExpRequeridas.getElementAt(er));
+            }
+            equipe.sqlInserirExperiencia();
+        }
         
-        JPanel pnlSalvarAlteracao = new JPanel(new FlowLayout(2));
-        pnlSalvarAlteracao.add(btnSalvarAlteracao);
+        // Objetivos
+        l1 = listaSqlObjetivos.toList(); // Antigo
+        l2 = toList(modeloListaObjEspecificos); // Novo
+        if(l1.size() == l2.size()) {    // Tamanhos iguais
+            if(!l1.containsAll(l2)) {
+                // Diferentes
+                for(int er = 0; er < l2.size(); er++) {
+                    equipe.setObjetivoEspecifico((String) modeloListaObjEspecificos.getElementAt(er),
+                                Integer.parseInt((String) listaSqlIdObj.get(er)));
+                }
+                equipe.sqlAlterarObjetivo();
+            }
+        } else {
+            equipe.sqlExcluirObjetivo();
+            for(int er = 0; er < l2.size(); er++) {
+                equipe.setObjetivoEspecifico((String) modeloListaObjEspecificos.getElementAt(er));
+            }
+            equipe.sqlInserirObjetivo();
+        }
         
-        JPanel pnlIntev = new JPanel(new BorderLayout());
-        pnlIntev.add(pnlInterventor.painelTabelas(),
-                                                        BorderLayout.NORTH);
-        pnlIntev.add(pnlSalvarAlteracao, BorderLayout.CENTER);
+        // Habilidades
+        l1 = listaSqlHabilidades.toList(); // Antigo
+        l2 = toList(modeloListaHabRequeridas); // Novo
+        if(l1.size() == l2.size()) {    // Tamanhos iguais
+            if(!l1.containsAll(l2)) {
+                // Diferentes
+                for(int er = 0; er < l2.size(); er++) {
+                    equipe.setHabilidade((String) modeloListaHabRequeridas.getElementAt(er),
+                                Integer.parseInt((String) listaSqlIdHab.get(er)));
+                }
+                equipe.sqlAlterarHabilidade();
+            }
+        } else {
+            equipe.sqlExcluirHabilidade();
+            for(int er = 0; er < l2.size(); er++) {
+                equipe.setHabilidade((String) modeloListaHabRequeridas.getElementAt(er));
+            }
+            equipe.sqlInserirHabilidade();
+        }
         
-        return pnlIntev;
+        pnlEqpGeral.reiniciarTabela();
+        pnlEqpGeral.atualizarAparenciaDaTabela();
+        
+        modeloListaExpRequeridas.clear();
+        modeloListaHabRequeridas.clear();
+        modeloListaObjEspecificos.clear();
+        
+        equipe.getListaExperiencias().clear();
+        equipe.getListaHabilidades().clear();
+        equipe.getListaObjetivos().clear();
+        
+        tfdObjetivoGeral.setText("");
+        
+        pnlIntv.limpaSelecao();
+        
+//        if(modeloListaObjEspecificos.size() == listaSqlObjetivos.size()) {
+//            for(int i = 0; i < listaSqlObjetivos.size(); i++) {
+//                // Se o valor no modelo atual for diferente do valor obtido do banco, substitua
+//                if(modeloListaObjEspecificos.get(i) != listaSqlObjetivos.get(i)) {
+//                    equipe.setObjetivoEspecifico((String) modeloListaObjEspecificos.get(i));
+//                }
+//            }
+//        } else {
+//            
+//        }
+//        
+//        // Define os objetivos específicos da equipe: os objetivos listados
+//        for(int ob = 0; ob < listaObjEspecificos.getModel().getSize(); ob++) {
+//            equipe.setObjetivoEspecifico(
+//                        listaObjEspecificos.getModel().getElementAt(ob));
+//        }
+//        
+//        
+//        // Define as habilidades requeridas da equipe, conforme as habilidades listadas
+//        for(int hr = 0; hr < listaHabRequeridas.getModel().getSize(); hr++) {
+//            equipe.setHabilidade(
+//                        listaHabRequeridas.getModel().getElementAt(hr));
+//        }
+        
+//        // Define os interventores da equipe: os adicionados a tabela
+//        for(int it = 0; it < tabEquipe.getRowCount(); it++) {
+//            /**
+//             * Cria um objeto da classe Interventor para cada linha da tabela.
+//             * Configura este objeto com os dados da linha correspondente.
+//             */
+//            interventor = new Interventor();
+//            interventor.setNome(
+//                        String.valueOf(tabEquipe.getValueAt(it, 0)));
+//            interventor.setSexo(
+//                        String.valueOf(tabEquipe.getValueAt(it, 1)));
+//            interventor.setNascimento(
+//                        String.valueOf(tabEquipe.getValueAt(it, 2)));
+//            interventor.setAdmissao(
+//                        String.valueOf(tabEquipe.getValueAt(it, 3)));
+//            interventor.setCargo(
+//                        String.valueOf(tabEquipe.getValueAt(it, 4)));
+//            interventor.setFormacao(
+//                        String.valueOf(tabEquipe.getValueAt(it, 5)));
+//            interventor.setRemuneracao(
+//                        String.valueOf(tabEquipe.getValueAt(it, 6)));
+//            interventor.setEstadoCivil(
+//                        String.valueOf(tabEquipe.getValueAt(it, 7)));
+//            interventor.setEndereco(
+//                        String.valueOf(tabEquipe.getValueAt(it, 8)));
+//            interventor.setCidade(
+//                        String.valueOf(tabEquipe.getValueAt(it, 9)));
+//            
+//            // Adiciona o interventor ao Vetor de interventores.
+//            equipe.setInterventor(interventor);
+//        }
+        
+//        equipe.sqlInserir();
     }
     
     @Override
@@ -228,105 +347,26 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         mapaComponentes.put(3, listaObjEspecificos);
         mapaComponentes.put(4, listaHabRequeridas);
         mapaComponentes.put(5, listaExpRequeridas);
-        mapaComponentes.put(6, lblNome);
-        mapaComponentes.put(7, tfdNome);
-        mapaComponentes.put(8, lblSexo);
-        mapaComponentes.put(9, tfdSexo);
-        mapaComponentes.put(10, lblNascimento);
-        mapaComponentes.put(11, tfdNascimento);
-        mapaComponentes.put(12, lblAdmissao);
-        mapaComponentes.put(13, tfdAdmissao);
-        mapaComponentes.put(14, lblCargo);
-        mapaComponentes.put(15, tfdCargo);
-        mapaComponentes.put(16, lblFormacao);
-        mapaComponentes.put(17, tfdFormacao);
-        mapaComponentes.put(18, lblRemuneracao);
-        mapaComponentes.put(19, tfdRemuneracao);
-        mapaComponentes.put(20, lblEstadoCivil);
-        mapaComponentes.put(21, tfdEstadoCivil);
-        mapaComponentes.put(22, lblEndereco);
-        mapaComponentes.put(23, tfdEndereco);
-        mapaComponentes.put(24, lblCidade);
-        mapaComponentes.put(25, tfdCidade);
-        mapaComponentes.put(26, btnAddExperiencia);
-        mapaComponentes.put(27, btnAddHabilidade);
-        mapaComponentes.put(28, btnAddInterventor);
-        mapaComponentes.put(29, btnAddObjetivo);
-        mapaComponentes.put(30, btnRemExperiencia);
-        mapaComponentes.put(31, btnRemHabilidade);
-        mapaComponentes.put(32, btnRemObjetivo);
-        mapaComponentes.put(33, btnRemInterventor);
-        mapaComponentes.put(34, pnlInterventor.painelTabelas());
-        mapaComponentes.put(35, tfdObjetivoGeral);
-    }
-    
-    @Override
-    public void confirmar() {
-        // Define o objetivo geral da equipe
-        equipe.setObjetivoGeral(tfdObjetivoGeral.getText());
-        
-        // Define os objetivos específicos da equipe: os objetivos listados
-        for(int ob = 0; ob < listaObjEspecificos.getModel().getSize(); ob++) {
-            equipe.setObjetivoEspecifico(
-                        listaObjEspecificos.getModel().getElementAt(ob));
-        }
-        
-        // Define as experiências requeridas da equipe: as experiências listadas
-        for(int er = 0; er < listaExpRequeridas.getModel().getSize(); er++) {
-            equipe.setExperiencia(listaExpRequeridas.getModel().getElementAt(er));
-        }
-        
-        // Define as habilidades requeridas da equipe, conforme as habilidades listadas
-        for(int hr = 0; hr < listaHabRequeridas.getModel().getSize(); hr++) {
-            equipe.setHabilidade(
-                        listaHabRequeridas.getModel().getElementAt(hr));
-        }
-        
-        // Define os interventores da equipe: os adicionados a tabela
-        for(int it = 0; it < tabEquipe.getRowCount(); it++) {
-            /**
-             * Cria um objeto da classe Interventor para cada linha da tabela.
-             * Configura este objeto com os dados da linha correspondente.
-             */
-            interventor = new Interventor();
-            interventor.setNome(
-                        String.valueOf(tabEquipe.getValueAt(it, 0)));
-            interventor.setSexo(
-                        String.valueOf(tabEquipe.getValueAt(it, 1)));
-            interventor.setNascimento(
-                        String.valueOf(tabEquipe.getValueAt(it, 2)));
-            interventor.setAdmissao(
-                        String.valueOf(tabEquipe.getValueAt(it, 3)));
-            interventor.setCargo(
-                        String.valueOf(tabEquipe.getValueAt(it, 4)));
-            interventor.setFormacao(
-                        String.valueOf(tabEquipe.getValueAt(it, 5)));
-            interventor.setRemuneracao(
-                        String.valueOf(tabEquipe.getValueAt(it, 6)));
-            interventor.setEstadoCivil(
-                        String.valueOf(tabEquipe.getValueAt(it, 7)));
-            interventor.setEndereco(
-                        String.valueOf(tabEquipe.getValueAt(it, 8)));
-            interventor.setCidade(
-                        String.valueOf(tabEquipe.getValueAt(it, 9)));
-            
-            // Adiciona o interventor ao Vetor de interventores.
-            equipe.setInterventor(interventor);
-        }
-        
-        equipe.sqlInserir();
+        mapaComponentes.put(6, tfdObjetivoGeral);
+        mapaComponentes.put(7, pnlIntv.painelTabelas());
+        mapaComponentes.put(8, btnAddExperiencia);
+        mapaComponentes.put(9, btnAddHabilidade);
+        mapaComponentes.put(10, btnAddObjetivo);
+        mapaComponentes.put(11, btnRemObjetivo);
+        mapaComponentes.put(12, btnRemExperiencia);
+        mapaComponentes.put(13, btnRemHabilidade);
+        mapaComponentes.put(14, btnRemEquipe);
+        mapaComponentes.put(15, btnSalvarAlteracao);
+        mapaComponentes.put(16, btnRenoExperiencia);
+        mapaComponentes.put(17, btnRenoHabilidade);
+        mapaComponentes.put(18, btnRenoObjetivo);
     }
     
     @Override
     public void habilitarEdicao(boolean escolha) {
-        if(escolha == true) {
-            for(int i = 0; i <= 35; i++) {
-                mapaComponentes.get(i).setEnabled(true); // Habilita.
-            }
-        } else {
-            for(int i = 0; i <= 35; i++) {
-                mapaComponentes.get(i).setEnabled(false); // Desabilita.
-            }
+        for(int i = 0; i <= 18; i++) {
+            mapaComponentes.get(i).setEnabled(escolha); // Habilita.
+            pnlIntv.habilitarTabela(escolha);
         }
         
         edicaoPermitida = escolha;
@@ -340,6 +380,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
      * Monta o painel da tabela com informações gerais da equipe de intervenção.
      * 
      * @return Um JPanel.
+     * @deprecated 
      */
     private JPanel painelTabelaEquipeGeral() {
         /* Painel com os botões de escolher e voltar */
@@ -362,9 +403,46 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         pnlEquipeGeral2.add(pnlBtnAlterar);
         return pnlEquipeGeral2;
     }
+
+    private Component painelExcluirEquipe() {
+        // Botão "Remover" interventor.
+        btnRemEquipe = new JButton("Remover");
+        btnRemEquipe.setPreferredSize(new Dimension(90, 20));
+        btnRemEquipe.addActionListener(new Excluir());
+
+        // Painel com botões.
+        pnlBtnEqp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pnlBtnEqp.add(btnRemEquipe);
+        
+        // Painel "Interventor".
+        JPanel pnlEqp4 = new JPanel(new BorderLayout());
+        pnlEqp4.setOpaque(true);
+        pnlEqp4.add(painelListas(), BorderLayout.NORTH);
+        pnlEqp4.add(pnlBtnEqp, BorderLayout.CENTER);
+        
+        return pnlEqp4;
+    }
+
+    private class ListaListener implements ListDataListener {
+
+        public ListaListener() {
+        }
+
+        @Override
+        public void intervalAdded(ListDataEvent e) {
+        }
+
+        @Override
+        public void intervalRemoved(ListDataEvent e) {
+        }
+
+        @Override
+        public void contentsChanged(ListDataEvent e) {
+        }
+    }
     
     // -------------------------------------------------------------------------
-    // Classes.
+    // Classes privadas.
     // -------------------------------------------------------------------------
     
     /** 
@@ -376,84 +454,112 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
         public void actionPerformed(ActionEvent event) {
             if(pnlEqpGeral.tabEquipe.getSelectedRowCount() != 0) {
                 habilitarEdicao(true);
-                pnlInterventor.habilitarTabela();
-                pnlEqpGeral.habilitarTabela();
                 
                 modeloListaObjEspecificos.removeAllElements();
                 modeloListaExpRequeridas.removeAllElements();
                 modeloListaHabRequeridas.removeAllElements();
+                pnlIntv.tabInterventor.clearSelection();
                 
+                int r = pnlEqpGeral.tabEquipe.getSelectedRow();
                 
                 /** Objetivo geral */
                 tfdObjetivoGeral.setText(String.valueOf(
-                            pnlEqpGeral.tabEquipe.getValueAt(
-                                pnlEqpGeral.tabEquipe.getSelectedRow(), 1)));
+                            pnlEqpGeral.tabEquipe.getValueAt(r, 1)));
+                equipe.setObjetivoGeral(tfdObjetivoGeral.getText());
                 
                 String tabela;
                 String idEquipe = String.valueOf(
-                            pnlEqpGeral.tabEquipe.getValueAt(
-                                    pnlEqpGeral.tabEquipe.getSelectedRow(), 0));
+                            pnlEqpGeral.tabEquipe.getValueAt(r, 0));
                 
                 try {
                     listaSQL = new Lista();
+                    listaSqlObjetivos = new Lista();
+                    listaSqlExperiencias = new Lista();
+                    listaSqlHabilidades = new Lista();
+                    
+                    listaSqlIdObj = new Lista();
+                    ListaSqlIdExp = new Lista();
+                    listaSqlIdHab = new Lista();
                     
                     /** Lista Objetivos específicos */
                     tabela = "objetivos_especificos";
-                    listaSQL.setQuery(
+                    listaSqlObjetivos.setQuery(
                         "SELECT " + tabela + ".descricao " +
                         "FROM equipe, " + tabela + " " +
                         "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
                         "GROUP BY " + tabela + ".id;");
+                    listaSqlIdObj.setQuery(
+                        "SELECT " + tabela + ".id " +
+                        "FROM equipe, " + tabela + " " +
+                        "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
+                        "GROUP BY " + tabela + ".id;");
                     
-                    for(int i = 0; i < listaSQL.toVector().size(); i++) {
+                    for(int i = 0; i < listaSqlObjetivos.toVector().size(); i++) {
                         modeloListaObjEspecificos.addElement(
-                                    listaSQL.toVector().get(i));
+                                    listaSqlObjetivos.toVector().get(i));
+                        equipe.setObjetivoEspecifico(listaSqlObjetivos.getString(i), Integer.parseInt((String)listaSqlIdObj.get(i)));
                     }
                     
                     /** Lista Experiências requeridas */
                     tabela = "experiencias_requeridas";
-                    listaSQL.setQuery(
+                    listaSqlExperiencias.setQuery(
                         "SELECT " + tabela + ".descricao " +
                         "FROM equipe, " + tabela + " " +
                         "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
                         "GROUP BY " + tabela + ".id;");
+                    ListaSqlIdExp.setQuery(
+                        "SELECT " + tabela + ".id " +
+                        "FROM equipe, " + tabela + " " +
+                        "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
+                        "GROUP BY " + tabela + ".id;");
                     
-                    for(int i = 0; i < listaSQL.toVector().size(); i++) {
+                    for(int i = 0; i < listaSqlExperiencias.toVector().size(); i++) {
                         modeloListaExpRequeridas.addElement(
-                                    listaSQL.toVector().get(i));
+                                    listaSqlExperiencias.toVector().get(i));
+                        equipe.setExperiencia(listaSqlExperiencias.getString(i), Integer.parseInt((String)ListaSqlIdExp.get(i)));
                     }
                     
                     /** Lista Habilidades requeridas */
                     tabela = "habilidades_requeridas";
-                    listaSQL.setQuery(
+                    listaSqlHabilidades.setQuery(
                         "SELECT " + tabela + ".descricao " +
                         "FROM equipe, " + tabela + " " +
                         "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
                         "GROUP BY " + tabela + ".id;");
+                    listaSqlIdHab.setQuery(
+                        "SELECT " + tabela + ".id " +
+                        "FROM equipe, " + tabela + " " +
+                        "WHERE " + tabela + ".id_equipe = " + idEquipe + " " +
+                        "GROUP BY " + tabela + ".id;");
                     
-                    for(int i = 0; i < listaSQL.toVector().size(); i++) {
+                    for(int i = 0; i < listaSqlHabilidades.toVector().size(); i++) {
                         modeloListaHabRequeridas.addElement(
-                                    listaSQL.toVector().get(i));
+                                    listaSqlHabilidades.toVector().get(i));
+                        equipe.setHabilidade(listaSqlHabilidades.getString(i), Integer.parseInt((String)listaSqlIdHab.get(i)));
                     }
                     
-                    /** Tabela de interventores */
-                    pnlInterventor.atualizarAparenciaDaTabela();
+                    /** Lista Habilidades requeridas */
+                    tabela = "interventor";
+                    listaSQL.setQuery(
+                        "SELECT " + tabela + ".id " +
+                        "FROM equipe, aux_equipe, " + tabela + " " +
+                        "WHERE equipe.id = " + idEquipe + " AND aux_equipe.id_equipe = equipe.id " + 
+                        "AND aux_equipe.id_interventor = " + tabela + ".id " +
+                        "GROUP BY " + tabela + ".id;");
+                    
+                    for(int i = 0; i < listaSQL.toVector().size(); i++) {
+                        System.out.println(listaSQL.toVector().get(i));
+                        for(int j = 0; j < pnlIntv.tabInterventor.getRowCount(); j++) {
+                            System.out.println(pnlIntv.tabInterventor.getValueAt(j, 0));
+                            if(String.valueOf(pnlIntv.tabInterventor.getValueAt(j, 0)).equals(listaSQL.toVector().get(i))) {
+                                pnlIntv.tabInterventor.addRowSelectionInterval(j, j);
+                                break;
+                            }
+                        }
+                    }
                 } catch(SQLException ex) {
                     ex.printStackTrace();
                 }
-            }
-        }
-    }
-    
-    /** 
-     * {@inheritDoc}
-     * @see menu.JanelaAdicionarAlterar.ActionSalvar
-     */
-    private class Salvar extends Janela.ActionSalvar {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(edicaoPermitida == true) {
-                confirmar();
             }
         }
     }
@@ -465,17 +571,106 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     private class Voltar extends Janela.ActionVoltar {
         @Override
         public void actionPerformed(ActionEvent event) {
-            habilitarEdicao(false);
             tfdObjetivoGeral.setText("");
-            pnlInterventor.habilitarTabela();
-            pnlEqpGeral.habilitarTabela();
             
             modeloListaObjEspecificos.removeAllElements();
             modeloListaExpRequeridas.removeAllElements();
             modeloListaHabRequeridas.removeAllElements();
+            pnlIntv.tabInterventor.clearSelection();
             
-            pnlInterventor.reiniciarTabela();
-            pnlInterventor.atualizarAparenciaDaTabela();
+            habilitarEdicao(false);
         }
+    }
+    
+    /** 
+     * {@inheritDoc}
+     * @see menu.JanelaAdicionarAlterar.ActionSalvar
+     */
+    private class Salvar extends Janela.ActionSalvar {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(pnlEqpGeral.tabEquipe.getSelectedRowCount() == 1 && edicaoPermitida == true) {
+                confirmar();
+            }
+        }
+    }
+
+    /**
+     * Classe privada que implementa ActionListener. Remove a equipe selecionada
+     */
+    private class Excluir implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Se uma equipe estiver selecionada e permitida a edição
+            if(pnlEqpGeral.tabEquipe.getSelectedRowCount() == 1) {
+                JButton btnOk = new JButton("Excluir");
+                JButton btnCan = new JButton("Cancelar");
+                
+                // Cria e mostra diálogo de confirmação com mensagem e botões definidos
+                DialogoConfirma d = new DialogoConfirma(
+                            "Tem certeza que deseja remover esta equipe? "
+                            + "Esta ação não pode ser desfeita.");
+                
+                btnOk.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Cria objeto equipe
+                        Equipe eq = new Equipe();
+                        eq.setIdBD((int) pnlEqpGeral.tabEquipe.getValueAt(
+                                    pnlEqpGeral.tabEquipe.getSelectedRow(), 0));
+                        
+                        // Exclui a equipe e desvincula os interventores
+                        eq.sqlExcluir();
+                        
+                        // Dispóe o diálogo
+                        d.dispose();
+                        
+                        habilitarEdicao(false);
+                        pnlEqpGeral.atualizarAparenciaDaTabela();
+                        pnlEqpGeral.tabEquipe.clearSelection();
+                        pnlIntv.tabInterventor.clearSelection();
+                    }
+                });
+                
+                btnCan.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        d.dispose();
+                    }
+                });
+                
+                d.setOptions(new Object[] {btnOk, btnCan});
+                d.show();
+            }
+        }
+    }
+    
+    private boolean verificarListas(List l1, List l2) {
+        boolean b = true;
+        if(l1.size() == l2.size()) {
+            
+            
+        }
+        
+        if(l1.containsAll(l2)) {
+            
+        }
+        
+        return b;
+    }
+    
+    /**
+     * 
+     * @param m
+     * @return Um objeto List a partir do DefaultListModel
+     */
+    private List toList(DefaultListModel m) {
+        List<Object> l = new ArrayList<>();
+        
+        for(int i = 0; i < m.size(); i++) {
+            l.add(m.get(i));
+        }
+        
+        return l;
     }
 }

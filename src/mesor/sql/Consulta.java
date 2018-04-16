@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+import mesor.menu.DialogoAviso;
 
 /**
  * Consulta.java
@@ -99,7 +98,11 @@ public class Consulta {
                 alterarParte = null,
                 alterarDemanda = null,
                 alterarIntervencao = null,
-                alterarInterventor = null;
+                alterarInterventor = null,
+                alterarEquipe = null,
+                alterarObjetivoEspecifico = null,
+                alterarHabilidadeRequerida = null,
+                alterarExperienciaRequerida = null;
     
     /**
      * Consulta em SQL previamente preparada que exclui do banco de dados
@@ -111,10 +114,16 @@ public class Consulta {
                 deletarParte = null,
                 deletarDemanda = null,
                 deletarIntervencao = null,
-                deletarInterventor = null;
+                deletarInterventor = null,
+                deletarEquipe = null,
+                deletarObjetivoEspecifico = null,
+                deletarHabilidadeRequerida = null,
+                deletarExperienciaRequerida = null;
     
     private static PreparedStatement vincularEquipe = null,
-                vincularIntervencao = null;
+                vincularIntervencao = null,
+                desvincularEquipe = null;
+    
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
     // -------------------------------------------------------------------------
@@ -1074,7 +1083,6 @@ public class Consulta {
      * dadas pelo usuário.
      * 
      * @param objetivoGeral
-     * @param idIntervencao
      * @return Um inteiro como resultado da execução do PreparedStatement.
      */
     public static int insertEquipe(String objetivoGeral) {
@@ -1098,6 +1106,62 @@ public class Consulta {
                 idEquipe = resultSet.getInt(1);
             }
         } // fim do try. // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Deleta uma linha selecionada da entidade EQUIPE do banco de dados.
+     * 
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int deleteEquipe(int id) {
+        int resultado = 0;        
+        try {
+            deletarEquipe.setInt(1, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = deletarEquipe.executeUpdate();
+            deletarEquipe.getQueryTimeout();
+            
+        } // fim do try.
+        catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+            desconectar();
+        } // fim do catch.
+        
+        return resultado;
+    }
+    
+    /**
+     * Atualiza uma linha selecionada da entidade EQUIPE do banco de dados.
+     * 
+     * @param obj
+     * @param id
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int updateEquipe(String obj, int id) {
+        int resultado = 0;        
+        try {
+            alterarEquipe.setString(1, obj);
+            alterarEquipe.setInt(2, id);
+            
+            // executa a operação; retorna número de linhas atualizadas.
+            resultado = alterarEquipe.executeUpdate();
+            alterarEquipe.getQueryTimeout();
+            
+            // Pega os ID gerados automaticamente na inserção.
+            resultSet = alterarEquipe.getGeneratedKeys();
+            if(resultSet.next()) {
+                idEquipe = resultSet.getInt(1);
+            }
+            
+        } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
             desconectar();
@@ -1137,6 +1201,47 @@ public class Consulta {
     }
     
     /**
+     *
+     * @param des
+     * @param id
+     * @param idEquipe
+     * @return
+     */
+    public static int updateObjetivoEspecifico(String des, int id, int idEquipe) {
+        
+        int res = 0;
+        try {
+            alterarObjetivoEspecifico.setString(1, des);
+            alterarObjetivoEspecifico.setInt(2, id);
+            alterarObjetivoEspecifico.setInt(3, idEquipe);
+            
+            res = alterarObjetivoEspecifico.executeUpdate();
+            alterarObjetivoEspecifico.getQueryTimeout();
+            
+        } catch (SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    public static int deleteObjetivoEspecifico(int id) {
+        int r = 0;
+        try {
+            deletarObjetivoEspecifico.setInt(1, id);
+            
+            r = deletarObjetivoEspecifico.executeUpdate();
+            deletarObjetivoEspecifico.getQueryTimeout();
+        } catch(SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return r;
+    }
+    
+    /**
      * Adiciona uma linha à entidade HABILIDADESREQUERIDAS do banco de dados
      * com as informações dadas pelo usuário.
      * 
@@ -1164,6 +1269,47 @@ public class Consulta {
         } // fim do catch.
         
         return resultado;
+    }
+    
+    /**
+     *
+     * @param des
+     * @param id
+     * @param idEquipe
+     * @return
+     */
+    public static int updateHabilidade(String des, int id, int idEquipe) {
+        
+        int res = 0;
+        try {
+            alterarHabilidadeRequerida.setString(1, des);
+            alterarHabilidadeRequerida.setInt(2, id);
+            alterarHabilidadeRequerida.setInt(3, idEquipe);
+            
+            res = alterarHabilidadeRequerida.executeUpdate();
+            alterarHabilidadeRequerida.getQueryTimeout();
+            
+        } catch (SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    public static int deleteHabilidade(int id) {
+        int r = 0;
+        try {
+            deletarHabilidadeRequerida.setInt(1, id);
+            
+            r = deletarHabilidadeRequerida.executeUpdate();
+            deletarHabilidadeRequerida.getQueryTimeout();
+        } catch(SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return r;
     }
     
     /**
@@ -1195,6 +1341,47 @@ public class Consulta {
     }
     
     /**
+     *
+     * @param des
+     * @param id
+     * @param idEquipe
+     * @return
+     */
+    public static int updateExperiencia(String des, int id, int idEquipe) {
+        
+        int res = 0;
+        try {
+            alterarExperienciaRequerida.setString(1, des);
+            alterarExperienciaRequerida.setInt(2, id);
+            alterarExperienciaRequerida.setInt(3, idEquipe);
+            
+            res = alterarExperienciaRequerida.executeUpdate();
+            alterarExperienciaRequerida.getQueryTimeout();
+            
+        } catch (SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    public static int deleteExperiencia(int id) {
+        int r = 0;
+        try {
+            deletarExperienciaRequerida.setInt(1, id);
+            
+            r = deletarExperienciaRequerida.executeUpdate();
+            deletarExperienciaRequerida.getQueryTimeout();
+        } catch(SQLException e) {
+            DialogoAviso.show(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        
+        return r;
+    }
+    
+    /**
      * Adiciona uma linha à entidade AUX_EQUIPE do banco de dados
      * com as informações dadas pelo usuário.
      * 
@@ -1211,6 +1398,28 @@ public class Consulta {
             
             res = vincularEquipe.executeUpdate();
             vincularEquipe.getQueryTimeout();
+        } catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    /**
+     * Remove todas as linhas da entidade AUX_EQUIPE do banco de dados
+     * nas quais têm o id da equipe informado pelo usuário.
+     * 
+     * @param idEquipe
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int desvincularEquipe(int idEquipe) {
+        
+        int res = 0;
+        try {
+            desvincularEquipe.setInt(1, idEquipe);
+            
+            res = desvincularEquipe.executeUpdate();
+            desvincularEquipe.getQueryTimeout();
         } catch(SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -1254,16 +1463,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException e) {
             /* Se houver erro, exibe mensagem de erro */
-            JOptionPane mPane = new JOptionPane();
-            mPane.setMessage(e.getLocalizedMessage());
-            mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
-            mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-
-            JDialog mDialog = mPane.createDialog(mPane, "Erro");
-            mDialog.pack();
-            mDialog.setVisible(true);
-            mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
+            DialogoAviso.show(e.getLocalizedMessage());
             e.printStackTrace();
         }
         
@@ -1375,32 +1575,54 @@ public class Consulta {
                     "cidade = ?, estado = ?, contato = ? WHERE id = ?",
                         Statement.RETURN_GENERATED_KEYS);
             deletarInterventor = connection.prepareStatement(
-                "DELETE FROM interventor WHERE id = ?");
+                "DELETE FROM interventor WHERE id = ?;");
             
             /* Definição de métodos para a classe EQUIPE */
             inserirEquipe = connection.prepareStatement(
                 "INSERT INTO equipe (objetivo_geral) VALUES (?);",
                         Statement.RETURN_GENERATED_KEYS);
+            alterarEquipe = connection.prepareStatement(
+                "UPDATE equipe SET objetivo_geral = ? WHERE id = ?;",
+                        Statement.RETURN_GENERATED_KEYS);
+            deletarEquipe = connection.prepareStatement(
+                "DELETE FROM equipe WHERE id = ?");
+            
             inserirObjetivoEspecifico = connection.prepareStatement(
                 "INSERT INTO objetivos_especificos" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
+            alterarObjetivoEspecifico = connection.prepareStatement(
+                "UPDATE objetivos_especificos SET descricao = ? WHERE id = ? AND id_equipe = ?;");
+            deletarObjetivoEspecifico = connection.prepareStatement(
+                        "DELETE FROM objetivos_especificos WHERE id = ?;");
+            
             inserirHabilidadeRequerida = connection.prepareStatement(
                 "INSERT INTO habilidades_requeridas" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
+            alterarHabilidadeRequerida = connection.prepareStatement(
+                "UPDATE habilidades_requeridas SET descricao = ? WHERE id = ? AND id_equipe = ?;");
+            deletarHabilidadeRequerida = connection.prepareStatement(
+                        "DELETE FROM habilidades_requeridas WHERE id = ?;");
+            
             inserirExperienciaRequerida = connection.prepareStatement(
                 "INSERT INTO experiencias_requeridas" +
                     "(id_equipe, descricao)" +
                     "VALUES (?, ?);",
                         Statement.RETURN_GENERATED_KEYS);
+            alterarExperienciaRequerida = connection.prepareStatement(
+                "UPDATE experiencias_requeridas SET descricao = ? WHERE id = ? AND id_equipe = ?;");
+            deletarExperienciaRequerida = connection.prepareStatement(
+                        "DELETE FROM experiencias_requeridas WHERE id = ?;");
             
             /* Definição de métodos para a relação EQUIPE-INTERVENTOR */
             vincularEquipe = connection.prepareStatement(
                 "INSERT INTO aux_equipe (id_equipe, id_interventor) " + 
                     "VALUES (?, ?)");
+            desvincularEquipe = connection.prepareStatement(
+                "DELETE FROM aux_equipe WHERE id_equipe = ?");
             
             /* Definição de métodos para a relação EQUIPE-INTERVENCAO */
             vincularIntervencao = connection.prepareStatement(
@@ -1410,15 +1632,7 @@ public class Consulta {
         }
         catch(SQLException sqlException) {
             /* Se houver erro, exibe mensagem de erro */
-            JOptionPane mPane = new JOptionPane();
-            mPane.setMessage("Ocorreu um erro na conexão com o banco de dados.");
-            mPane.setOptionType(JOptionPane.PLAIN_MESSAGE);
-            mPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-
-            JDialog mDialog = mPane.createDialog(mPane, "Aviso");
-            mDialog.pack();
-            mDialog.setVisible(true);
-            mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            DialogoAviso.show("Erro ao conectar ao banco de dados");
             
             /* Printa no prompt a exceção */
             sqlException.printStackTrace();

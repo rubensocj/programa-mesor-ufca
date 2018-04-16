@@ -63,8 +63,10 @@ public class PainelInterventor {
     
     /**
      * Construtor.
+     * @param x
+     * @param y
      */
-    public PainelInterventor() {
+    public PainelInterventor(int x, int y) {
         
         lblIntv = new JLabel(" Interventores:");
         
@@ -92,7 +94,7 @@ public class PainelInterventor {
             tabInterventor.setCellSelectionEnabled(false);
             atualizarAparenciaDaTabela();
             
-            habilitarTabela();
+            habilitarTabela(true);
         }
         catch(SQLException ex) { ex.printStackTrace();}
         
@@ -122,7 +124,7 @@ public class PainelInterventor {
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabInterventor.setFillsViewportHeight(true);
-        tabInterventor.setPreferredScrollableViewportSize(new Dimension(600,400));
+        tabInterventor.setPreferredScrollableViewportSize(new Dimension(x,y));
         
         inicializaEConfiguraBusca();
         
@@ -193,7 +195,7 @@ public class PainelInterventor {
             modelo.setQuery("SELECT * FROM unidade");
         }
         
-        habilitarTabela();
+        habilitarTabela(true);
         atualizarAparenciaDaTabela();
     }
     
@@ -257,11 +259,18 @@ public class PainelInterventor {
      * Habilita a tabela especificada, permitindo a seleção de linhas.
      * Desabilita todas as tabelas caso tabela == PainelEquipamento.TAB_NULL.
      * 
+     * @param e
      */
-    public void habilitarTabela() {
-        tabInterventor.setEnabled(true);
-        tabInterventor.setRowSelectionAllowed(true);
-        tabInterventor.setForeground(Color.BLACK);
+    public void habilitarTabela(boolean e) {
+        if(e == true) {
+            tabInterventor.setEnabled(true);
+            tabInterventor.setRowSelectionAllowed(true);
+            tabInterventor.setForeground(Color.BLACK);
+        } else {
+            tabInterventor.setEnabled(false);
+            tabInterventor.setRowSelectionAllowed(false);
+            tabInterventor.setForeground(Color.LIGHT_GRAY);
+        }
     }
     
     /**

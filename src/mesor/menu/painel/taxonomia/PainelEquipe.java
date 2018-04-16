@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import mesor.menu.DialogoAviso;
 import mesor.menu.Janela;
 
 /**
@@ -154,11 +157,18 @@ public class PainelEquipe {
      * Reinicia a tabela através de uma consulta SQL {@code SELECT * FROM
      * demanda}.
      * 
-     * @throws SQLException 
      */
-    public void reiniciarTabela() throws SQLException {
+    public void reiniciarTabela() {
         modelo = (ModeloTabela) tabEquipe.getModel();
-        modelo.setQuery("SELECT * FROM " + String.valueOf(this.tipoDeTabela));
+        try {
+            modelo.setQuery("SELECT id, objetivo_geral FROM equipe;");
+        } catch (SQLException ex) {
+            DialogoAviso.show("SQLExcpetion: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        } catch (IllegalStateException ex) {
+            DialogoAviso.show("IllegalStateException: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
     }
     
     /**
@@ -227,8 +237,7 @@ public class PainelEquipe {
         tfdBuscaEqp.setColumns(10);
         
         // Inicializa JButtons
-        btnBuscaEqp = new JButton(new ImageIcon(
-            Janela.LOCAL + "\\icone\\busca.png"));
+        btnBuscaEqp = new JButton(Janela.criarIcon("/res/icone/busca.png"));
         
         // Define o tamanho dos botões
         btnBuscaEqp.setPreferredSize(new Dimension(20,20));

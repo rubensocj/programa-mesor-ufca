@@ -57,7 +57,7 @@ public class JanelaAdicionarInterventor extends Janela {
                 listaExpRequeridas;
     
     public Equipe equipe = new Equipe();
-    public PainelInterventor pnlIntv = new PainelInterventor();
+    public PainelInterventor pnlIntv = new PainelInterventor(600,400);
     public Interventor interventor;
     
     public JPanel pnlBtnEqp;
@@ -566,18 +566,9 @@ public class JanelaAdicionarInterventor extends Janela {
                 interventor.setCidade(tfdCidade.getText());
                 interventor.setContato(tfdContato.getText());
 
-                /**
-                 * Converte os textos no formato String inseridos nos
-                 * JTextFields do painel interventor em variáveis do tipo
-                 * Object para a tabela adicioná-los a tabela da equipe.
-                 */
-                try {
-                    interventor.sqlInserir();
-                    pnlIntv.reiniciarTabela();
-                    pnlIntv.atualizarAparenciaDaTabela();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                interventor.sqlInserir();
+                pnlIntv.reiniciarTabela();
+                pnlIntv.atualizarAparenciaDaTabela();
 
                 limparTexto();
             }

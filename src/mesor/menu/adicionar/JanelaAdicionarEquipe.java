@@ -52,14 +52,15 @@ public class JanelaAdicionarEquipe extends Janela {
     
     public Equipe equipe = new Equipe();
     public Interventor interventor;
-    public PainelInterventor pnlIntv = new PainelInterventor();
+    public PainelInterventor pnlIntv = new PainelInterventor(600,400);
     
     public JPanel pnlBtnEqp;
     public JPanel pnlNovoInterventor;
     
     public JButton btnAddExperiencia, btnRemExperiencia, btnAddHabilidade,
                 btnRemHabilidade, btnAddObjetivo, btnRemObjetivo,
-                btnAddInterventor, btnRemInterventor;
+                btnAddInterventor, btnRemEquipe, btnRenoExperiencia,
+                btnRenoHabilidade, btnRenoObjetivo;
     
     public DefaultListModel modeloListaObjEspecificos;
     public DefaultListModel modeloListaHabRequeridas;
@@ -89,7 +90,7 @@ public class JanelaAdicionarEquipe extends Janela {
                             tfdObjetivoGeral.getText().startsWith(" ")) {
                     DialogoAviso.show("Informe um objetivo geral");
                 } else if(pnlIntv.tabInterventor.getSelectedRowCount() == 0) {
-                    DialogoAviso.show("ei caksldjas");
+                    DialogoAviso.show("Selecione um interventor");
                 } else {
                     // Se não houver erro, executa a operação.
                     confirmar();
@@ -235,7 +236,7 @@ public class JanelaAdicionarEquipe extends Janela {
         JScrollPane ePane = new JScrollPane(listaExpRequeridas,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        ePane.setPreferredSize(new Dimension(230,100));
+        ePane.setPreferredSize(new Dimension(230,80));
         
         // Cria JTextField.
         tfdExpRequeridas = new JTextField(15);
@@ -248,8 +249,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Adicionar".
-        btnAddExperiencia = new JButton("Adicionar");
-        btnAddExperiencia.setPreferredSize(new Dimension(90, 20));
+        btnAddExperiencia = new JButton(criarIcon("/res/icone/Add16.gif"));
+        btnAddExperiencia.setPreferredSize(new Dimension(20, 20));
+        btnAddExperiencia.setToolTipText("Adicionar");
         btnAddExperiencia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -261,8 +263,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Remover".
-        btnRemExperiencia = new JButton("Remover");
-        btnRemExperiencia.setPreferredSize(new Dimension(90, 20));
+        btnRemExperiencia = new JButton(criarIcon("/res/icone/Remove16.gif"));
+        btnRemExperiencia.setPreferredSize(new Dimension(20, 20));
+        btnRemExperiencia.setToolTipText("Remover");
         btnRemExperiencia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,10 +276,26 @@ public class JanelaAdicionarEquipe extends Janela {
             }
         });
         
+        // Cria botão "Renomear".
+        btnRenoExperiencia = new JButton(criarIcon("/res/icone/ComposeMail16.gif"));
+        btnRenoExperiencia.setPreferredSize(new Dimension(20, 20));
+        btnRenoExperiencia.setToolTipText("Renomear");
+        btnRenoExperiencia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(tfdExpRequeridas.getText().isEmpty() == false) {
+                    int i = listaExpRequeridas.getSelectedIndex();
+                    modeloListaExpRequeridas.set(i, tfdExpRequeridas.getText());
+                    tfdExpRequeridas.setText("");
+                }
+            }
+        });
+        
         // Painel com JTextField e Botões.
         JPanel pnlBtnExp = new JPanel(new FlowLayout());
         pnlBtnExp.add(tfdExpRequeridas);
         pnlBtnExp.add(btnAddExperiencia);
+        pnlBtnExp.add(btnRenoExperiencia);
         pnlBtnExp.add(btnRemExperiencia);
         
         // Painel Habilidades requeridas.
@@ -319,7 +338,7 @@ public class JanelaAdicionarEquipe extends Janela {
         JScrollPane hPane = new JScrollPane(listaHabRequeridas,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        hPane.setPreferredSize(new Dimension(230,100));
+        hPane.setPreferredSize(new Dimension(230,80));
         
         // Cria JTextField.
         tfdHabRequeridas = new JTextField(15);
@@ -332,8 +351,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Adicionar".
-        btnAddHabilidade = new JButton("Adicionar");
-        btnAddHabilidade.setPreferredSize(new Dimension(90, 20));
+        btnAddHabilidade = new JButton(criarIcon("/res/icone/Add16.gif"));
+        btnAddHabilidade.setPreferredSize(new Dimension(20, 20));
+        btnAddHabilidade.setToolTipText("Adicionar");
         btnAddHabilidade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -345,8 +365,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Remover"
-        btnRemHabilidade = new JButton("Remover");
-        btnRemHabilidade.setPreferredSize(new Dimension(90, 20));
+        btnRemHabilidade = new JButton(criarIcon("/res/icone/Remove16.gif"));
+        btnRemHabilidade.setPreferredSize(new Dimension(20, 20));
+        btnRemHabilidade.setToolTipText("Remover");
         btnRemHabilidade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -357,10 +378,26 @@ public class JanelaAdicionarEquipe extends Janela {
             }
         });
         
+        // Cria botão "Renomear".
+        btnRenoHabilidade = new JButton(criarIcon("/res/icone/ComposeMail16.gif"));
+        btnRenoHabilidade.setPreferredSize(new Dimension(20, 20));
+        btnRenoHabilidade.setToolTipText("Renomear");
+        btnRenoHabilidade.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(listaHabRequeridas.isSelectionEmpty() == false) {
+                    int i = listaHabRequeridas.getSelectedIndex();
+                    modeloListaHabRequeridas.set(i, tfdHabRequeridas.getText());
+                    tfdHabRequeridas.setText("");
+                }
+            }
+        });
+        
         // Painel com JTextField e Botões.
         JPanel pnlBtnHab = new JPanel(new FlowLayout());
         pnlBtnHab.add(tfdHabRequeridas);
         pnlBtnHab.add(btnAddHabilidade);
+        pnlBtnHab.add(btnRenoHabilidade);
         pnlBtnHab.add(btnRemHabilidade);
         
         // Painel Habilidades requeridas.
@@ -403,7 +440,7 @@ public class JanelaAdicionarEquipe extends Janela {
         JScrollPane oPane = new JScrollPane(listaObjEspecificos,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        oPane.setPreferredSize(new Dimension(230,100));
+        oPane.setPreferredSize(new Dimension(230,80));
         
         // Cria JTextField.
         tfdObjEspecificos = new JTextField(15);
@@ -416,8 +453,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Adicionar".
-        btnAddObjetivo = new JButton("Adicionar");
-        btnAddObjetivo.setPreferredSize(new Dimension(90, 20));
+        btnAddObjetivo = new JButton(criarIcon("/res/icone/Add16.gif"));
+        btnAddObjetivo.setPreferredSize(new Dimension(20, 20));
+        btnAddObjetivo.setToolTipText("Adicionar");
         btnAddObjetivo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -429,8 +467,9 @@ public class JanelaAdicionarEquipe extends Janela {
         });
         
         // Cria botão "Remover".
-        btnRemObjetivo = new JButton("Remover");
-        btnRemObjetivo.setPreferredSize(new Dimension(90, 20));
+        btnRemObjetivo = new JButton(criarIcon("/res/icone/Remove16.gif"));
+        btnRemObjetivo.setPreferredSize(new Dimension(20, 20));
+        btnRemObjetivo.setToolTipText("Remover");
         btnRemObjetivo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -441,10 +480,26 @@ public class JanelaAdicionarEquipe extends Janela {
             }
         });
         
+        // Cria botão "Renomear".
+        btnRenoObjetivo = new JButton(criarIcon("/res/icone/ComposeMail16.gif"));
+        btnRenoObjetivo.setPreferredSize(new Dimension(20, 20));
+        btnRenoObjetivo.setToolTipText("Renomear");
+        btnRenoObjetivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(listaObjEspecificos.isSelectionEmpty() == false) {
+                    int i = listaObjEspecificos.getSelectedIndex();
+                    modeloListaObjEspecificos.set(i, tfdObjEspecificos.getText());
+                    tfdObjEspecificos.setText("");
+                }
+            }
+        });
+        
         // Painel com JTextField e Botões.
         JPanel pnlBtnObj = new JPanel(new FlowLayout());
         pnlBtnObj.add(tfdObjEspecificos);
         pnlBtnObj.add(btnAddObjetivo);
+        pnlBtnObj.add(btnRenoObjetivo);
         pnlBtnObj.add(btnRemObjetivo);
         
         // Painel Objetivos específicos.
@@ -567,7 +622,7 @@ public class JanelaAdicionarEquipe extends Janela {
      * @return Um JPanel
      */
     public JPanel painelListas() {
-        tfdObjetivoGeral = new JTextField(30);
+        tfdObjetivoGeral = new JTextField(20);
         
         JPanel pnlObjetivoGeral = new JPanel(new FlowLayout());
         pnlObjetivoGeral.setBorder(BorderFactory.createTitledBorder(

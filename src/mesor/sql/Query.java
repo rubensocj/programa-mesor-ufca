@@ -12,6 +12,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import java.util.Vector;
+import mesor.menu.DialogoAviso;
 /**
  * Query.java
  *
@@ -33,15 +34,21 @@ public class Query extends Consulta{
 
     }
     
-    public static int consultaSQLInt(String q) throws SQLException {
+    public static int consultaSQLInt(String q) {
+        Integer i = 0;
         if(!conectado) { conectar(); }
-        statement = Consulta.connection.createStatement(
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
-        
-        setQuery(q);
-        
-        Integer i = (int) (long) resultSet.getObject(1);
+        try {
+            statement = Consulta.connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
+
+            setQuery(q);
+
+            i = (int) (long) resultSet.getObject(1);
+        } catch (SQLException e) {
+            DialogoAviso.show("Erro ao realizar consulta. " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
         return i;
     }
     

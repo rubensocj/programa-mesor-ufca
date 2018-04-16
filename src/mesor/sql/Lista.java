@@ -1,13 +1,19 @@
 package mesor.sql;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javax.swing.*;
 
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import mesor.menu.DialogoAviso;
 
 /**
  * Autor Rubens Oliveira da Cunha Júnior
@@ -15,7 +21,7 @@ import java.util.Vector;
 public class Lista extends Consulta {
     
 //    private final Connection connection;
-    private final Statement statement;
+    private Statement statement;
     private ResultSet resultSet;
     private ResultSetMetaData metaData;
     private int numLinhas;
@@ -31,21 +37,27 @@ public class Lista extends Consulta {
     private static final String PASSWORD = "mesorufca1506";
     
     public JList l; //, listaAtributos;
+    public List<String> lista = new ArrayList<>();
     private Vector<String> vetorResultado;
     private String[] arrayResultado;
     
     /**
      * Construtor.
      * @param consulta
-     * @throws SQLException 
      */
-    public Lista(String consulta) throws SQLException {
+    public Lista(String consulta) {
         if(!conectado) { conectar(); }
-        statement = connection.createStatement(
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+        try {
+            statement = connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
         
-        setQuery(consulta);
+            setQuery(consulta);
+        } catch (SQLException e) {
+            DialogoAviso.show("SQLException em construtor Lista(consulta): " + 
+                        e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -87,31 +99,44 @@ public class Lista extends Consulta {
      * Monta um vetor com o resultado da consulta.
      * 
      * @return Um vetor.
-     * @throws SQLException 
      */
-    public Vector<String> toVector() throws SQLException {
+    public Vector<String> toVector() {
         vetorResultado = new Vector();
 //        vetorResultado.addElement("");
-        int numColuna = metaData.getColumnCount();
-        
-        resultSet.beforeFirst();
-        while(resultSet.next()) {
-            for (int i = 1; i <= numColuna; i++) {
-                vetorResultado.addElement(resultSet.getString(i));
+        try {
+            int numColuna = metaData.getColumnCount();
+
+            resultSet.beforeFirst();
+            while(resultSet.next()) {
+                for (int i = 1; i <= numColuna; i++) {
+                    vetorResultado.addElement(resultSet.getString(i));
+                }
             }
+        } catch (SQLException e) {
+            DialogoAviso.show("SQLExcpetion em Lista.toVector(): " + e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return vetorResultado;
     }
     
-    public int size() throws SQLException {
-        return toVector().size();
+    public List toList() {
+        for (String t : toVector()) {
+            lista.add(t);
+        }
+        return lista;
     }
     
-    public Object get(int i) throws SQLException {
+    public int size() {
+        int s = 0;
+        s = toVector().size();
+        return s;
+    }
+    
+    public Object get(int i) {
         return toVector().get(i);
     }
     
-    public String getString(int i) throws SQLException {
+    public String getString(int i) {
         return (String) toVector().get(i);
     }
     
