@@ -30,7 +30,7 @@ public class JanelaAdicionarIntervencao extends Janela {
     
     public PainelEquipamento pnlUnidade = new PainelEquipamento();
     public PainelDemanda pnlDemanda = new PainelDemanda();
-    public PainelEquipe pnlEquipe = new PainelEquipe(300,100);
+    public PainelEquipe pnlEquipe = new PainelEquipe(310,90);
     
     public JPanel pnlTabelaDemanda;
     
@@ -357,6 +357,7 @@ public class JanelaAdicionarIntervencao extends Janela {
         
         // Botão "Buscar" demanda
         btnBuscarDemanda = new JButton("Buscar");
+        btnBuscarDemanda.setToolTipText("Buscar demandas existentes no item selecionado");
         btnBuscarDemanda.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {

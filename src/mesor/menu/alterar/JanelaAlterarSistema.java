@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.border.BevelBorder;
+import mesor.intervencao.Equipe;
+import mesor.menu.DialogoConfirma;
 
 import mesor.menu.adicionar.JanelaAdicionarSistema;
 import mesor.menu.painel.taxonomia.PainelSistema;
@@ -25,7 +27,8 @@ import mesor.menu.painel.taxonomia.PainelSistema;
  */
 public class JanelaAlterarSistema extends JanelaAdicionarSistema {
     
-    private final PainelSistema pnlSistema;
+    public PainelSistema pnlSistema;
+    private JButton btnExcluir;
     
     /**
      * Construtor.
@@ -113,6 +116,11 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
         btnSalvarAlteracao = new JButton("Salvar alterações");
         btnSalvarAlteracao.setPreferredSize(new Dimension(150,20));
         btnSalvarAlteracao.addActionListener(new Salvar());
+        
+        /* Botão "Salvar alterações" executa a operação */
+        btnExcluir = new JButton("Excluir");
+        btnExcluir.setPreferredSize(new Dimension(100,20));
+        btnExcluir.addActionListener(new Excluir());
     }
     
     @Override
@@ -129,6 +137,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
         
         JPanel pnlSalvarAlteracao = new JPanel(new FlowLayout(2));
         pnlSalvarAlteracao.add(btnSalvarAlteracao);
+        pnlSalvarAlteracao.add(btnExcluir);
         
         JPanel pnlAlterar2 = new JPanel(new BorderLayout());
         pnlAlterar2.add(pnlAlterar1, BorderLayout.NORTH);
@@ -152,8 +161,8 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
     @Override
     public void confirmar() {
         sistema = new Sistema(tfdSisNome.getText(), txaSisDescricao.getText());
-        sistema.setIdBD((int) pnlSistema.tabSistema.getValueAt(
-                    pnlSistema.tabSistema.getSelectedRow(), 0));
+        sistema.setIdBD((int) pnlSistema.tab.getValueAt(
+                    pnlSistema.tab.getSelectedRow(), 0));
         sistema.sqlAlterar();
     }
     
@@ -161,6 +170,56 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
     public void limparTexto() {
         tfdSisNome.setText("");
         txaSisDescricao.setText("");
+    }
+
+    private class Excluir implements ActionListener {
+
+        public Excluir() {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Se um sistema estiver selecionado e permitida a edição
+            if(pnlSistema.tab.getSelectedRowCount()== 1) {
+                JButton btnOk = new JButton("Excluir");
+                JButton btnCan = new JButton("Cancelar");
+                
+                // Cria e mostra diálogo de confirmação com mensagem e botões definidos
+                DialogoConfirma d = new DialogoConfirma(
+                            "Tem certeza que deseja excluir este sistema "
+                            + "Esta ação não pode ser desfeita.");
+                
+                btnOk.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Cria objeto 
+                        Sistema s = new Sistema((int) pnlSistema.tab.getValueAt(
+                                    pnlSistema.tab.getSelectedRow(), 0));
+                        
+                        // Exclui a equipe e desvincula os interventores
+                        s.sqlExcluir();
+                        
+                        // Dispóe o diálogo
+                        d.dispose();
+                        
+                        habilitarEdicao(false);
+                        pnlSistema.reiniciarTabela();
+                        pnlSistema.atualizarAparenciaDaTabela();
+                        pnlSistema.tab.clearSelection();
+                    }
+                });
+                
+                btnCan.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        d.dispose();
+                    }
+                });
+                
+                d.setOptions(new Object[] {btnOk, btnCan});
+                d.show();
+            }
+        }
     }
     
     // -------------------------------------------------------------------------
@@ -174,18 +233,18 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
     private class Escolher extends Janela.ActionEscolher {
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(pnlSistema.tabSistema.getSelectedRowCount() == 1) {
+            if(pnlSistema.tab.getSelectedRowCount() == 1) {
                 tfdSisNome.setText(String.valueOf(
-                    pnlSistema.tabSistema.getValueAt(
-                        pnlSistema.tabSistema.getSelectedRow(), 1)));
+                    pnlSistema.tab.getValueAt(
+                        pnlSistema.tab.getSelectedRow(), 1)));
                 
                 String descricao = "";
-                if(pnlSistema.tabSistema.getValueAt(
-                        pnlSistema.tabSistema.getSelectedRow(), 2) != null) {
+                if(pnlSistema.tab.getValueAt(
+                        pnlSistema.tab.getSelectedRow(), 2) != null) {
                 
                     descricao = String.valueOf(
-                        pnlSistema.tabSistema.getValueAt(
-                            pnlSistema.tabSistema.getSelectedRow(), 2));
+                        pnlSistema.tab.getValueAt(
+                            pnlSistema.tab.getSelectedRow(), 2));
                 }
                 
                 txaSisDescricao.setText(descricao);
@@ -248,8 +307,8 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
     private class Voltar extends Janela.ActionVoltar {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(pnlSistema.tabSistema.getSelectedRowCount() == 1) {
-                pnlSistema.tabSistema.clearSelection();
+            if(pnlSistema.tab.getSelectedRowCount() == 1) {
+                pnlSistema.tab.clearSelection();
                 pnlSistema.habilitarTabela(true);
                 limparTexto();
             }

@@ -108,7 +108,8 @@ public class Consulta {
      * Consulta em SQL previamente preparada que exclui do banco de dados
      * elementos selecionados pelo usuário.
      */
-    private static PreparedStatement deletarUnidade = null,
+    private static PreparedStatement deletarSistema = null,
+                deletarUnidade = null,
                 deletarSubunidade = null,
                 deletarComponente = null,
                 deletarParte = null,
@@ -122,7 +123,8 @@ public class Consulta {
     
     private static PreparedStatement vincularEquipe = null,
                 vincularIntervencao = null,
-                desvincularEquipe = null;
+                desvincularEquipe = null,
+                atualizarVinculoEquipe = null;
     
     // -------------------------------------------------------------------------
     // Métodos da classe Sistema
@@ -180,6 +182,18 @@ public class Consulta {
         }
         
         return resultado;
+    }
+    
+    public static int deleteSistema(int id) {
+        int r = 0;
+        try {
+            deletarSistema.setInt(1, id);
+            r = deletarSistema.executeUpdate();
+            deletarSistema.getQueryTimeout();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return r;
     }
     
     // -------------------------------------------------------------------------
@@ -244,7 +258,7 @@ public class Consulta {
         } // Fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -304,7 +318,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -329,7 +343,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -365,7 +379,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -392,7 +406,7 @@ public class Consulta {
         } // fim do try
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch
         
         return resultado;
@@ -416,7 +430,7 @@ public class Consulta {
         } // fim do try
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch
         
         return resultado;
@@ -452,7 +466,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -479,7 +493,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -503,7 +517,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -534,7 +548,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -561,7 +575,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -585,7 +599,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -658,7 +672,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -706,7 +720,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -729,7 +743,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -796,7 +810,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -842,7 +856,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -866,7 +880,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -956,7 +970,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1043,7 +1057,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1068,7 +1082,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1108,7 +1122,7 @@ public class Consulta {
         } // fim do try. // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1132,7 +1146,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1164,7 +1178,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1194,7 +1208,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1265,7 +1279,7 @@ public class Consulta {
         } // fim do try.
         catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            desconectar();
+//            desconectar();
         } // fim do catch.
         
         return resultado;
@@ -1428,6 +1442,31 @@ public class Consulta {
     }
     
     /**
+     * Altera os interventores de uma equipe
+     * 
+     * @param id
+     * @param idEquipe
+     * @param idAntigo
+     * @return Um inteiro como resultado da execução do PreparedStatement.
+     */
+    public static int atualizarVinculoEquipe(int id, int idEquipe, int idAntigo) {
+        
+        int res = 0;
+        try {
+            atualizarVinculoEquipe.setInt(1, id);
+            atualizarVinculoEquipe.setInt(2, idEquipe);
+            atualizarVinculoEquipe.setInt(3, idAntigo);
+            
+            res = atualizarVinculoEquipe.executeUpdate();
+            atualizarVinculoEquipe.getQueryTimeout();
+        } catch(SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        
+        return res;
+    }
+    
+    /**
      * Adiciona uma linha à entidade AUX_INTERVENCAO do banco de dados
      * com as informações dadas pelo usuário.
      * 
@@ -1457,6 +1496,9 @@ public class Consulta {
      */
     public static void testarConexão() {
         try {
+            // Verificar se connection é null
+            // Verificar se connection está ativo / se há conexão
+            // Não criar um a conexão cada vez que chamar o método
             System.out.println("Testando conexão com o servidor...\n");
             connection = DriverManager.getConnection(
                         BD_URL, USERNAME, PASSWORD);
@@ -1483,6 +1525,8 @@ public class Consulta {
                 "INSERT INTO sistema (nome, descricao) VALUES (?, ?);");
             alterarSistema = connection.prepareStatement(
                 "UPDATE sistema SET nome = ?, descricao = ? WHERE id = ?;");
+            deletarSistema = connection.prepareStatement(
+                "DELETE FROM sistema WHERE id = ?;");
 
             /* Definição de métodos para a classe UNIDADE */
             inserirUnidade = connection.prepareStatement(
@@ -1623,6 +1667,8 @@ public class Consulta {
                     "VALUES (?, ?)");
             desvincularEquipe = connection.prepareStatement(
                 "DELETE FROM aux_equipe WHERE id_equipe = ?");
+            atualizarVinculoEquipe = connection.prepareStatement(
+                "UPDATE aux_equipe SET id_interventor = ? WHERE id_equipe = ? AND id_interventor = ?;");
             
             /* Definição de métodos para a relação EQUIPE-INTERVENCAO */
             vincularIntervencao = connection.prepareStatement(

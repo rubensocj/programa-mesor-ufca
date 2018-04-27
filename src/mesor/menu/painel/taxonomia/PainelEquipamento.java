@@ -302,14 +302,14 @@ public class PainelEquipamento {
             public void mouseExited(MouseEvent e) {}});
         
         // Cria JSCROLLPANE e configura as TABELAS.
-        Dimension dim = new Dimension(290, 100);
+        Dimension dim = new Dimension(290, 90);
         
         // Unidade
         JScrollPane uPane = new JScrollPane(tabUnidade,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabUnidade.setFillsViewportHeight(true);
-        tabUnidade.setPreferredScrollableViewportSize(new Dimension(290,300));
+        tabUnidade.setPreferredScrollableViewportSize(dim);
         
         // Subunidade
         JScrollPane sPane = new JScrollPane(tabSubunidade,
@@ -376,7 +376,7 @@ public class PainelEquipamento {
                                    pnlSub, sptPaneCmpPte);
         sptPaneSubCmp.setOpaque(true);
         sptPaneSubCmp.setOneTouchExpandable(true);
-        sptPaneSubCmp.setDividerLocation(150);        
+        sptPaneSubCmp.setDividerLocation(170);        
         divSubCmp = new DivisorSplitPane(false, sptPaneSubCmp);
         
         sptPaneUniSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
@@ -397,7 +397,7 @@ public class PainelEquipamento {
         pnlSelecionadosExcluir.add(pnlSelecao, BorderLayout.WEST);
         
         // PainelEquipamento final
-        pnlUniFinal = new JPanel(new BorderLayout(10,0));
+        pnlUniFinal = new JPanel(new BorderLayout(5,0));
         pnlUniFinal.setBorder(BorderFactory.createTitledBorder(
                             BorderFactory.createEtchedBorder(), "Equipamento"));
         pnlUniFinal.add(sptPaneUniSub, BorderLayout.CENTER);

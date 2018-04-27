@@ -173,7 +173,6 @@ public class Equipe {
         sqlAlterarExperiencia();
         sqlAlterarHabilidade();
         sqlAlterarObjetivo();
-        sqlAlterarInterventor();
     }
     
     /**
@@ -258,13 +257,16 @@ public class Equipe {
             n = Consulta.vincularEquipe(this.getIdBD(), it.getIdBD());
         }
     }
-    public void sqlAlterarInterventor() {
+    public void sqlAlterarInterventor(Interventor it, int idAntigo) {
         int n;
-        for(Interventor it : intv) {
-            n = Consulta.vincularEquipe(this.getIdBD(), it.getIdBD());
-        }
+        n = Consulta.atualizarVinculoEquipe(it.getIdBD(), this.getIdBD(), idAntigo);
+    }
+    public void sqlExcluirInterventor() {
+        int n;
+        n = Consulta.desvincularEquipe(this.getIdBD());
     }
     
+    // Métodos objetivo geral
     public void sqlAlterarObjetivoGeral() {
         int n;
         n = Consulta.updateEquipe(this.objGeral, this.getIdBD());

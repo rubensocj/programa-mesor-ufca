@@ -87,4 +87,12 @@ public class Sistema {
         int n;
         n = Consulta.updateSistema(this.nome, this.descricao, this.idBD);
     }
+    
+    /**
+     * Altera informações no banco de dados.
+     */
+    public void sqlExcluir() {
+        int n;
+        n = Consulta.deleteSistema(this.idBD);
+    }
 }

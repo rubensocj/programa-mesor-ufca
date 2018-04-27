@@ -166,7 +166,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
          */
         JPanel pnlAlterarIntervencao = new JPanel(new BorderLayout());
         pnlAlterarIntervencao.add(painelIntervencao(), BorderLayout.NORTH);
-        pnlAlterarIntervencao.add(pnlTabelaDemanda, BorderLayout.CENTER);
+//        pnlAlterarIntervencao.add(pnlTabelaDemanda, BorderLayout.CENTER);
         pnlAlterarIntervencao.add(pnlSalvarAlteracao, BorderLayout.SOUTH);
         
         inicializarMapaComponentes();
@@ -344,7 +344,7 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
     @Override
     public JPanel painelDemanda() {
         /* Painel com a tabela das demandas */
-        pnlDemanda.tamanhoDaTabela(new Dimension(300,250));
+        pnlDemanda.tamanhoDaTabela(new Dimension(320,150));
         pnlDemanda.habilitarTabela(false);
         pnlTabelaDemanda = pnlDemanda.painelTabelas();
         return pnlTabelaDemanda;

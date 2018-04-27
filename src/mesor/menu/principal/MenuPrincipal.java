@@ -269,7 +269,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarIntervencao janela;
                 janela = new JanelaAlterarIntervencao();
-                janela.mostrar("Alterar intervenção", 0);
+                janela.mostrar("Alterar/Excluir intervenção", 0);
             }
         }
     }
@@ -281,7 +281,7 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarInterventor janela;
                 janela = new JanelaAlterarInterventor();
-                janela.mostrar("Alterar interventor");
+                janela.mostrar("Alterar/Excluir interventor");
             }
         }
     }
@@ -292,7 +292,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR DEMANDA.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarDemanda janela = new JanelaAlterarDemanda();
-                janela.mostrar("Alterar demanda", 0);
+                janela.mostrar("Alterar/Excluir demanda", 0);
             }
         }
     }
@@ -303,7 +303,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR EQUIPE.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarEquipe janela = new JanelaAlterarEquipe();
-                janela.mostrar("Alterar equipe de intervenção");
+                janela.mostrar("Alterar/Excluir equipe de intervenção");
             }
         }
     }    
@@ -314,7 +314,7 @@ public class MenuPrincipal extends JFrame {
             System.out.println("ActionEvent: ALTERAR SISTEMA.");
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarSistema janela = new JanelaAlterarSistema();
-                janela.mostrar("Alterar sistema");
+                janela.mostrar("Alterar/Excluir sistema");
             }
         }
     }

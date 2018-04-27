@@ -29,14 +29,14 @@ public class ModeloTabela extends AbstractTableModel {
 //    private boolean conectado = false;
     
     // Nome e URL do banco de dados.
-    private static final String BD_NAME = "bdprograma";
-//    private static final String BD_HOST = "192.168.1.12:3306/";
-    private static final String BD_HOST = "localhost:3306/";
-    private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
-    
-    // Acesso ao servidor: usuário e senha
-    private static final String USERNAME = "mesor";
-    private static final String PASSWORD = "mesorufca1506";
+//    private static final String BD_NAME = "bdprograma";
+////    private static final String BD_HOST = "192.168.1.12:3306/";
+//    private static final String BD_HOST = "localhost:3306/";
+//    private static final String BD_URL = "jdbc:mysql://" + BD_HOST + BD_NAME;
+//    
+//    // Acesso ao servidor: usuário e senha
+//    private static final String USERNAME = "mesor";
+//    private static final String PASSWORD = "mesorufca1506";
     
     // Construtor
     public ModeloTabela(String consulta) throws SQLException {

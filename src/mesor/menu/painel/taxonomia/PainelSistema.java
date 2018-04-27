@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import java.sql.SQLException;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.ModeloTabela;
 
@@ -19,7 +20,7 @@ import mesor.sql.ModeloTabela;
  */
 public class PainelSistema {
     
-    public JTable tabSistema;
+    public JTable tab;
     
     private final DefaultTableCellRenderer render;
     private ModeloTabela modelo;
@@ -41,7 +42,7 @@ public class PainelSistema {
          * Cria a tabela com uma consulta em SQL.
          */
         try {
-            tabSistema = new JTable(
+            tab = new JTable(
                         new ModeloTabela("SELECT * FROM sistema"));
             
             atualizarAparenciaDaTabela();
@@ -51,10 +52,10 @@ public class PainelSistema {
         /**
          * Cria o JScrollPane da tabela.
          */
-        sPane = new JScrollPane(tabSistema,
+        sPane = new JScrollPane(tab,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        tabSistema.setFillsViewportHeight(true);
+        tab.setFillsViewportHeight(true);
         
         pnlSistema = new JPanel(new FlowLayout());
         pnlSistema.add(sPane);
@@ -77,11 +78,15 @@ public class PainelSistema {
      * Reinicia a tabela através de uma consulta SQL {@code SELECT * FROM
      * demanda}.
      * 
-     * @throws SQLException 
      */
-    public void reiniciarTabela() throws SQLException {
-        modelo = (ModeloTabela) tabSistema.getModel();
-        modelo.setQuery("SELECT * FROM sistema");
+    public void reiniciarTabela() {
+        try {
+            modelo = (ModeloTabela) tab.getModel();
+            modelo.setQuery("SELECT * FROM sistema");
+        } catch (SQLException ex) {
+            DialogoAviso.show("SQLExcpetion: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
     }
     
     /**
@@ -98,7 +103,7 @@ public class PainelSistema {
     public void buscarSistema(Object idUnidade, Object idSubunidade,
                 Object idComponente, Object idParte) throws SQLException {
         
-        modelo = (ModeloTabela) tabSistema.getModel();
+        modelo = (ModeloTabela) tab.getModel();
         if(idSubunidade == null) {
             modelo.setQuery(
                 "SELECT demanda.* FROM " +
@@ -141,17 +146,17 @@ public class PainelSistema {
      */
     public void atualizarAparenciaDaTabela() {
 
-        tabSistema.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tabSistema.getTableHeader().setReorderingAllowed(false);
-        tabSistema.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tab.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tab.getTableHeader().setReorderingAllowed(false);
+        tab.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        tabSistema.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tab.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        tabSistema.getColumnModel().getColumn(0).setPreferredWidth(40);
-        tabSistema.getColumnModel().getColumn(1).setPreferredWidth(250);
-        tabSistema.getColumnModel().getColumn(2).setPreferredWidth(300);
+        tab.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tab.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tab.getColumnModel().getColumn(2).setPreferredWidth(300);
 
-        tabSistema.getColumnModel().getColumn(0).setCellRenderer(render);
+        tab.getColumnModel().getColumn(0).setCellRenderer(render);
     }
     
     /**
@@ -161,12 +166,12 @@ public class PainelSistema {
      * @param habilita - booleano
      */
     public void habilitarTabela(boolean habilita) {
-        tabSistema.setEnabled(habilita);
+        tab.setEnabled(habilita);
         
         if(habilita == true) {
-            tabSistema.setForeground(Color.BLACK);
+            tab.setForeground(Color.BLACK);
         } else if(habilita == false) {
-            tabSistema.setForeground(Color.LIGHT_GRAY);
+            tab.setForeground(Color.LIGHT_GRAY);
         }
     }
     

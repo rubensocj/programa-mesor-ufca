@@ -28,13 +28,13 @@ public class Lista extends Consulta {
     
     
     // Nome e URL do banco de dados
-    private static final String BD_NAME = "bdprograma";
-    private static final String BD_URL = "jdbc:mysql:" + 
-                                        "//192.168.1.12:3306/" + BD_NAME;
-    
-    // Acesso ao servidor: usuário e senha
-    private static final String USERNAME = "mesor";
-    private static final String PASSWORD = "mesorufca1506";
+ //   private static final String BD_NAME = "bdprograma";
+ //   private static final String BD_URL = "jdbc:mysql:" + 
+//                                        "//192.168.1.12:3306/" + BD_NAME;
+//    
+//    // Acesso ao servidor: usuário e senha
+//    private static final String USERNAME = "mesor";
+//    private static final String PASSWORD = "mesorufca1506";
     
     public JList l; //, listaAtributos;
     public List<String> lista = new ArrayList<>();
@@ -46,6 +46,7 @@ public class Lista extends Consulta {
      * @param consulta
      */
     public Lista(String consulta) {
+
         if(!conectado) { conectar(); }
         try {
             statement = connection.createStatement(

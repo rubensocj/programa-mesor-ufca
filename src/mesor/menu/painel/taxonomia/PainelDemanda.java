@@ -20,6 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.regex.PatternSyntaxException;
+import javax.swing.table.TableRowSorter;
+import mesor.menu.Janela;
 
 /**
  * PainelDemanda.java
@@ -44,6 +47,11 @@ public class PainelDemanda extends JPanel {
     private JButton btnExcluir = new JButton("Excluir item");
     private JPanel pnlDem;
     
+    private JLabel lblDem = new JLabel("");
+    private TableRowSorter<ModeloTabela> ord;
+    private JTextField tfdBusca;
+    private JButton btnBusca;
+    
     public static int NIVEL_SISTEMA = 0, NIVEL_UNIDADE = 1, NIVEL_SUBUNIDADE = 2,
                 NIVEL_COMPONENTE = 3, NIVEL_PARTE = 4;
     private String query;
@@ -58,8 +66,15 @@ public class PainelDemanda extends JPanel {
         
         /** Cria a tabela com uma consulta em SQL */
         try {
-            tabDemanda = new JTable(new ModeloTabela("SELECT * FROM demanda"));
-            atualizarAparenciaDaTabela();            
+            ModeloTabela modeloTabela = new ModeloTabela("SELECT id, data, modo, impacto, causa FROM demanda");
+            
+            tabDemanda = new JTable(modeloTabela);
+            
+            // Cria objeto da classe TableRowSorter, para ordenar os valores
+            // das linhas com o clique no cabeçalho da coluna
+            ord = new TableRowSorter<>(modeloTabela);
+            
+            atualizarAparenciaDaTabela();
         } catch (SQLException ex) { ex.getErrorCode();}
         
         // Adiciona os MOUSELISTENER às painelTabelas.
@@ -88,8 +103,12 @@ public class PainelDemanda extends JPanel {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabDemanda.setFillsViewportHeight(true);
         
-        pnlDem = new JPanel(new FlowLayout());
-        pnlDem.add(dPane);
+        inicializaEConfiguraBusca();
+        
+        pnlDem = new JPanel(new BorderLayout(0,5));
+        pnlDem.add(PainelInterventor.painelBusca(
+                        lblDem, tfdBusca, btnBusca), BorderLayout.NORTH);
+        pnlDem.add(dPane, BorderLayout.CENTER);
         pnlDem.setOpaque(true);        
         
         // PainelDemanda final
@@ -110,7 +129,13 @@ public class PainelDemanda extends JPanel {
         
         /** Cria a tabela com uma consulta em SQL */
         try {
-            tabDemanda = new JTable(new ModeloTabela(query));
+            ModeloTabela modeloTabela = new ModeloTabela(query);
+            
+            tabDemanda = new JTable(modeloTabela);
+            
+            // Cria objeto da classe TableRowSorter, para ordenar os valores
+            // das linhas com o clique no cabeçalho da coluna
+            ord = new TableRowSorter<>(modeloTabela);
             atualizarAparenciaDaTabela();            
         } catch (SQLException ex) { ex.getErrorCode();}
         
@@ -207,7 +232,7 @@ public class PainelDemanda extends JPanel {
      */
     public void reiniciarTabela() throws SQLException {
         modelo = (ModeloTabela) tabDemanda.getModel();
-        modelo.setQuery("SELECT * FROM demanda");
+        modelo.setQuery("SELECT id, data, modo, impacto, causa FROM demanda");
     }
     
     /**
@@ -274,20 +299,20 @@ public class PainelDemanda extends JPanel {
         tabDemanda.getColumnModel().getColumn(2).setPreferredWidth(60);
         tabDemanda.getColumnModel().getColumn(3).setPreferredWidth(120);
         tabDemanda.getColumnModel().getColumn(4).setPreferredWidth(60);
-        tabDemanda.getColumnModel().getColumn(5).setPreferredWidth(130);
-        tabDemanda.getColumnModel().getColumn(6).setPreferredWidth(70);
-        tabDemanda.getColumnModel().getColumn(7).setPreferredWidth(100);
-        tabDemanda.getColumnModel().getColumn(8).setPreferredWidth(100);
-        tabDemanda.getColumnModel().getColumn(9).setPreferredWidth(60);
+//        tabDemanda.getColumnModel().getColumn(5).setPreferredWidth(130);
+//        tabDemanda.getColumnModel().getColumn(6).setPreferredWidth(70);
+//        tabDemanda.getColumnModel().getColumn(7).setPreferredWidth(100);
+//        tabDemanda.getColumnModel().getColumn(8).setPreferredWidth(100);
+//        tabDemanda.getColumnModel().getColumn(9).setPreferredWidth(60);
 
         tabDemanda.getColumnModel().getColumn(0).setCellRenderer(render);
         tabDemanda.getColumnModel().getColumn(1).setCellRenderer(render);
         tabDemanda.getColumnModel().getColumn(2).setCellRenderer(render);
         tabDemanda.getColumnModel().getColumn(4).setCellRenderer(render);
-        tabDemanda.getColumnModel().getColumn(6).setCellRenderer(render);
-        tabDemanda.getColumnModel().getColumn(7).setCellRenderer(render);
-        tabDemanda.getColumnModel().getColumn(8).setCellRenderer(render);
-        tabDemanda.getColumnModel().getColumn(9).setCellRenderer(render);
+//        tabDemanda.getColumnModel().getColumn(6).setCellRenderer(render);
+//        tabDemanda.getColumnModel().getColumn(7).setCellRenderer(render);
+//        tabDemanda.getColumnModel().getColumn(8).setCellRenderer(render);
+//        tabDemanda.getColumnModel().getColumn(9).setCellRenderer(render);
     }
     
     /**
@@ -314,6 +339,41 @@ public class PainelDemanda extends JPanel {
      */
     public void tamanhoDaTabela(Dimension dim) {
         dPane.setPreferredSize(dim);
+    }
+    
+    /**
+     * Inicializa os campos de busca nas tabelas e os botões realizam a busca.
+     */
+    private void inicializaEConfiguraBusca(){
+        // Inicializa JTextFields
+        tfdBusca = new JTextField();        
+        tfdBusca.setColumns(10);
+        
+        // Inicializa JButtons
+        btnBusca = new JButton(Janela.criarIcon("/res/icone/busca.png"));
+        
+        // Define o tamanho dos botões
+        btnBusca.setPreferredSize(new Dimension(20,20));
+
+        // Define os ActionListeners
+        btnBusca.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = tfdBusca.getText();
+                if(texto.length() == 0) {
+                    ord.setRowFilter(null);
+                } else {
+                    try {
+                        // Atribui o filtro nas linhas usando RowFilter
+                        // (?i) torna a busca case insensitive
+                        ord.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                    } catch(PatternSyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        
     }
     
     // -------------------------------------------------------------------------
