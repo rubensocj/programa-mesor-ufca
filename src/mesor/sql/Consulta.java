@@ -1,11 +1,13 @@
 package mesor.sql;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 
 import mesor.menu.DialogoAviso;
 
@@ -1496,12 +1498,24 @@ public class Consulta {
      */
     public static void testarConexão() {
         try {
+            // Testa se a conexão é válida após 10s de espera 
+            if(connection != null && !connection.isValid(10)) {
+                System.err.println("Encerrando conexão inválida");
+                connection = null;
+            }
+            
+            // Testa se a conexão é nula
+            if(connection == null) {
+                System.out.println("Testando conexão com o servidor...");
+                connection = DriverManager.getConnection(
+                        BD_URL, USERNAME, PASSWORD);
+            }
             // Verificar se connection é null
             // Verificar se connection está ativo / se há conexão
             // Não criar um a conexão cada vez que chamar o método
-            System.out.println("Testando conexão com o servidor...\n");
-            connection = DriverManager.getConnection(
-                        BD_URL, USERNAME, PASSWORD);
+//            System.out.println("Testando conexão com o servidor...");
+//            connection = DriverManager.getConnection(
+//                        BD_URL, USERNAME, PASSWORD);
         } // fim do try.
         catch(SQLException e) {
             /* Se houver erro, exibe mensagem de erro */
@@ -1509,7 +1523,7 @@ public class Consulta {
             e.printStackTrace();
         }
         
-        System.out.println("Conexão estabelecida.");
+        System.out.println("Conexão válida");
         conectado = true;
     }
     
