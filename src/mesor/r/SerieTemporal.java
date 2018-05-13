@@ -45,11 +45,10 @@ public class SerieTemporal {
     private static PreparedStatement obterSerieTemporal = null;
     private static ResultSet resultadoConsulta = null;
     
-    public SerieTemporal(String n, int id) {
-        inicializarPreparedStatementSQL(n, id);
+    public SerieTemporal(int[] n) {
+        inicializarPreparedStatementSQL(n);
         executarConsultaSQL();
         calcularTempoEntre(Tempo.SEGUNDOS);
-        
     }
     
     // -------------------------------------------------------------------------
@@ -60,22 +59,23 @@ public class SerieTemporal {
      * Inicializa o preparedStatement com uma consulta referente ao nível 
      * taxonômico n informado.
      * 
-     * @param n 
+     * @param n posição no array do nível taxônomico selecionado. n = 0 é o id do sistema
      */
-    private static void inicializarPreparedStatementSQL(String n, int id) {
-        Consulta.testarConexão();
+    private static void inicializarPreparedStatementSQL(int[] n) {
         
         String campo = "";
-        switch(n) {
-            case "Unidade" : campo = "id_unidade"; break;
-            case "Subunidade" : campo = "id_subunidade"; break;
-            case "Componente" : campo = "id_componente"; break;
-            case "Parte" : campo = "id_parte"; break;
+        switch(n.length) {
+            case 2 : campo = "id_unidade"; break;
+            case 3 : campo = "id_subunidade"; break;
+            case 4 : campo = "id_componente"; break;
+            case 5 : campo = "id_parte"; break;
         }
         try {
             obterSerieTemporal = Consulta.connection.prepareStatement(
-                        "SELECT intervencao.inicio, intervencao.categoria " +
-                        "FROM intervencao WHERE " + campo + "= " + String.valueOf(id) + ";");
+                    "SELECT intervencao.inicio, intervencao.categoria " +
+                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
+                    String.valueOf(n[n.length - 1]) + " AND sistema.id = " + 
+                    String.valueOf(n[0]) + ";");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

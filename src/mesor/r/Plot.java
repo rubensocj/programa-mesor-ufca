@@ -52,6 +52,8 @@ public class Plot extends JPanel {
     private double ratio;  // Aspect ratio da imagem original
     private int wPnl;      // Dimensões do painel em abas que abrigará o plot
     
+    private SerieTemporal serie; // Serie temporal
+    
     // -------------------------------------------------------------------------
     // Construtores.
     // -------------------------------------------------------------------------
@@ -115,15 +117,24 @@ public class Plot extends JPanel {
      * 
      * @param x
      * @param y 
+     * @param t array de inteiros com os ids de cada nível taxonomico (sistema até parte)
+     * @param pn
      */
-    public Plot(int x, int y) {
+    public Plot(int x, int y, int[] t, String pn) {
         // Pega a largura da aba que mostrará o plot
         wPnl = x;
+        
+        serie = new SerieTemporal(t);
+        
+        CamadaR camadaR = new CamadaR();
+        camadaR.setNomeImagemTabela(pn);
+        camadaR.setSerieTemporal(serie);
+        camadaR.run();
         
         try {
             // Cria a imagem a partir do arquivo
             // Pega o aspect ratio da imagem importada
-            BufferedImage p = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "\\wgrp_plot.png"));
+            BufferedImage p = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "\\wgrp_plot" + pn + ".png"));
             h1 = p.getHeight(null);
             w1 = p.getWidth(null);
             ratio = h1/w1;

@@ -15,6 +15,11 @@ import javax.swing.JOptionPane;
  */
 public class DialogoAviso {
 
+    private static JOptionPane pane;
+    private static JDialog dialog;
+    
+    public DialogoAviso() {}
+    
     public static void show(String m) {
         /* Se houver erro, exibe mensagem de erro */
         JOptionPane mPane = new JOptionPane();
@@ -26,5 +31,23 @@ public class DialogoAviso {
         mDialog.pack();
         mDialog.setVisible(true);
         mDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+    
+    public void showProgress(String m) {
+        /* Se houver erro, exibe mensagem de erro */
+        pane = new JOptionPane(m, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+//        pane.setMessage(m);
+//        pane.setOptionType(JOptionPane.WARNING_MESSAGE);
+//        pane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+
+        dialog = pane.createDialog(pane, "Aviso");
+        dialog.setModal(true);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+    
+    public void dispose() {
+        dialog.dispose();
     }
 }

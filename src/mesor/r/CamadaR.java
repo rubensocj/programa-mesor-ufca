@@ -5,6 +5,8 @@ package mesor.r;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 
 import java.nio.charset.Charset;
@@ -17,6 +19,15 @@ import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.RVector;
 
 import java.io.IOException;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import mesor.menu.DialogoAviso;
+
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -24,7 +35,8 @@ import java.io.IOException;
  */
 public class CamadaR {
 
-    static SerieTemporal str = new SerieTemporal("Subunidade", 15);
+    // Serie temporal
+    private static SerieTemporal str = null;
 
     // REngine
     static Rengine re;
@@ -61,10 +73,54 @@ public class CamadaR {
     // Caminho usado para salvar arquivo parametersAndICs_table.txt
     public static final String R_USERS_PUBLIC = "C:/Users/Public/";
     
+    // Nome do arquivo - Data da criação
+    public static String nomePlot = "", nomeTabela;
+    
+    // Barra de progresso da operação
+//    private final AbsoluteConstraints absBarra, absLabel;
+//    private final AbsoluteLayout absLayout;
+//    private final JProgressBar barra;
+//    private final JLabel lbl;
+//    private final JFrame frm;
+//    private final JPanel pnl;
+//    private final SwingProgressBarExample pb;
+    private final DialogoAviso aviso;
+    
     /**
-     * @param args the command line arguments
+     * Construtor
      */
-    public static void main(String[] args) {
+    public CamadaR() {
+        aviso = new DialogoAviso();
+        new Thread() {
+            @Override
+            public void run() {
+                aviso.showProgress("Obtendo resultados da análise WGRP...");
+            }
+        }.start();
+//        absLayout = new AbsoluteLayout();
+//        absBarra = new AbsoluteConstraints(40, 30);
+//        absLabel = new AbsoluteConstraints(40, 10);
+//        
+//        barra = new JProgressBar(0,100);
+//        barra.setStringPainted(true);
+//        lbl = new JLabel("aaaaaa");
+//        
+//        pnl = new JPanel(new BorderLayout());
+//        pnl.add(barra, BorderLayout.PAGE_START);
+//        
+//        pb = new SwingProgressBarExample();
+//        frm = new JFrame("Progresso da modelagem");
+////        frm.add(lbl, BorderLayout.NORTH);
+//        frm.setContentPane(pb);
+////        frm.add(barra, BorderLayout.PAGE_START);
+////        frm.setPreferredSize(new Dimension(500,100));
+//        frm.pack();
+//        frm.setVisible(true);
+//        frm.setLocationRelativeTo(null);
+    }
+    
+    public void run() {
+        
         // Inicia a REngine
         rIniciarREngine();
 
@@ -73,19 +129,49 @@ public class CamadaR {
         
         // Importação dos dados vindos do banco e conversão para objetos R
         rGetSeriesTemporais(str);
-
-        // Estudo WGRP e geração dos resultados em tabeça e imagem
+        
+        // Estudo WGRP e geração dos resultados em tabela e imagem
         rEstudoWGRP();
         
+        aviso.dispose();
 //        System.out.println("\n** ---------------------------\n\n TENTANDO FINALIZAR O R...");
 //        re.end();
-        System.out.println("\nPronto...");
-
-        // Encerra a JVM
-//        Runtime.getRuntime().exit(1);
-//        System.exit(0);
+        System.out.println("\nPronto");
     }
+    
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String[] args) {
+//        // Inicia a REngine
+//        rIniciarREngine();
+//
+//        // Compila o arquivo MK_WGRP.R
+//        rCompilarArquivoMK_WGRP();
+//        
+//        // Importação dos dados vindos do banco e conversão para objetos R
+//        rGetSeriesTemporais(str);
+//
+//        // Estudo WGRP e geração dos resultados em tabela e imagem
+//        rEstudoWGRP();
+//        
+////        System.out.println("\n** ---------------------------\n\n TENTANDO FINALIZAR O R...");
+////        re.end();
+//        System.out.println("\nPronto...");
+//
+//        // Encerra a JVM
+////        Runtime.getRuntime().exit(1);
+////        System.exit(0);
+//    }
 
+    public void setSerieTemporal(SerieTemporal s) {
+        CamadaR.str = s;
+    }
+    
+    public void setNomeImagemTabela(String nome) {
+        CamadaR.nomePlot = nome;
+    }
+    
     /**
      * Verifica se as condições necessárias para a inicialização da sessão R
      * foram atendidas e tenta criar a sessão. Ao criá-la, o ambiente R está
@@ -205,21 +291,25 @@ public class CamadaR {
      * escolha dos melhores modelos, criação de arquivos txt com resumo do
      * procedimento e imagem com o gráfico.
      */
-    private static void rEstudoWGRP() {
+    private void rEstudoWGRP() {
         //
         re.eval("n_x=length(data_base_x)");
         rEnv();
         
         // Cria o objeto mle_objs em R. Executa o cálculo principal da
         // modelagem.
+        System.out.println("Chamando getMLE_objs...");
         rexpMle_objs = re.eval(R_MLE_OBJS + 
             " = getMLE_objs(timesBetweenInterventions = " + R_TEMPOS_ENTRE +
             ", interventionsTypes = " + R_TIPOS + ")");
+        System.out.println("Feito.\n");
         rEnv();
         
         // Chama método de MK_WGRP.R que cria parametersAndICs_table.txt
+        System.out.println("Chamando summarizeICsAndParametersTable...");
         rexpICsAndParameters = re.eval("df=summarizeICsAndParametersTable(" +
                 R_MLE_OBJS + ", " + R_TEMPOS_ENTRE + ", \"" + R_LOCAL + "/\")");
+        System.out.println("Feito.\n");
         rEnv();
 
         /**
@@ -243,19 +333,23 @@ public class CamadaR {
         re.eval("parameters = getParameters(nSamples=1000, " + 
                     "nInterventions=(n_x+m), a=optimum$a, b=optimum$b, " + 
                     "q=optimum$q, propagations = pmPropagations);");
+        System.out.println("Chamando bootstrapSample...");
         re.eval("bSample = bootstrapSample(parameters);");
+        System.out.println("Feito.\n");
         re.eval("theoreticalMoments = sampleConditionalMoments(parameters)");
 
         // Cria o arquivo de imagem
-        re.eval("try(png(filename = \"wgrp_plot.png\",width=1024,height=768))");
+        re.eval("try(png(filename = \"wgrp_plot" + nomePlot + ".png\",width=1024,height=768))");
         re.eval("plot.new();");
         
+        System.out.println("Plotando...");
         re.eval("graphicStudyOfCumulativeTimes(x=data_base_x, " +
                     "bootstrapSample= bSample, conditionalMeans = " + 
                     "theoreticalMoments, parameters=parameters);");
         
         // Finaliza o dispositivo gráfico
         re.eval("dev.off();");
+        System.out.println("Feito.");
     }
     
     /**
@@ -355,4 +449,26 @@ public class CamadaR {
      * @deprecated
      */
     private static void rConfigurarPATHs() {}
+    
+    private class SwingProgressBarExample extends JPanel {
+
+        JProgressBar pbar;
+
+        static final int MY_MINIMUM = 0;
+
+        static final int MY_MAXIMUM = 100;
+
+        public SwingProgressBarExample() {
+          // initialize Progress Bar
+          pbar = new JProgressBar();
+          pbar.setMinimum(MY_MINIMUM);
+          pbar.setMaximum(MY_MAXIMUM);
+          // add to JPanel
+          add(pbar);
+        }
+
+        public void updateBar(int newValue) {
+          pbar.setValue(newValue);
+        }
+    }
 }

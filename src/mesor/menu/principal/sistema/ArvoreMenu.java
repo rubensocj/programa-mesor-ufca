@@ -22,6 +22,7 @@ import mesor.menu.painel.taxonomia.PainelDemanda;
 import mesor.menu.painel.taxonomia.PainelIntervencao;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaNordeste;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaSudeste;
+import mesor.r.CamadaR;
 
 import mesor.r.Plot;
 import mesor.r.TabelaParametrosEICs;
@@ -388,9 +389,10 @@ public class ArvoreMenu {
             String g = "Parâmetros " + hoje + " " + s;
             
             pnlAbaNordeste.addTab(p, null,
-                        new PainelConteudo(
-                            new Plot(pnlAbaNordeste.getWidth(),
-                                    pnlAbaNordeste.getHeight())), p);
+                    new PainelConteudo(
+                        new Plot(pnlAbaNordeste.getWidth(), pnlAbaNordeste.getHeight(), new int[] {1,3,15}, p)
+                        ),
+                    p);
             pnlAbaSudeste.addTab(g, null,
                         new PainelConteudo(new TabelaParametrosEICs()), g);
         }
