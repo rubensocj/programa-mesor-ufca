@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -43,6 +44,7 @@ public class ArvoreMenu {
     
     public JLabel jlab;
     public mesor.sql.Lista lsSistemas;
+    public mesor.sql.Lista lsSistemasCod;
     public mesor.sql.Lista[] lsUni;
     public mesor.sql.Lista[] lsUniCod;
     
@@ -54,6 +56,8 @@ public class ArvoreMenu {
     public mesor.sql.Lista lsPteCod;
     
     public int s, u, sb;
+    
+    public int[] arrayItem = new int[] {0,0,0,0,0};
     
     public int NIVEL_SELECAO_NO = 0;
     public String CODIGO_SELECAO_NO = "";
@@ -68,6 +72,7 @@ public class ArvoreMenu {
         try {
             // Faz consulta SQL e cria uma lista com os dados de uma coluna
             lsSistemas = new Lista("SELECT nome FROM sistema");
+            lsSistemasCod = new Lista("SELECT id FROM sistema");
             
             // Pega o comprimento do vetor com os dados da consulta
             s = lsSistemas.size();
@@ -133,10 +138,10 @@ public class ArvoreMenu {
         int i = 0, j = 0;
         while(i < lsSistemas.size()) {
             // Preenche o array dos nós (sistemas)
-            arrayNOSistema[i] = new DefaultMutableTreeNode(lsSistemas.get(i));
+            arrayNOSistema[i] = new DefaultMutableTreeNode(lsSistemasCod.get(i) + " - " + lsSistemas.get(i));
 
             // String com o nome do sistema corrente no loop
-            String n = arrayNOSistema[i].toString();
+            String n = lsSistemas.get(i).toString();
 
             // Lista resultado da consulta SQL: 
             // Unidades do sistema corrente
@@ -265,8 +270,20 @@ public class ArvoreMenu {
                 }
 
                 // Pega o nível
-                NIVEL_SELECAO_NO = no.getLevel();                
+                NIVEL_SELECAO_NO = no.getLevel();
                 System.out.println("nivel:" + String.valueOf(NIVEL_SELECAO_NO));
+                System.out.println(Arrays.toString(tree.getSelectionPaths()));
+                
+                // Pega o caminho do nó selecionado
+                // E para cada nível taxonomico pega o id e grava no arrayItem
+                // arrayItem vai ser passado em serieTemporal
+                TreePath[] tp = tree.getSelectionPaths();
+                String[] trp = Arrays.toString(tp).split(", ");
+                for(int i = 1; i < trp.length; i++) {
+                    System.out.println(trp[i]);
+                    String[] splitD = trp[i].split(" - ");
+                    arrayItem[i - 1] = Integer.parseInt(splitD[0]);
+                }
             }
         });
         
@@ -328,6 +345,8 @@ public class ArvoreMenu {
                 TreePath pathSelecao = tree.getClosestPathForLocation(
                                                         e.getX(), e.getY());
                 tree.setSelectionPath(pathSelecao);
+                
+                System.out.println(Arrays.toString(tree.getSelectionRows()));
             }
             if(e.isPopupTrigger()) {
                 try {
@@ -387,10 +406,11 @@ public class ArvoreMenu {
             String s = tree.getLastSelectedPathComponent().toString();
             String p = "Gráfico " + hoje + " " + s;
             String g = "Parâmetros " + hoje + " " + s;
-            
+
+            tree.getLastSelectedPathComponent();
             pnlAbaNordeste.addTab(p, null,
                     new PainelConteudo(
-                        new Plot(pnlAbaNordeste.getWidth(), pnlAbaNordeste.getHeight(), new int[] {1,3,15}, p)
+                        new Plot(pnlAbaNordeste.getWidth(), pnlAbaNordeste.getHeight(), arrayItem, p)
                         ),
                     p);
             pnlAbaSudeste.addTab(g, null,

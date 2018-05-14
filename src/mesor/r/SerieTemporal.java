@@ -63,18 +63,24 @@ public class SerieTemporal {
      */
     private static void inicializarPreparedStatementSQL(int[] n) {
         
+        // Verifica qual nível taxonômico do item selecionado
+        int i = 0;
+        while(n[i] != 0) {
+            i++;
+        }
+        
         String campo = "";
-        switch(n.length) {
-            case 2 : campo = "id_unidade"; break;
-            case 3 : campo = "id_subunidade"; break;
-            case 4 : campo = "id_componente"; break;
-            case 5 : campo = "id_parte"; break;
+        switch(i - 1) {
+            case 1 : campo = "id_unidade"; break;
+            case 2 : campo = "id_subunidade"; break;
+            case 3 : campo = "id_componente"; break;
+            case 4 : campo = "id_parte"; break;
         }
         try {
             obterSerieTemporal = Consulta.connection.prepareStatement(
                     "SELECT intervencao.inicio, intervencao.categoria " +
                     "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
-                    String.valueOf(n[n.length - 1]) + " AND sistema.id = " + 
+                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
                     String.valueOf(n[0]) + ";");
         } catch (SQLException ex) {
             ex.printStackTrace();
