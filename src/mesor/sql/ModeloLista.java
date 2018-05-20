@@ -8,6 +8,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mesor.equipamento.Sistema;
 import mesor.menu.DialogoAviso;
 
@@ -17,7 +19,7 @@ import mesor.menu.DialogoAviso;
 public class ModeloLista extends DefaultListModel {
     
 //    private final Connection con;
-    private final Statement statement;
+    private Statement statement = null;
     private ResultSet resultSet;
     private ResultSetMetaData metaData;
     private int linhas;
@@ -30,15 +32,38 @@ public class ModeloLista extends DefaultListModel {
     /**
      * Construtor.
      * @param consulta
-     * @throws SQLException 
      */
-    public ModeloLista(String consulta) throws SQLException {
-        if(!Consulta.conectado) { Consulta.conectar(); }
-        statement = Consulta.connection.createStatement(
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+    public ModeloLista(String consulta) {
         
-        setQuery(consulta);
+        try {
+            statement = Consulta.connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
+            
+            setQuery(consulta);
+        } catch (SQLException e) {
+            
+            e.printStackTrace();            
+            Consulta.conectar();
+
+        } catch(Exception ex2) {
+            
+            ex2.printStackTrace();
+            Consulta.conectar();
+            
+        } finally {
+            try {
+                statement = Consulta.connection.createStatement(
+                            ResultSet.CONCUR_READ_ONLY,
+                            ResultSet.TYPE_SCROLL_INSENSITIVE);
+                
+                setQuery(consulta);
+            } catch (SQLException ex) {
+                DialogoAviso.show("SQLException em construtor ModeloLista(consulta): " + 
+                        ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
+        }
         
         arrayRes = new String[linhas+1];
         arraySistema = new Sistema[linhas+1];
@@ -66,12 +91,15 @@ public class ModeloLista extends DefaultListModel {
     
     /**
      * Construtor.
-     * @throws SQLException 
      */
-    public ModeloLista() throws SQLException {
-        statement = Consulta.connection.createStatement(
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+    public ModeloLista() {
+        try {
+            statement = Consulta.connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModeloLista.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // -------------------------------------------------------------------------

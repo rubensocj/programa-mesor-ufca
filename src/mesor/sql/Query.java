@@ -34,20 +34,38 @@ public class Query extends Consulta{
 
     }
     
-    public static int consultaSQLInt(String q) {
+    public static int consultaSQLInt(String consulta) {
         Integer i = 0;
-        if(!conectado) { conectar(); }
         try {
             statement = Consulta.connection.createStatement(
                         ResultSet.CONCUR_READ_ONLY,
                         ResultSet.TYPE_SCROLL_INSENSITIVE);
 
-            setQuery(q);
+            setQuery(consulta);
 
             i = (int) (long) resultSet.getObject(1);
         } catch (SQLException e) {
-            DialogoAviso.show("Erro ao realizar consulta. " + e.getLocalizedMessage());
-            e.printStackTrace();
+            
+            e.printStackTrace();            
+            Consulta.conectar();
+
+        } catch(Exception ex2) {
+            
+            ex2.printStackTrace();
+            Consulta.conectar();
+            
+        } finally {
+            try {
+                statement = Consulta.connection.createStatement(
+                            ResultSet.CONCUR_READ_ONLY,
+                            ResultSet.TYPE_SCROLL_INSENSITIVE);
+                
+                setQuery(consulta);
+            } catch (SQLException ex) {
+                DialogoAviso.show("SQLException em construtor Query(consulta): " + 
+                        ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
         }
         return i;
     }

@@ -96,6 +96,7 @@ public class CamadaR {
             public void run() {
                 aviso.showProgress("Obtendo resultados da análise WGRP...");
             }
+//            run();
         }.start();
 //        absLayout = new AbsoluteLayout();
 //        absBarra = new AbsoluteConstraints(40, 30);

@@ -47,17 +47,34 @@ public class Lista extends Consulta {
      */
     public Lista(String consulta) {
 
-        if(!conectado) { conectar(); }
         try {
-            statement = connection.createStatement(
+            statement = Consulta.connection.createStatement(
                         ResultSet.CONCUR_READ_ONLY,
                         ResultSet.TYPE_SCROLL_INSENSITIVE);
         
             setQuery(consulta);
         } catch (SQLException e) {
-            DialogoAviso.show("SQLException em construtor Lista(consulta): " + 
-                        e.getLocalizedMessage());
+            
             e.printStackTrace();
+            Consulta.conectar();
+
+        } catch(Exception ex2) {
+            
+            ex2.printStackTrace();
+            Consulta.conectar();
+            
+        } finally {
+            try {
+                statement = Consulta.connection.createStatement(
+                            ResultSet.CONCUR_READ_ONLY,
+                            ResultSet.TYPE_SCROLL_INSENSITIVE);
+                
+                setQuery(consulta);
+            } catch (SQLException ex) {
+                DialogoAviso.show("SQLException em construtor Lista(consulta): " + 
+                        ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
         }
     }
     

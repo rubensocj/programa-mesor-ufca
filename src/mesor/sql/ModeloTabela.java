@@ -6,8 +6,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
+import mesor.menu.DialogoAviso;
 import static mesor.sql.Consulta.conectado;
 import static mesor.sql.Consulta.conectar;
 
@@ -20,7 +23,7 @@ import static mesor.sql.Consulta.conectar;
 public class ModeloTabela extends AbstractTableModel {
     
 //    private final Connection connection;
-    private final Statement statement;
+    private Statement statement;
     private ResultSet resultSet;
     private ResultSetMetaData metaData;
     private int numLinhas;
@@ -39,13 +42,36 @@ public class ModeloTabela extends AbstractTableModel {
 //    private static final String PASSWORD = "mesorufca1506";
     
     // Construtor
-    public ModeloTabela(String consulta) throws SQLException {
-        if(!conectado) { conectar(); }
-        statement = Consulta.connection.createStatement(
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE);
+    public ModeloTabela(String consulta) {
+        try {
+            statement = Consulta.connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
+            setQuery(consulta);
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+            Consulta.conectar();
+
+        } catch(Exception ex2) {
+            
+            ex2.printStackTrace();
+            Consulta.conectar();
+            
+        } finally {            
+            try {
+                statement = Consulta.connection.createStatement(
+                            ResultSet.CONCUR_READ_ONLY,
+                            ResultSet.TYPE_SCROLL_INSENSITIVE);
+                
+                setQuery(consulta);
+            } catch (SQLException ex) {
+                DialogoAviso.show("SQLException em construtor ModeloTabela(consulta): " + 
+                        ex.getLocalizedMessage());
+                ex.printStackTrace();
+            }
+        }
         
-        setQuery(consulta);
     } // Fim do construtor -----------------------------------------------------
     
     // Pega a classe que representa o tipo da coluna
