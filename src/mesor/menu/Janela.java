@@ -66,7 +66,7 @@ public abstract class Janela {
     private JList lista;
     private static JPanel pnlSistema;
     private static ModeloLista mLista;
-    private JFrame frm;
+    public JFrame frm;
     
     /**
      * Construtores.
@@ -129,9 +129,7 @@ public abstract class Janela {
     public final JPanel painelSistema() throws SQLException {
         // Inicializa a lista com a consulta SQL e define o modelo da JComboBox
         mLista = null;
-        try {
-            mLista = new ModeloLista("SELECT id, nome FROM sistema");
-        } catch (SQLException ex) {ex.printStackTrace();}
+        mLista = new ModeloLista("SELECT id, nome FROM sistema");
         cbxSistema = new JComboBox(mLista.toArray());
         cbxSistema.setPreferredSize(new Dimension(275, 20));
         cbxSistema.setSelectedIndex(0);

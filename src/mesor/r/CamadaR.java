@@ -88,16 +88,21 @@ public class CamadaR {
     
     /**
      * Construtor
+     * @param p
+     * @param s
      */
-    public CamadaR() {
+    public CamadaR(String p, SerieTemporal s) {
+        // Define a série temporal e nome do plot
+        setNomeImagemTabela(p);
+        setSerieTemporal(s);
+        
+        // Inicia thread com os cálculos na camada R
+        (new RThread()).start();
+        
+        // Exibe diálogo com informações para o usuário
         aviso = new DialogoAviso();
-        new Thread() {
-            @Override
-            public void run() {
-                aviso.showProgress("Obtendo resultados da análise WGRP...");
-            }
-//            run();
-        }.start();
+        aviso.showProgress("Obtendo resultados da análise WGRP...");
+        
 //        absLayout = new AbsoluteLayout();
 //        absBarra = new AbsoluteConstraints(40, 30);
 //        absLabel = new AbsoluteConstraints(40, 10);
@@ -120,7 +125,7 @@ public class CamadaR {
 //        frm.setLocationRelativeTo(null);
     }
     
-    public void run() {
+    public void rModelagemWGRP() {
         
         // Inicia a REngine
         rIniciarREngine();
@@ -470,6 +475,14 @@ public class CamadaR {
 
         public void updateBar(int newValue) {
           pbar.setValue(newValue);
+        }
+    }
+    
+    private class RThread extends Thread {
+
+        @Override
+        public void run() {
+            rModelagemWGRP();
         }
     }
 }

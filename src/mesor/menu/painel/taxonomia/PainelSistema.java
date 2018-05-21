@@ -38,16 +38,9 @@ public class PainelSistema {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /**
-         * Cria a tabela com uma consulta em SQL.
-         */
-        try {
-            tab = new JTable(
-                        new ModeloTabela("SELECT * FROM sistema"));
-            
-            atualizarAparenciaDaTabela();
-            
-        } catch (SQLException ex) { ex.getErrorCode();}
+        tab = new JTable(
+                    new ModeloTabela("SELECT * FROM sistema"));
+        atualizarAparenciaDaTabela();
         
         /**
          * Cria o JScrollPane da tabela.

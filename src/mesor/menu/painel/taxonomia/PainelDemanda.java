@@ -64,18 +64,10 @@ public class PainelDemanda extends JPanel {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /** Cria a tabela com uma consulta em SQL */
-        try {
-            ModeloTabela modeloTabela = new ModeloTabela("SELECT id, data, modo, impacto, causa FROM demanda");
-            
-            tabDemanda = new JTable(modeloTabela);
-            
-            // Cria objeto da classe TableRowSorter, para ordenar os valores
-            // das linhas com o clique no cabeçalho da coluna
-            ord = new TableRowSorter<>(modeloTabela);
-            
-            atualizarAparenciaDaTabela();
-        } catch (SQLException ex) { ex.getErrorCode();}
+        ModeloTabela modeloTabela = new ModeloTabela("SELECT id, data, modo, impacto, causa FROM demanda");
+        tabDemanda = new JTable(modeloTabela);
+        ord = new TableRowSorter<>(modeloTabela);
+        atualizarAparenciaDaTabela();
         
         // Adiciona os MOUSELISTENER às painelTabelas.
         tabDemanda.addMouseListener(new MouseListener() {
@@ -127,17 +119,10 @@ public class PainelDemanda extends JPanel {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /** Cria a tabela com uma consulta em SQL */
-        try {
-            ModeloTabela modeloTabela = new ModeloTabela(query);
-            
-            tabDemanda = new JTable(modeloTabela);
-            
-            // Cria objeto da classe TableRowSorter, para ordenar os valores
-            // das linhas com o clique no cabeçalho da coluna
-            ord = new TableRowSorter<>(modeloTabela);
-            atualizarAparenciaDaTabela();            
-        } catch (SQLException ex) { ex.getErrorCode();}
+        ModeloTabela modeloTabela = new ModeloTabela(query);
+        tabDemanda = new JTable(modeloTabela);
+        ord = new TableRowSorter<>(modeloTabela);
+        atualizarAparenciaDaTabela();
         
         /** Cria o JScrollPane da tabela */
         dPane = new JScrollPane(tabDemanda,

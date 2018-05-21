@@ -77,7 +77,7 @@ public class JanelaAdicionarEquipamento extends Janela {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("opção CANCELAR selecionada");
-                dialog.dispose();
+                frm.dispose();
             }
         });
         
@@ -101,7 +101,7 @@ public class JanelaAdicionarEquipamento extends Janela {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 p.setPreferredSize(new Dimension(400,500));
                 
-                JDialog janelaAjuda = new JDialog(dialog);
+                JDialog janelaAjuda = new JDialog(frm);
                 janelaAjuda.add(aPane);
                 janelaAjuda.setTitle("Ajuda");
                 janelaAjuda.pack();
@@ -463,7 +463,7 @@ public class JanelaAdicionarEquipamento extends Janela {
             /* Se não houver erro, executa a operação */
             if(mensagemErro.isEmpty()) {
                 confirmar();
-                dialog.dispose();
+                frm.dispose();
             } else {
                 /* Se houver erro, exibe mensagem de erro */
                 JOptionPane mPane = new JOptionPane();

@@ -124,12 +124,11 @@ public class Plot extends JPanel {
         // Pega a largura da aba que mostrará o plot
         wPnl = x;
         
+        // Cria a série temporal
         serie = new SerieTemporal(t);
         
-        CamadaR camadaR = new CamadaR();
-        camadaR.setNomeImagemTabela(pn);
-        camadaR.setSerieTemporal(serie);
-        camadaR.run();
+        // Cria a camada R e lida com threads
+        CamadaR camadaR = new CamadaR(pn, serie);
         
         try {
             // Cria a imagem a partir do arquivo

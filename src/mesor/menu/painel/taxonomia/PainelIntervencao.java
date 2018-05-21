@@ -52,16 +52,9 @@ public class PainelIntervencao {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /**
-         * Cria a tabela com uma consulta em SQL.
-         */
-        try {
-            tabIntervencao = new JTable(
-                        new ModeloTabela("SELECT * FROM intervencao"));
-            
-            atualizarAparenciaDaTabela();
-            
-        } catch (SQLException ex) { ex.getErrorCode();}
+        tabIntervencao = new JTable(
+                    new ModeloTabela("SELECT * FROM intervencao"));
+        atualizarAparenciaDaTabela();
         
         // Adiciona os MOUSELISTENER às painelTabelas.
         tabIntervencao.addMouseListener(new MouseListener() {
@@ -111,13 +104,8 @@ public class PainelIntervencao {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        /** Cria a tabela com uma consulta em SQL */
-        try {
-            tabIntervencao = new JTable(new ModeloTabela(query));
-            
-            atualizarAparenciaDaTabela();
-            
-        } catch (SQLException ex) { ex.getErrorCode();}
+        tabIntervencao = new JTable(new ModeloTabela(query));
+        atualizarAparenciaDaTabela();
         
         /**
          * Cria o JScrollPane da tabela.

@@ -76,27 +76,13 @@ public class PainelInterventor {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        // Cria as TABELAS com informações do banco de dados.
-        try {
-            // Cria o modelo da tabela pela classe ModeloTabela
-            ModeloTabela modeloIntv = new ModeloTabela("SELECT * FROM interventor;");
-            
-            // Cria objeto da classe TableRowSorter, para ordenar os valores
-            // das linhas com o clique no cabeçalho da coluna
-            ordIntv = new TableRowSorter<>(modeloIntv);
-
-            // Cria a tabela Interventor
-            tabInterventor = new JTable(modeloIntv);
-            
-            // Define o ordenador para esta coluna
-            tabInterventor.setRowSorter(ordIntv);
-            
-            tabInterventor.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela();
-            
-            habilitarTabela(true);
-        }
-        catch(SQLException ex) { ex.printStackTrace();}
+        ModeloTabela modeloIntv = new ModeloTabela("SELECT * FROM interventor;");
+        ordIntv = new TableRowSorter<>(modeloIntv);
+        tabInterventor = new JTable(modeloIntv);
+        tabInterventor.setRowSorter(ordIntv);
+        tabInterventor.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela();
+        habilitarTabela(true);
         
         // Adiciona os MOUSELISTENER às painelTabelas.
         tabInterventor.addMouseListener(new MouseListener() {

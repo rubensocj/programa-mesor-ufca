@@ -77,7 +77,7 @@ public class JanelaAdicionarIntervencao extends Janela {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("opção CANCELAR selecionada");
-                dialog.dispose();
+                frm.dispose();
             }
         });
         
@@ -101,7 +101,7 @@ public class JanelaAdicionarIntervencao extends Janela {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 p.setPreferredSize(new Dimension(400,500));
                 
-                JDialog janelaAjuda = new JDialog(dialog);
+                JDialog janelaAjuda = new JDialog(frm);
                 janelaAjuda.add(aPane);
                 janelaAjuda.setTitle("Ajuda");
                 janelaAjuda.pack();
@@ -378,53 +378,49 @@ public class JanelaAdicionarIntervencao extends Janela {
                 pnlDemanda.tabDemanda.clearSelection();
                 pnlDemanda.habilitarTabela(true);
                 
-                try {
                 switch (pnlUnidade.tabelaSelecionada) {
                     case "unidade":
                         pnlDemanda.tabDemanda.setModel(new ModeloTabela(
-                            "SELECT demanda.* FROM " +
-                                "demanda, unidade WHERE demanda.id_unidade = " +
-                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
-                                " GROUP BY demanda.id"));
+                                    "SELECT demanda.* FROM " +
+                                                "demanda, unidade WHERE demanda.id_unidade = " +
+                                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
+                                                " GROUP BY demanda.id"));
                         break;
                     case "subunidade":
                         pnlDemanda.tabDemanda.setModel(new ModeloTabela(
-                            "SELECT demanda.* FROM " +
-                                "demanda, unidade, subunidade WHERE demanda.id_unidade = " +
-                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
-                                " AND demanda.id_subunidade = " +
-                                pnlUnidade.idSelecionado +
-                                " GROUP BY demanda.id"));
+                                    "SELECT demanda.* FROM " +
+                                                "demanda, unidade, subunidade WHERE demanda.id_unidade = " +
+                                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
+                                                " AND demanda.id_subunidade = " +
+                                                pnlUnidade.idSelecionado +
+                                                " GROUP BY demanda.id"));
                         break;
                     case "componente":
                         pnlDemanda.tabDemanda.setModel(new ModeloTabela(
-                            "SELECT demanda.* FROM " +
-                                "demanda, unidade, subunidade, componente WHERE demanda.id_unidade = " +
-                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
-                                " AND demanda.id_subunidade = " +
-                                String.valueOf(pnlUnidade.subunidade.getIdBD()) +
-                                " AND demanda.id_componente = " +
-                                pnlUnidade.idSelecionado +
-                                " GROUP BY demanda.id"));
+                                    "SELECT demanda.* FROM " +
+                                                "demanda, unidade, subunidade, componente WHERE demanda.id_unidade = " +
+                                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
+                                                " AND demanda.id_subunidade = " +
+                                                String.valueOf(pnlUnidade.subunidade.getIdBD()) +
+                                                " AND demanda.id_componente = " +
+                                                pnlUnidade.idSelecionado +
+                                                " GROUP BY demanda.id"));
                         break;
                     case "parte":
                         pnlDemanda.tabDemanda.setModel(new ModeloTabela(
-                            "SELECT demanda.* FROM " +
-                                "demanda, unidade, subunidade, componente, parte WHERE demanda.id_unidade = " +
-                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
-                                " AND demanda.id_subunidade = " +
-                                String.valueOf(pnlUnidade.subunidade.getIdBD()) +
-                                " AND demanda.id_componente = " +
-                                String.valueOf(pnlUnidade.componente.getIdBD()) +
-                                " AND demanda.id_parte = " +
-                                pnlUnidade.idSelecionado +
-                                " GROUP BY demanda.id"));
+                                    "SELECT demanda.* FROM " +
+                                                "demanda, unidade, subunidade, componente, parte WHERE demanda.id_unidade = " +
+                                                String.valueOf(pnlUnidade.unidade.getIdBD()) +
+                                                " AND demanda.id_subunidade = " +
+                                                String.valueOf(pnlUnidade.subunidade.getIdBD()) +
+                                                " AND demanda.id_componente = " +
+                                                String.valueOf(pnlUnidade.componente.getIdBD()) +
+                                                " AND demanda.id_parte = " +
+                                                pnlUnidade.idSelecionado +
+                                                " GROUP BY demanda.id"));
                         break;
                     default:
                         break;
-                } // Fim do Switch
-                } catch(SQLException ex) {
-                    ex.printStackTrace();
                 }
                 
                 pnlDemanda.atualizarAparenciaDaTabela();
@@ -565,7 +561,7 @@ public class JanelaAdicionarIntervencao extends Janela {
             if(mensagemErro.isEmpty()) {
                 System.out.println("opção CONFIRMAR selecionada");
                 confirmar();
-                dialog.dispose();
+                frm.dispose();
             } else {
                 // Se houver erro, exibe mensagem de erro
                 JOptionPane mPane = new JOptionPane();

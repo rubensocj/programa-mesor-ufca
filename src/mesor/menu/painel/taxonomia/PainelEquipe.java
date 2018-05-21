@@ -60,28 +60,14 @@ public class PainelEquipe {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        // Cria as TABELAS com informações do banco de dados.
-        try {
-            // Cria o modelo da tabela pela classe ModeloTabela
-            ModeloTabela modeloEqp = new ModeloTabela(
-                        "SELECT id, objetivo_geral FROM equipe;");
-            
-            // Cria objeto da classe TableRowSorter, para ordenar os valores
-            // das linhas com o clique no cabeçalho da coluna
-            ordEqp = new TableRowSorter<>(modeloEqp);
-
-            // Cria a tabela Interventor
-            tabEquipe = new JTable(modeloEqp);
-            
-            // Define o ordenador para esta coluna
-            tabEquipe.setRowSorter(ordEqp);
-            
-            tabEquipe.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela();
-            
-            habilitarTabela();
-        }
-        catch(SQLException ex) { ex.printStackTrace();}
+        ModeloTabela modeloEqp = new ModeloTabela(
+                    "SELECT id, objetivo_geral FROM equipe;");
+        ordEqp = new TableRowSorter<>(modeloEqp);
+        tabEquipe = new JTable(modeloEqp);
+        tabEquipe.setRowSorter(ordEqp);
+        tabEquipe.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela();
+        habilitarTabela();
         
         // Interventor
         ePane = new JScrollPane(tabEquipe,
@@ -117,12 +103,8 @@ public class PainelEquipe {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        try {
-            tabEquipe = new JTable(new ModeloTabela(
-                        "SELECT * FROM " + String.valueOf(this.tipoDeTabela)));
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
+        tabEquipe = new JTable(new ModeloTabela(
+                    "SELECT * FROM " + String.valueOf(this.tipoDeTabela)));
         
         /**
          * Cria o JScrollPane da tabela.

@@ -69,19 +69,29 @@ public class SerieTemporal {
             i++;
         }
         
-        String campo = "";
+        String campo = "", campoSeguinte = "";
         switch(i - 1) {
-            case 1 : campo = "id_unidade"; break;
-            case 2 : campo = "id_subunidade"; break;
-            case 3 : campo = "id_componente"; break;
+            case 1 : campo = "id_unidade"; campoSeguinte = "id_subunidade"; break;
+            case 2 : campo = "id_subunidade"; campoSeguinte = "id_componente"; break;
+            case 3 : campo = "id_componente"; campoSeguinte = "id_parte"; break;
             case 4 : campo = "id_parte"; break;
         }
         try {
-            obterSerieTemporal = Consulta.connection.prepareStatement(
+            
+            if(campo.equals("parte")) {
+                obterSerieTemporal = Consulta.connection.prepareStatement(
                     "SELECT intervencao.inicio, intervencao.categoria " +
                     "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
                     String.valueOf(n[i- 1]) + " AND sistema.id = " + 
                     String.valueOf(n[0]) + ";");
+            } else {
+                obterSerieTemporal = Consulta.connection.prepareStatement(
+                    "SELECT intervencao.inicio, intervencao.categoria " +
+                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
+                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
+                    String.valueOf(n[0]) + " AND intervencao." + campoSeguinte +
+                    " IS NULL OR intervencao." + campoSeguinte + " = '';");
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

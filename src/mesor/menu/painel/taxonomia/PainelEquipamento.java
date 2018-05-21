@@ -113,48 +113,25 @@ public class PainelEquipamento {
         render = new DefaultTableCellRenderer();
         render.setHorizontalAlignment(JLabel.CENTER);
         
-        // Cria as TABELAS com informações do banco de dados.
-        try {
-            // Cria o modelo da tabela pela classe ModeloTabela
-            ModeloTabela modeloUni = new ModeloTabela("SELECT * FROM unidade;");
-            
-            // Cria objeto da classe TableRowSorter, para ordenar os valores
-            // das linhas com o clique no cabeçalho da coluna
-            ordUni = new TableRowSorter<>(modeloUni);
-
-            // Cria a tabela Unidade
-            tabUnidade = new JTable(modeloUni);
-            
-            // Define o ordenador para esta coluna
-            tabUnidade.setRowSorter(ordUni);
-            
-            tabUnidade.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela(TAB_UNIDADE);
-            
-            // Subunidade
-            tabSubunidade = new JTable(new ModeloTabela(
-                        "SELECT * FROM subunidade;"));
-            
-            tabSubunidade.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
-
-            // Componente
-            tabComponente = new JTable(new ModeloTabela(
-                        "SELECT * FROM componente;"));
-            
-            tabComponente.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela(TAB_COMPONENTE);
-
-            // Parte
-            tabParte = new JTable(new ModeloTabela(
-                        "SELECT * FROM parte;"));
-            
-            tabParte.setCellSelectionEnabled(false);
-            atualizarAparenciaDaTabela(TAB_PARTE);
-            
-            habilitarTabela(TAB_UNIDADE);
-        }
-        catch(SQLException ex) { ex.printStackTrace();}
+        ModeloTabela modeloUni = new ModeloTabela("SELECT * FROM unidade;");
+        ordUni = new TableRowSorter<>(modeloUni);
+        tabUnidade = new JTable(modeloUni);
+        tabUnidade.setRowSorter(ordUni);
+        tabUnidade.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela(TAB_UNIDADE);
+        tabSubunidade = new JTable(new ModeloTabela(
+                    "SELECT * FROM subunidade;"));
+        tabSubunidade.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
+        tabComponente = new JTable(new ModeloTabela(
+                    "SELECT * FROM componente;"));
+        tabComponente.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela(TAB_COMPONENTE);
+        tabParte = new JTable(new ModeloTabela(
+                    "SELECT * FROM parte;"));
+        tabParte.setCellSelectionEnabled(false);
+        atualizarAparenciaDaTabela(TAB_PARTE);
+        habilitarTabela(TAB_UNIDADE);
         
         // Adiciona os MOUSELISTENER às painelTabelas.
         tabUnidade.addMouseListener(new MouseListener() {
@@ -172,17 +149,13 @@ public class PainelEquipamento {
                     componente.setIdBD(0);
                     parte.setIdBD(0);
                     
-                    try {
-                        tabSubunidade.setModel(new ModeloTabela(
-                            "SELECT * FROM subunidade "
-                            + "WHERE id_unidade = "
-                            + String.valueOf(tabUnidade.getValueAt(
-                                        tabUnidade.getSelectedRow(), 0))));
-                        
-                        atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
-                        habilitarTabela(TAB_SUBUNIDADE);
-                        
-                    } catch(SQLException ex) { ex.getErrorCode();}
+                    tabSubunidade.setModel(new ModeloTabela(
+                                "SELECT * FROM subunidade "
+                                            + "WHERE id_unidade = "
+                                            + String.valueOf(tabUnidade.getValueAt(
+                                                        tabUnidade.getSelectedRow(), 0))));
+                    atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
+                    habilitarTabela(TAB_SUBUNIDADE);
                         
                     selecao1 = String.valueOf(tabUnidade.getValueAt(
                                 tabUnidade.getSelectedRow(), 1)) + " / ";
@@ -212,17 +185,13 @@ public class PainelEquipamento {
                     componente.setIdBD(0);
                     parte.setIdBD(0);
                     
-                    try {
-                        tabComponente.setModel(new ModeloTabela(
-                            "SELECT * FROM componente "
-                            + "WHERE id_subunidade = "
-                            + String.valueOf(tabSubunidade.getValueAt(
-                                        tabSubunidade.getSelectedRow(), 0))));
-                        
-                        atualizarAparenciaDaTabela(TAB_COMPONENTE);
-                        habilitarTabela(TAB_COMPONENTE);
-                        
-                    } catch(SQLException ex) { ex.getErrorCode();}
+                    tabComponente.setModel(new ModeloTabela(
+                                "SELECT * FROM componente "
+                                            + "WHERE id_subunidade = "
+                                            + String.valueOf(tabSubunidade.getValueAt(
+                                                        tabSubunidade.getSelectedRow(), 0))));
+                    atualizarAparenciaDaTabela(TAB_COMPONENTE);
+                    habilitarTabela(TAB_COMPONENTE);
                         
                     selecao2 = String.valueOf(tabSubunidade.getValueAt(
                                 tabSubunidade.getSelectedRow(), 1)) + " / ";
@@ -251,17 +220,13 @@ public class PainelEquipamento {
                     
                     parte.setIdBD(0);
                     
-                    try {
-                        tabParte.setModel(new ModeloTabela(
-                            "SELECT * FROM parte WHERE "
-                            + "id_componente = "
-                            + String.valueOf(tabComponente.getValueAt(
-                                        tabComponente.getSelectedRow(), 0))));
-                        
-                        atualizarAparenciaDaTabela(TAB_PARTE);
-                        habilitarTabela(TAB_PARTE);
-                        
-                    } catch(SQLException ex) { ex.getErrorCode();}
+                    tabParte.setModel(new ModeloTabela(
+                                "SELECT * FROM parte WHERE "
+                                            + "id_componente = "
+                                            + String.valueOf(tabComponente.getValueAt(
+                                                        tabComponente.getSelectedRow(), 0))));
+                    atualizarAparenciaDaTabela(TAB_PARTE);
+                    habilitarTabela(TAB_PARTE);
                         
                     selecao3 = String.valueOf(tabComponente.getValueAt(
                                 tabComponente.getSelectedRow(), 1)) + " / ";

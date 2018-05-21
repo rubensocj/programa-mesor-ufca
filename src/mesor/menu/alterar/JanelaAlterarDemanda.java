@@ -74,7 +74,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                frm.dispose();
             }
         });
         
@@ -97,7 +97,7 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 p.setPreferredSize(new Dimension(400,500));
                 
-                JDialog janelaAjuda = new JDialog(dialog);
+                JDialog janelaAjuda = new JDialog(frm);
                 janelaAjuda.add(aPane);
                 janelaAjuda.setTitle("Ajuda");
                 janelaAjuda.pack();
