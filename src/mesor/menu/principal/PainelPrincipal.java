@@ -24,6 +24,7 @@ import mesor.menu.DivisorSplitPane;
 
 import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.aba.PainelEmAbas;
+import mesor.menu.principal.sistema.ComboBoxesSQL;
 
 import mesor.r.Plot;
 import mesor.r.TabelaParametrosEICs;
@@ -44,6 +45,7 @@ public class PainelPrincipal extends JPanel {
     private static JSplitPane sptHorizontal, sptVertical;
     
     public static ArvoreMenu treeSistema;
+    public ComboBoxesSQL cbxSQL;
     public JButton btnTeste = new JButton("Adicionar aba");
     
     /**
@@ -55,7 +57,8 @@ public class PainelPrincipal extends JPanel {
         pnlAbaSudeste = new PainelEmAbas();
         
         // Inicializa a JTree
-        treeSistema = new ArvoreMenu();
+//        treeSistema = new ArvoreMenu();
+        cbxSQL = new ComboBoxesSQL();
         // ----
         
         // Inicializa os paineis principais        
@@ -63,7 +66,8 @@ public class PainelPrincipal extends JPanel {
         pnlNordeste.add(pnlAbaNordeste);
         
         pnlOeste = new JPanel(new BorderLayout());
-        pnlOeste.add(treeSistema.getPaneTree(), BorderLayout.CENTER);
+//        pnlOeste.add(treeSistema.getPaneTree(), BorderLayout.CENTER);
+        pnlOeste.add(cbxSQL, BorderLayout.CENTER);
 
         pnlSudeste = new JPanel(new BorderLayout());
         pnlSudeste.add(pnlAbaSudeste);

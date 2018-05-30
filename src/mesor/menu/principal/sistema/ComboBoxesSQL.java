@@ -32,9 +32,15 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import mesor.menu.DialogoAviso;
 import mesor.menu.HoraFormatada;
+import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.taxonomia.PainelDemanda;
+import mesor.menu.painel.taxonomia.PainelIntervencao;
 import mesor.sql.Lista;
 import mesor.sql.Query;
+import static mesor.menu.principal.PainelPrincipal.pnlAbaNordeste;
+import static mesor.menu.principal.PainelPrincipal.pnlAbaSudeste;
+import mesor.r.Plot;
+import mesor.r.TabelaParametrosEICs;
 
 /**
  * ArvoreSQL.java
@@ -236,10 +242,10 @@ public class ComboBoxesSQL extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                String n = (String) e.getItem();
+                String n = (String) e.getItem().toString().split(" - ")[0];
                 Lista lUni = new Lista(
                     "SELECT CONCAT_WS(\" - \", unidade.id, unidade.classe) FROM " +
-                    "unidade, sistema WHERE sistema.nome = '" + n +
+                    "unidade, sistema WHERE sistema.id = '" + n +
                     "' AND unidade.id_sistema = sistema.id");
                 
                 cbxUni.setEnabled(true);
