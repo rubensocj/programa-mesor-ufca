@@ -162,20 +162,23 @@ public class Lista extends Consulta {
      * Monta um array com o resultado da consulta.
      * 
      * @return Um array.
-     * @throws SQLException 
      */
-    public String[] toArray() throws SQLException {
+    public String[] toArray() {
         arrayResultado = new String[numLinhas];
         
-        int numColuna = metaData.getColumnCount();
-        
-        resultSet.first();
-        while(resultSet.next()) {
-            int j = resultSet.getRow();
-            arrayResultado[j - 1] = resultSet.getString(j - 1);
-//            for (int i = 1; i <= numColuna; i++) {
-//                arrayResultado[i - 1] = resultSet.getString(i);
-//            }
+        try {
+            int numColuna = metaData.getColumnCount();
+
+            resultSet.first();
+            while(resultSet.next()) {
+                int j = resultSet.getRow();
+                arrayResultado[j - 1] = resultSet.getString(j - 1);
+    //            for (int i = 1; i <= numColuna; i++) {
+    //                arrayResultado[i - 1] = resultSet.getString(i);
+    //            }
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
         return arrayResultado;
     }

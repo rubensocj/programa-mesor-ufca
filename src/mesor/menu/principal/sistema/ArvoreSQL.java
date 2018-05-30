@@ -64,9 +64,11 @@ public class ArvoreSQL extends JPanel {
         rootNode = new DefaultMutableTreeNode("Sistemas");
         povoarRoot();
         
+        // Cria o modelo
         treeModel = new DefaultTreeModel(rootNode);
 	treeModel.addTreeModelListener(new MyTreeModelListener());
 
+        // Cria a árvore
         tree = new JTree(treeModel);
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode
@@ -84,7 +86,6 @@ public class ArvoreSQL extends JPanel {
             }
         });
         add(btn);
-
     }
     
     // -------------------------------------------------------------------------
