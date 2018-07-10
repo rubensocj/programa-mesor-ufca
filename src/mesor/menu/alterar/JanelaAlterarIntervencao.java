@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelIntervencao;
@@ -90,7 +91,9 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                             LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) { ex.printStackTrace();
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
                 }
                 
                 JScrollPane aPane = new JScrollPane(p,
@@ -192,7 +195,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
             cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(painelAbas(), BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);
         return pnlPrincipal;
@@ -283,14 +289,20 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
             tb = (ModeloTabela) pnlIntervencao.tabIntervencao.getModel();
             try {
                 tb.setQuery("SELECT * FROM intervencao");
-            } catch (SQLException ex) {ex.printStackTrace();}
+            } catch (SQLException ex) {
+                DialogoAviso.show(ex.getMessage());
+                ex.printStackTrace();
+            }
             
             pnlIntervencao.atualizarAparenciaDaTabela();
             pnlIntervencao.habilitarTabela(true);
 
             try {
                 pnlDemanda.reiniciarTabela();
-            } catch (SQLException ex) {ex.printStackTrace();}
+            } catch (SQLException ex) {
+                DialogoAviso.show(ex.getMessage());
+                ex.printStackTrace();
+            }
 
             pnlDemanda.atualizarAparenciaDaTabela();
             pnlDemanda.habilitarTabela(false);
@@ -423,7 +435,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                             "WHERE intervencao.id_unidade = " +
                                 String.valueOf(pnlUnidade.unidade.getIdBD()) +
                             " GROUP BY intervencao.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "subunidade":
@@ -436,7 +451,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                             " AND intervencao.id_subunidade = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY intervencao.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "componente":
@@ -451,7 +469,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                             " AND intervencao.id_componente = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY intervencao.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "parte":
@@ -469,7 +490,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                             " AND intervencao.id_parte = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY intervencao.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                         
@@ -614,7 +638,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                     /* Atualiza a tabela de demandas */
                     try {
                         pnlDemanda.buscarDemanda(idUni, idSub, idCom, idPte);
-                    } catch (SQLException ex) {ex.printStackTrace();}
+                    } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
+                        ex.printStackTrace();
+                    }
                     
                     /**
                      * Na tabela de demandas, seleciona a demanda relacionada a
@@ -645,7 +672,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                     
                     try {
                         pnlDemanda.reiniciarTabela();
-                    } catch (SQLException ex) {ex.printStackTrace();}
+                    } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
+                        ex.printStackTrace();
+                    }
                     
                     pnlDemanda.atualizarAparenciaDaTabela();
                     pnlDemanda.habilitarTabela(false);
@@ -672,7 +702,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
                 tb = (ModeloTabela) pnlIntervencao.tabIntervencao.getModel();
                 try {
                     tb.setQuery("SELECT * FROM intervencao");
-                } catch (SQLException ex) {ex.printStackTrace();}
+                } catch (SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
                 
                 pnlIntervencao.atualizarAparenciaDaTabela();
                 pnlUnidade.limpaSelecao();
@@ -742,7 +775,10 @@ public class JanelaAlterarIntervencao extends JanelaAdicionarIntervencao {
 
                 try {
                     pnlDemanda.reiniciarTabela();
-                } catch (SQLException ex) {ex.printStackTrace();}
+                } catch (SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
 
                 pnlDemanda.tabDemanda.clearSelection();
                 pnlDemanda.atualizarAparenciaDaTabela();

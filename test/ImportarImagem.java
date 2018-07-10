@@ -102,6 +102,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
+import mesor.menu.DialogoAviso;
  
 /**
  * This class demonstrates how to load an Image from an external file
@@ -119,6 +120,7 @@ public class ImportarImagem extends JPanel {
        try {
            img = ImageIO.read(new File("wgrp_plot.png"));
        } catch (IOException e) {
+           DialogoAviso.show(e.getMessage());
        }
  
     }

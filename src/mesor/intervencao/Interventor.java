@@ -7,6 +7,7 @@ package mesor.intervencao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import mesor.menu.DialogoAviso;
 import mesor.sql.Consulta;
 
 public class Interventor {
@@ -214,6 +215,7 @@ public class Interventor {
             sqlDataNasc = converterData(this.dataNascimento);
             sqlDataAdm = converterData(this.dataAdmissao);
         } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         
@@ -236,6 +238,7 @@ public class Interventor {
             sqlDataNasc = converterData(this.dataNascimento);
             sqlDataAdm = converterData(this.dataAdmissao);
         } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         

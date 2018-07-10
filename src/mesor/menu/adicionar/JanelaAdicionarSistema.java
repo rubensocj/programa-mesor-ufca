@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.border.BevelBorder;
+import mesor.menu.DialogoAviso;
 
 /**
  * JanelaAdicionarEquipamento.Java
@@ -65,6 +66,7 @@ public class JanelaAdicionarSistema extends Janela {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 

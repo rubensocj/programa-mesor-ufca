@@ -105,6 +105,7 @@ public class JanelaAdicionarInterventor extends Janela {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 
@@ -241,6 +242,7 @@ public class JanelaAdicionarInterventor extends Janela {
         try {
             mask = new MaskFormatter("(##) #####-####");
         } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
 //        mask.setValidCharacters("0123456789");
@@ -291,7 +293,10 @@ public class JanelaAdicionarInterventor extends Janela {
             mf.install(tfdNascimento);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         // Cria o JFormattedTextField tfdAdmissao.
         tfdAdmissao = new JFormattedTextField();
@@ -313,7 +318,10 @@ public class JanelaAdicionarInterventor extends Janela {
             mf.install(tfdAdmissao);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         // Cria a JComboBox de seleção do sexo
         cbxSexo = new JComboBox(new Object[] {

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mesor.menu.DialogoAviso;
 import mesor.menu.principal.PainelPrincipal;
 import mesor.sql.ModeloLista;
 
@@ -93,6 +94,7 @@ public class JanelaAdicionarEquipamento extends Janela {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 
@@ -126,7 +128,10 @@ public class JanelaAdicionarEquipamento extends Janela {
         try {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             cbxSistema.addItemListener(eventSistema);
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(pnlEsquerda, BorderLayout.WEST);
         pnlPrincipal.add(painelSubunidades(), BorderLayout.CENTER);
         return pnlPrincipal;
@@ -169,6 +174,7 @@ public class JanelaAdicionarEquipamento extends Janela {
         try {
             PainelPrincipal.treeSistema.atualizaNoSistema();
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             Logger.getLogger(JanelaAdicionarEquipamento.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -217,7 +223,10 @@ public class JanelaAdicionarEquipamento extends Janela {
             mf.install(tfdUniDataAq);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         // Adiciona os componentes ao JPanel.
         JPanel pnlGeral1 = new JPanel(new GridLayout(0,1,0,8));
@@ -286,7 +295,10 @@ public class JanelaAdicionarEquipamento extends Janela {
             mf.install(tfdUniDataOp);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         pnlUniOp = new JPanel(new GridLayout(0,2,0,5));
         pnlUniOp.add(lblUniModo);       pnlUniOp.add(cbxModo);

@@ -20,6 +20,7 @@ import mesor.menu.Janela;
 import mesor.menu.adicionar.JanelaAdicionarEquipamento;
 
 import java.sql.SQLException;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.ModeloTabela;
 
@@ -86,7 +87,10 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                             LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) {ex.printStackTrace();}
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
                 
                 JScrollPane aPane = new JScrollPane(p,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -171,7 +175,10 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
             cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));            
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(pnlTabela, BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);
         
@@ -268,6 +275,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                     try {
                         tb.setQuery("SELECT * FROM unidade;");
                     } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                     
@@ -299,6 +307,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                             pnlUnidade.tabUnidade.getValueAt(
                                     pnlUnidade.tabUnidade.getSelectedRow(),0)));
                     } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                     
@@ -328,6 +337,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                             pnlUnidade.tabSubunidade.getValueAt(
                                 pnlUnidade.tabSubunidade.getSelectedRow(),0)));
                     } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                     
@@ -357,6 +367,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
                             pnlUnidade.tabComponente.getValueAt(
                                 pnlUnidade.tabComponente.getSelectedRow(),0)));
                     } catch (SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                     

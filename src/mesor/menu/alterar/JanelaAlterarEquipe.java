@@ -34,6 +34,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import mesor.intervencao.Equipe;
+import mesor.menu.DialogoAviso;
 import mesor.menu.DialogoConfirma;
 import mesor.menu.painel.taxonomia.PainelInterventor;
 import mesor.sql.Query;
@@ -100,7 +101,10 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
                             LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) {ex.printStackTrace();}
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
                 
                 JScrollPane aPane = new JScrollPane(p,
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -539,6 +543,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
                         }
                     }
                 } catch(SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
             }

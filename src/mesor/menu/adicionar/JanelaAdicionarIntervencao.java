@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import java.sql.SQLException;
 import mesor.intervencao.Equipe;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
@@ -93,6 +94,7 @@ public class JanelaAdicionarIntervencao extends Janela {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 
@@ -123,7 +125,10 @@ public class JanelaAdicionarIntervencao extends Janela {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
             cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelIntervencao(), BorderLayout.EAST);
         return pnlPrincipal;
@@ -248,7 +253,10 @@ public class JanelaAdicionarIntervencao extends Janela {
             mf.install(tfdDataInicio);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         /* Hora de início da intervenção */
         lblHoraInicio = new JLabel("Hora: *");
@@ -311,7 +319,10 @@ public class JanelaAdicionarIntervencao extends Janela {
             mf.install(tfdDataTermino);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         /* Hora de término da intervenção */
         lblHoraTermino = new JLabel("Hora:  ");
@@ -518,6 +529,7 @@ public class JanelaAdicionarIntervencao extends Janela {
                         break;
                 }
             } catch (NullPointerException ex) {
+                DialogoAviso.show(ex.getMessage());
                 ex.printStackTrace();
             }
             

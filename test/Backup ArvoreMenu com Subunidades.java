@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.taxonomia.PainelDemanda;
@@ -82,6 +83,7 @@ public class ArvoreMenu {
             criarNoDeConsultaSQL();
             
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         

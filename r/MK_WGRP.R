@@ -660,16 +660,16 @@ comparingGraphics=function(parameters, qs, bs, graphicType){
     }
   }
 }
-computeForecastingTable=function(forecasting, initialTime){
+computeForecastingTable=function(forecasting, initialTime, wd){
   n = length(forecasting$cumTimes)
   m = length(forecasting$cumSampleMeans)-n
-  intervention = paste(seq(from=(n+1), to=(n+m)), colapse=" & "); intervention = c("intervention & ", intervention, " \\")
-  lower = paste(round(forecasting$sampleLowerBound[(n+1):(n+m)]+initialTime, 2), colapse=" & "); lower  = c("2.5% quantile & ", lower , " \\")
-  mean = paste(round(forecasting$cumSampleMeans[(n+1):(n+m)]+initialTime, 2), colapse=" & "); mean = c("mean & ", mean, " \\")
-  upper = paste(round(forecasting$sampleUpperBound[(n+1):(n+m)]+initialTime, 2), colapse=" & "); upper = c("97.5% quantile & ", upper, " \\")
+  intervention = paste(seq(from=(n+1), to=(n+m))); intervention = c("intervention", intervention)
+  lower = paste(round(forecasting$sampleLowerBound[(n+1):(n+m)]+initialTime, 2)); lower  = c("2.5% quantile", lower)
+  mean = paste(round(forecasting$cumSampleMeans[(n+1):(n+m)]+initialTime, 2)); mean = c("mean", mean)
+  upper = paste(round(forecasting$sampleUpperBound[(n+1):(n+m)]+initialTime, 2)); upper = c("97.5% quantile", upper)
   print(intervention); print(lower); print(mean); print(upper)
   ret = rbind(intervention, lower, mean, upper)
-  write.table(ret, row.names=FALSE, col.names=FALSE, file="C:/cloud/Dropbox/CompetitiveRisks/GRP/grp_paper2/ventured_version/ICs_table.txt")
+  write.table(ret, row.names=FALSE, col.names=FALSE, file=paste(wd, ".txt", sep=""), sep=",")
   ret
 }
 computeInformationsCriteriaAndMLETable=function(ICs){
@@ -982,7 +982,7 @@ summarizeICsAndParametersTable=function(mle_objs, x, wd){
   #str_optimum = paste("optimum_", w, sep="")
   #optimum = mle_objs[[str_optimum]]
   #write.table(df, row.names=FALSE, col.names=TRUE, file= paste(PATH, "parametersAndICs_table.txt", sep=""), sep="\t")
-  write.table(df, row.names=FALSE, col.names=TRUE, file= paste(wd, "parametersAndICs_table.txt", sep=""), sep=",")
+  write.table(df, row.names=FALSE, col.names=TRUE, file= paste(wd, ".txt", sep=""), sep=",", fileEncoding = "UTF-8")
   #View(df)
   #---------- escolher optimum ----------#  
   #str_optimum = (paste("optimum_",subset(df,BIC==min(df$BIC))[1,1],sep=""))
@@ -999,4 +999,35 @@ getOptimum = function(mle_objs, df) {
   optimum = mle_objs[[str_optimum]]
   #optimum = mle_objs[["optimum_NHPP"]] #Teste
   return(optimum)
+}
+
+#interpret = ""
+#b<-optimum$b
+#q<-optimum$q
+#print(b<1)
+interpretation = function(optimum, wd) {
+  if(optimum$b<1.0){
+    interpret <- "O sistema está em melhoria. Os tempos entre falhas estão aumentando cronologicamente."
+  } else if(optimum$b> 1) {
+    if(optimum$q < 0) {
+      interpret <- paste("O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = ", optimum$q, " < 0, representa uma intervenção que leva à condição de melhor do que novo.", sep="")
+    } else if(optimum$q == 0) {
+      interpret <- "O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = 0,corresponde a uma intervenção perfeita que leva o sistema a uma condição de 'tão bom quanto novo'"
+    } else if(optimum$q == 1) {
+      interpret <- "O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = 1 corresponde a uma intervenção imperfeita que leva o sistema a uma condição de 'tão ruim quanto antes da intervenção'"
+    } else if(optimum$q > 1) {
+      interpret <- paste("O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Para q = ", optimum$q,"> 1, foi realizada uma intervenção que leva à condição de pior do que antes.", sep="")
+    } else {
+      interpret <- paste("O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Para q = ", optimum$q," entre 0 e 1, foi realizada uma intervenção que leva à condição intermediária entre 'tão bom quanto novo' e 'tão ruim quanto antes'.", sep="")
+    }
+  } else {
+    interpret <- "O sistema está estável."
+  }
+  conexaoArquivo <- file(paste(wd, ".txt", sep=""), encoding = "UTF-8")
+  writeLines(interpret, conexaoArquivo)
+  close(conexaoArquivo)
+  
+  
+  #write.table(interpret, row.names=FALSE, col.names=TRUE, file= paste(wd, ".txt", sep=""), sep=",")
+  return(interpret)
 }

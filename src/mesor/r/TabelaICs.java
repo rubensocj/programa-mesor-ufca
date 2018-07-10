@@ -6,7 +6,6 @@
 
 package mesor.r;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,7 +17,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import java.util.List;
 import javax.swing.JLabel;
@@ -37,70 +35,47 @@ import mesor.menu.DialogoAviso;
  * @version 1.0 21/10/2017
  * @author Rubens Júnior
  */
-public class TabelaParametrosEICs extends JPanel {
+public class TabelaICs extends JTable {
     
     private static JTable tabParametros;
     private static DefaultTableModel modelo;
     
     private static JScrollPane scrTabela;
     
-    private Object[][] stringArray;
-    private Object[][] corpoTabela;
+    private static Object[][] stringArray;
+    private static Object[][] corpoTabela;
     private static Object[] cabecalho;
     
-    private Path caminho;
-    private File file;
-    private List<String> list;
-    private JLabel lblInterpret;
-    private JScrollPane scrParametros;
+    private static Path caminho;
+    private static File file;
+    private static List<String> list;
     
-    public TabelaParametrosEICs(String n) {
+    public TabelaICs(String n) {
         try {
-            // COnfigura a tabela
             // Path gerado concatenando o CamadaR.R_PATH com o nome do arquivo
-            setPath(CamadaR.R_LOCAL + ("\\parametersAndICs_table" + n.replace("Gráfico ", "") + ".txt"));
+//            setPath(CamadaR.R_PATH.concat("\\parametersAndICs_table.txt"));
+//            setPath(mesor.menu.Janela.LOCAL + ("\\parametersAndICs_table.txt"));
+            setPath(CamadaR.R_LOCAL + ("\\ICs_table" + n.replace("Gráfico ", "") + ".txt"));
             
-            tabParametros = new JTable();
-            
-            tabParametros.setModel(criarModeloTabela());
+            setModel(criarModeloTabela());
             
             // Desabilita a seleção de linhas
             // Desabilita a reorganização das colunas
-            tabParametros.getTableHeader().setReorderingAllowed(false);
-            tabParametros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            tabParametros.setRowSelectionAllowed(false);
-            tabParametros.setCellSelectionEnabled(false);
+            getTableHeader().setReorderingAllowed(false);
+            setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            setRowSelectionAllowed(false);
+            setCellSelectionEnabled(false);
 
             // CellRender: alinhamento centralizado do texto das colunas
             DefaultTableCellRenderer render = new DefaultTableCellRenderer();
             render.setHorizontalAlignment(JLabel.CENTER);
-            tabParametros.getColumnModel().getColumn(1).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(2).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(3).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(4).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(5).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(6).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(7).setCellRenderer(render);
-            tabParametros.getColumnModel().getColumn(8).setCellRenderer(render);
-            
-            // Importa a interpretação
-            caminho = null;
-            setPath(CamadaR.R_LOCAL + ("\\interpretation" + n.replace("Gráfico ", "") + ".txt"));
-            lblInterpret = new JLabel(Arrays.toString(stringArray[0]));
-            
-            //
-            scrParametros = new JScrollPane(tabParametros);
+            getColumnModel().getColumn(1).setCellRenderer(render);
+            getColumnModel().getColumn(2).setCellRenderer(render);
             
         } catch (IOException ex) {
             DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
-        
-        setLayout(new BorderLayout(0,10));
-        add(lblInterpret, "North");
-        add(scrParametros, "Center");
-        setPreferredSize(new Dimension(500,100));
-        
     }
     
     // -------------------------------------------------------------------------
@@ -112,7 +87,7 @@ public class TabelaParametrosEICs extends JPanel {
      * 
      * @param caminho 
      */
-    private void setPath(String path) throws IOException {
+    private static void setPath(String path) throws IOException {
         caminho = Paths.get(path);
         
         setLista();
@@ -126,7 +101,7 @@ public class TabelaParametrosEICs extends JPanel {
      * @return Uma lista de string.
      * @throws IOException 
      */
-    private void setLista() throws IOException {
+    private static void setLista() throws IOException {
         list = Files.readAllLines(caminho, Charset.defaultCharset());
     }
     
@@ -135,7 +110,7 @@ public class TabelaParametrosEICs extends JPanel {
      * 
      * @throws IOException 
      */
-    private void toStringArray() throws IOException {
+    private static void toStringArray() throws IOException {
         stringArray = new String[list.size()][];
         int a = 0;
         for(String l:list) {
@@ -147,18 +122,39 @@ public class TabelaParametrosEICs extends JPanel {
     /**
      * Define o modelo da tabela e cria a JTable com o conteúdo do txt
      */
-    private DefaultTableModel criarModeloTabela() {
+    private static DefaultTableModel criarModeloTabela() {
         cabecalho = stringArray[0];
         corpoTabela = new Object[][] {stringArray[1], stringArray[2],
-                        stringArray[3], stringArray[4], stringArray[5]};
+                        stringArray[3]};
         
         // TableModel define as células não editáveis
-        modelo = new DefaultTableModel(corpoTabela, cabecalho) {
+        modelo = new DefaultTableModel(corpoTabela, stringArray[0]) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }     
         };
+//        tabParametros = new JTable(modelo);
+//        
+//        // Desabilita a seleção de linhas
+//        // Desabilita a reorganização das colunas
+//        tabParametros.getTableHeader().setReorderingAllowed(false);
+//        tabParametros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        tabParametros.setRowSelectionAllowed(false);
+//        tabParametros.setCellSelectionEnabled(false);
+//        
+//        // CellRender: alinhamento centralizado do texto das colunas
+//        DefaultTableCellRenderer render = new DefaultTableCellRenderer();
+//        render.setHorizontalAlignment(JLabel.CENTER);
+//        tabParametros.getColumnModel().getColumn(1).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(2).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(3).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(4).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(5).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(6).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(7).setCellRenderer(render);
+//        tabParametros.getColumnModel().getColumn(8).setCellRenderer(render);
+//        
         return modelo;
     }
     
@@ -166,11 +162,11 @@ public class TabelaParametrosEICs extends JPanel {
      * Cria a JTable com os dados importados do txt
      * 
      * @return Uma JTable.
-     * @deprecated 
      */
-    public JTable getTabelaICsEParameters() {
+    public static JTable getTabelaICsEParameters() {
         try {
             // Path gerado concatenando o CamadaR.R_PATH com o nome do arquivo
+//            setPath(CamadaR.R_PATH.concat("\\parametersAndICs_table.txt"));
             setPath(("parametersAndICs_table.txt"));
             
             setLista();
@@ -191,7 +187,7 @@ public class TabelaParametrosEICs extends JPanel {
      * @param altura
      * @return Um JScrollPane com a tabela dos parâmetros e ICs.
      */
-    public JScrollPane getPainelICsEParameters(int largura, int altura) {
+    public static JScrollPane getPainelICsEParameters(int largura, int altura) {
         getTabelaICsEParameters();
         
         scrTabela = new JScrollPane(tabParametros, 

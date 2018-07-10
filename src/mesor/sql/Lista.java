@@ -54,12 +54,12 @@ public class Lista extends Consulta {
         
             setQuery(consulta);
         } catch (SQLException e) {
-            
+//            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
             Consulta.conectar();
 
         } catch(Exception ex2) {
-            
+//            DialogoAviso.show(ex2.getMessage());
             ex2.printStackTrace();
             Consulta.conectar();
             
@@ -72,7 +72,7 @@ public class Lista extends Consulta {
                 setQuery(consulta);
             } catch (SQLException ex) {
                 DialogoAviso.show("SQLException em construtor Lista(consulta): " + 
-                        ex.getLocalizedMessage());
+                        ex.getMessage());
                 ex.printStackTrace();
             }
         }
@@ -131,7 +131,7 @@ public class Lista extends Consulta {
                 }
             }
         } catch (SQLException e) {
-            DialogoAviso.show("SQLExcpetion em Lista.toVector(): " + e.getLocalizedMessage());
+            DialogoAviso.show("SQLExcpetion em Lista.toVector(): " + e.getMessage());
             e.printStackTrace();
         }
         return vetorResultado;
@@ -178,6 +178,7 @@ public class Lista extends Consulta {
     //            }
             }
         } catch(SQLException e) {
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         return arrayResultado;

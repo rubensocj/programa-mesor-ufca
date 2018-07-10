@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalIconFactory;
+import mesor.menu.Janela;
 import mesor.menu.principal.PainelPrincipal;
 
 /**
@@ -47,8 +48,7 @@ public class BotaoAba extends JPanel {
         
         // Cria e configura o botão
         JButton btnFechar = new JButton();        
-        btnFechar.setIcon(new ImageIcon(mesor.menu.Janela.LOCAL + 
-                                "\\icone\\fechar_2.png"));
+        btnFechar.setIcon(Janela.criarIcon("/res/icone/fechar_2.png"));
         btnFechar.setOpaque(false);
         btnFechar.setBackground(new Color(178,178,178));
         btnFechar.setBorder(BorderFactory.createEmptyBorder());

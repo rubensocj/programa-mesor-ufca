@@ -152,6 +152,7 @@ public class Consulta {
             resultado = inserirSistema.executeUpdate();
             inserirSistema.getQueryTimeout();
         } catch (SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -180,6 +181,7 @@ public class Consulta {
             resultado = alterarSistema.executeUpdate();
             alterarSistema.getQueryTimeout();
         } catch (SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -193,6 +195,7 @@ public class Consulta {
             r = deletarSistema.executeUpdate();
             deletarSistema.getQueryTimeout();
         } catch (SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         return r;
@@ -259,6 +262,7 @@ public class Consulta {
             }
         } // Fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -319,6 +323,7 @@ public class Consulta {
             alterarUnidade.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -344,6 +349,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -380,6 +386,7 @@ public class Consulta {
             }
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -407,6 +414,7 @@ public class Consulta {
             
         } // fim do try
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch
@@ -431,6 +439,7 @@ public class Consulta {
             
         } // fim do try
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch
@@ -467,6 +476,7 @@ public class Consulta {
             }
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -494,6 +504,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -518,6 +529,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -549,6 +561,7 @@ public class Consulta {
 
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -576,6 +589,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -600,6 +614,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -673,6 +688,7 @@ public class Consulta {
             }
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -721,6 +737,7 @@ public class Consulta {
             alterarIntervencao.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -744,6 +761,7 @@ public class Consulta {
             deletarIntervencao.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -811,6 +829,7 @@ public class Consulta {
             }
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -857,6 +876,7 @@ public class Consulta {
             alterarDemanda.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -881,6 +901,7 @@ public class Consulta {
             deletarDemanda.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -971,6 +992,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1058,6 +1080,7 @@ public class Consulta {
             alterarInterventor.getQueryTimeout();
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1083,6 +1106,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1123,6 +1147,7 @@ public class Consulta {
             }
         } // fim do try. // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1147,6 +1172,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1179,6 +1205,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1209,6 +1236,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1235,7 +1263,7 @@ public class Consulta {
             alterarObjetivoEspecifico.getQueryTimeout();
             
         } catch (SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1250,7 +1278,7 @@ public class Consulta {
             r = deletarObjetivoEspecifico.executeUpdate();
             deletarObjetivoEspecifico.getQueryTimeout();
         } catch(SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1280,6 +1308,7 @@ public class Consulta {
             
         } // fim do try.
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
 //            desconectar();
         } // fim do catch.
@@ -1306,7 +1335,7 @@ public class Consulta {
             alterarHabilidadeRequerida.getQueryTimeout();
             
         } catch (SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1321,7 +1350,7 @@ public class Consulta {
             r = deletarHabilidadeRequerida.executeUpdate();
             deletarHabilidadeRequerida.getQueryTimeout();
         } catch(SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1350,6 +1379,7 @@ public class Consulta {
             inserirExperienciaRequerida.getQueryTimeout();
             
         } catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -1375,7 +1405,7 @@ public class Consulta {
             alterarExperienciaRequerida.getQueryTimeout();
             
         } catch (SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1390,7 +1420,7 @@ public class Consulta {
             r = deletarExperienciaRequerida.executeUpdate();
             deletarExperienciaRequerida.getQueryTimeout();
         } catch(SQLException e) {
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1415,6 +1445,7 @@ public class Consulta {
             res = vincularEquipe.executeUpdate();
             vincularEquipe.getQueryTimeout();
         } catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -1437,6 +1468,7 @@ public class Consulta {
             res = desvincularEquipe.executeUpdate();
             desvincularEquipe.getQueryTimeout();
         } catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -1462,6 +1494,7 @@ public class Consulta {
             res = atualizarVinculoEquipe.executeUpdate();
             atualizarVinculoEquipe.getQueryTimeout();
         } catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -1486,6 +1519,7 @@ public class Consulta {
             res = vincularIntervencao.executeUpdate();
             vincularIntervencao.getQueryTimeout();
         } catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
         }
         
@@ -1518,7 +1552,7 @@ public class Consulta {
          } // fim do try.
         catch(SQLException e) {
             /* Se houver erro, exibe mensagem de erro */
-            DialogoAviso.show(e.getLocalizedMessage());
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
         }
         
@@ -1707,6 +1741,7 @@ public class Consulta {
             conectado = false;
         }
         catch(SQLException sqlException) {
+            DialogoAviso.show(sqlException.getMessage());
             sqlException.printStackTrace();
             System.exit(1);
         }

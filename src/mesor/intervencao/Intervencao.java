@@ -8,6 +8,7 @@ import mesor.equipamento.Componente;
 import java.text.*;
 
 import java.util.Date;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.Consulta;
 
@@ -183,7 +184,10 @@ public class Intervencao {
                 // Caso contrário, converte "String" para "Date".
                 dataTerminoDate = formatoSQLTimeDate.parse(this.getTermino());
             }                
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         n = Consulta.insertIntervencao(categoria, atividade, dataInicioDate,
                     dataTerminoDate, this.unidade.getIdBD(),
@@ -215,7 +219,10 @@ public class Intervencao {
                 // Caso contrário, converte "String" para "Date".
                 dataTerminoDate = formatoSQLTimeDate.parse(this.getTermino());
             }                
-        } catch (ParseException ex) { ex.printStackTrace();}
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         
         n = Consulta.uptadeIntervencao(categoria, atividade, dataInicioDate,
                     dataTerminoDate, this.demanda.getIdBD(), this.idBD);

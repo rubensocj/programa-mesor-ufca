@@ -162,7 +162,7 @@ public class PainelInterventor {
             modelo = (ModeloTabela) tabInterventor.getModel();
             modelo.setQuery("SELECT * FROM interventor");
         } catch (SQLException e) {
-            DialogoAviso.show("Erro ao atualizar tabela. " + e.getLocalizedMessage());
+            DialogoAviso.show("Erro ao atualizar tabela. " + e.getMessage());
         }
     }
     
@@ -295,6 +295,7 @@ public class PainelInterventor {
                         // (?i) torna a busca case insensitive
                         ordIntv.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }

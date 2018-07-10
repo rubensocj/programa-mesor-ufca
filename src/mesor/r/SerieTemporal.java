@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import mesor.menu.DialogoAviso;
 import mesor.sql.Consulta;
 
 /**
@@ -69,30 +70,38 @@ public class SerieTemporal {
             i++;
         }
         
-        String campo = "", campoSeguinte = "";
+        String campo = "";
         switch(i - 1) {
-            case 1 : campo = "id_unidade"; campoSeguinte = "id_subunidade"; break;
-            case 2 : campo = "id_subunidade"; campoSeguinte = "id_componente"; break;
-            case 3 : campo = "id_componente"; campoSeguinte = "id_parte"; break;
+            case 1 : campo = "id_unidade"; break;
+            case 2 : campo = "id_subunidade"; break;
+            case 3 : campo = "id_componente"; break;
             case 4 : campo = "id_parte"; break;
         }
+        
         try {
             
-            if(campo.equals("parte")) {
-                obterSerieTemporal = Consulta.connection.prepareStatement(
-                    "SELECT intervencao.inicio, intervencao.categoria " +
-                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
-                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
-                    String.valueOf(n[0]) + ";");
-            } else {
-                obterSerieTemporal = Consulta.connection.prepareStatement(
-                    "SELECT intervencao.inicio, intervencao.categoria " +
-                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
-                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
-                    String.valueOf(n[0]) + " AND intervencao." + campoSeguinte +
-                    " IS NULL OR intervencao." + campoSeguinte + " = '';");
-            }
+            obterSerieTemporal = Consulta.connection.prepareStatement(
+                "SELECT intervencao.inicio, intervencao.categoria " +
+                "FROM intervencao, sistema WHERE sistema.id = " + String.valueOf(n[0]) +
+                " AND intervencao." + campo + " = " + String.valueOf(n[i - 1]) + ";"
+            );
+            
+//            if(campo.equals("parte")) {
+//                obterSerieTemporal = Consulta.connection.prepareStatement(
+//                    "SELECT intervencao.inicio, intervencao.categoria " +
+//                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
+//                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
+//                    String.valueOf(n[0]) + ";");
+//            } else {
+//                obterSerieTemporal = Consulta.connection.prepareStatement(
+//                    "SELECT intervencao.inicio, intervencao.categoria " +
+//                    "FROM intervencao, sistema WHERE intervencao." + campo + " = " + 
+//                    String.valueOf(n[i- 1]) + " AND sistema.id = " + 
+//                    String.valueOf(n[0]) + " AND intervencao." + campoSeguinte +
+//                    " IS NULL OR intervencao." + campoSeguinte + " = '';");
+//            }
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -126,6 +135,7 @@ public class SerieTemporal {
                 i++;
             }
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         

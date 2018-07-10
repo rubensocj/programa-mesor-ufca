@@ -76,7 +76,9 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
                             LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) { ex.printStackTrace();
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
                 }
                 
                 JScrollPane aPane = new JScrollPane(p,

@@ -1,0 +1,19 @@
+interpret = ""
+  #b<-optimum$b
+  #q<-optimum$q
+  #print(b<1)
+  if(optimum$b<1.0){
+    interpret <- "O sistema está em melhoria. Os tempos entre falhas estão aumentando cronologicamente."
+  } else if(optimum$b> 1) {
+    if(optimum$q < 0) {
+      interpret <- paste("O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = ", optimum$q, " < 0, representa uma intervenção que leva à condição de melhor do que novo.", sep="")
+    } else if(optimum$q == 0) {
+      interpret <- "O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = 0,corresponde a uma intervenção perfeita que leva o sistema a uma condição de 'tão bom quanto novo'"
+    } else if(optimum$q == 1) {
+      interpret <- "O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Como q = 1 corresponde a uma intervenção imperfeita que leva o sistema a uma condição de 'tão ruim quanto antes da intervenção'"
+    } else if(optimum$q > 1) {
+      interpret <- paste("O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Para q = ", optimum$q,"> 1, foi realizada uma intervenção que leva à condição de pior do que antes.", sep="")
+    } else {
+      interpret <- "O sistema está estável."
+    }
+  }

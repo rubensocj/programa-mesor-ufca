@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.sql.SQLException;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
@@ -84,6 +85,7 @@ public class JanelaAdicionarDemanda extends Janela {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 
@@ -114,7 +116,10 @@ public class JanelaAdicionarDemanda extends Janela {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
             cbxSistema.addItemListener(eventSistema);
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(pnlUnidade.painelTabelas(), BorderLayout.CENTER);
         pnlPrincipal.add(painelDemanda(), BorderLayout.EAST);
         
@@ -372,7 +377,10 @@ public class JanelaAdicionarDemanda extends Janela {
             mf.install(tfdData);
             mf.setPlaceholder("DD/MM/AAAA");
             mf.setValidCharacters("0123456789");
-        } catch (java.text.ParseException ex) { ex.getErrorOffset();}
+        } catch (java.text.ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.getErrorOffset();
+        }
         
         // Painel com data e hora.
         JPanel pnlDem1 = new JPanel(new FlowLayout(FlowLayout.LEFT));

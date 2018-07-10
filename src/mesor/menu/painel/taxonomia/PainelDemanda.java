@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.table.TableRowSorter;
+import mesor.menu.DialogoAviso;
 import mesor.menu.Janela;
 
 /**
@@ -178,7 +179,10 @@ public class PainelDemanda extends JPanel {
                         demanda.sqlExcluir();
                         reiniciarTabela();
                         atualizarAparenciaDaTabela();
-                    } catch(SQLException ex) {ex.printStackTrace();}
+                    } catch(SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
+                        ex.printStackTrace();
+                    }
                 } else {
                     // Bip do mouse ao clicar no botão
                     Toolkit.getDefaultToolkit().beep();
@@ -353,6 +357,7 @@ public class PainelDemanda extends JPanel {
                         // (?i) torna a busca case insensitive
                         ord.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }

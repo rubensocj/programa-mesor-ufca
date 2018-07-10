@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import mesor.menu.DialogoAviso;
 
 /**
  * PainelIntervencao.java
@@ -170,7 +171,10 @@ public class PainelIntervencao {
 //                        intervencao.sqlExcluir();
                         reiniciarTabela();
                         atualizarAparenciaDaTabela();
-                    } catch(SQLException ex) {ex.printStackTrace();}
+                    } catch(SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
+                        ex.printStackTrace();
+                    }
                 } else {
                     // Bip do mouse ao clicar no botão
                     Toolkit.getDefaultToolkit().beep();

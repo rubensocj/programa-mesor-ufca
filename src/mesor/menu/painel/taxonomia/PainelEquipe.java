@@ -145,10 +145,10 @@ public class PainelEquipe {
         try {
             modelo.setQuery("SELECT id, objetivo_geral FROM equipe;");
         } catch (SQLException ex) {
-            DialogoAviso.show("SQLExcpetion: " + ex.getLocalizedMessage());
+            DialogoAviso.show("SQLExcpetion: " + ex.getMessage());
             ex.printStackTrace();
         } catch (IllegalStateException ex) {
-            DialogoAviso.show("IllegalStateException: " + ex.getLocalizedMessage());
+            DialogoAviso.show("IllegalStateException: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -237,6 +237,7 @@ public class PainelEquipe {
                         // (?i) torna a busca case insensitive
                         ordEqp.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }

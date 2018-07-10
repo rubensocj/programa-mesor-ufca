@@ -14,32 +14,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.sql.SQLException;
-import java.util.Vector;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeSelectionModel;
 import mesor.menu.DialogoAviso;
 import mesor.menu.HoraFormatada;
 import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.taxonomia.PainelDemanda;
 import mesor.menu.painel.taxonomia.PainelIntervencao;
 import mesor.sql.Lista;
-import mesor.sql.Query;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaNordeste;
 import static mesor.menu.principal.PainelPrincipal.pnlAbaSudeste;
+import mesor.r.CamadaR;
 import mesor.r.Plot;
+import mesor.r.TabelaICs;
 import mesor.r.TabelaParametrosEICs;
 
 /**
@@ -91,7 +81,7 @@ public class ComboBoxesSQL extends JPanel {
         Lista lSis = new Lista("SELECT CONCAT_WS(\" - \", id, nome) FROM sistema;");
         if(lSis.size() != 0) {
             cbxSis.setEnabled(true);
-            mSis = new DefaultComboBoxModel(lSis.toVector());
+            mSis = new DefaultComboBoxModel(comporComboBoxModel(lSis));
             cbxSis.setModel(mSis);
             
             cbxSis.addItemListener(new ItemEventSis());
@@ -123,43 +113,29 @@ public class ComboBoxesSQL extends JPanel {
         
         add(pnl1, "North");
         add(pnl2, "Center");
+        
+        setMinimumSize(new Dimension(300,800));
     }
     
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
-    
+
     /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
+     * Monta o modelo dos JComboBox adicionando o item "Selecione..." no início
+     * das opções
+     * @param l Lista com os resultados da consulta SQL
+     * @return Um array object com as opções de seleção do JComboBox
      */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("DynamicTreeDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Create and set up the content pane.
-        ComboBoxesSQL newContentPane = new ComboBoxesSQL();
-        newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
-
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
+    private Object[] comporComboBoxModel(Lista l) {
+        Object[] o = new Object[l.size() + 1];
+        o[0] = "Selecione...";
+        for(int i = 0; i < l.size(); i++) {
+            o[i + 1] = l.get(i);
+        }
+        return o;
     }
-
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-
+    
     private class ActionPrincipal implements ActionListener {
 
         public ActionPrincipal() {
@@ -191,18 +167,42 @@ public class ComboBoxesSQL extends JPanel {
                 
                 // Ações
                 switch(a) {
-                    case "Previsão": 
+                    case "Previsão":
+                        
+                        String cod = String.valueOf(arrayItem[0]);
+                        int i = 1;
+                        while(arrayItem[i] != 0) {
+                            cod = cod.concat("-".concat(String.valueOf(arrayItem[i])));
+                            i++;
+                        }
+                        
                         String hoje = HoraFormatada.hoje();
-                        String p = "Gráfico " + hoje + " " + s;
-                        String g = "Parâmetros " + hoje + " " + s;
+                        
+                        // Títulos das abas
+                        // ex.: Gráfico MOTOR 1-3-15
+                        String tituloAbaGrafico = "Gráfico de " + s;    
+                        String tituloAbaParametros = "Parâmetros de " + s;
+                        String tituloAbaPrevisao = "Previsão de " + s;
+                        
+                        // Títulos dos arquivos
+                        // ex.: _1-3-15_25082018
+                        String p = "_" + cod + "_" + hoje;
 
-                        pnlAbaNordeste.addTab(p, null,
-                                new PainelConteudo(
-                                    new Plot(pnlAbaNordeste.getWidth(), pnlAbaNordeste.getHeight(), arrayItem, p)
-                                    ),
-                                p);
-                        pnlAbaSudeste.addTab(g, null,
-                                    new PainelConteudo(new TabelaParametrosEICs()), g);
+                        // Gráfico
+                        pnlAbaNordeste.addTab(tituloAbaGrafico, null,
+                            new PainelConteudo(
+                                new Plot(pnlAbaNordeste.getWidth(), pnlAbaNordeste.getHeight(), arrayItem, p)
+                                ),
+                            p);
+                        
+                        // Tabela parâmetros
+                        pnlAbaSudeste.addTab(tituloAbaParametros, null,
+                            new PainelConteudo(new TabelaParametrosEICs(p)), p);
+                        
+                        // Título previsão
+                        pnlAbaSudeste.addTab(tituloAbaPrevisao, null,
+                            new PainelConteudo(new TabelaICs(p)), p);
+                        
                         break;
                     case "Demandas": 
                         // Cria um painel demanda do item selecionado na tree
@@ -252,7 +252,7 @@ public class ComboBoxesSQL extends JPanel {
                 cbxSub.setEnabled(false);
                 cbxCmp.setEnabled(false);
                 cbxPte.setEnabled(false);
-                mUni = new DefaultComboBoxModel(lUni.toVector());
+                mUni = new DefaultComboBoxModel(comporComboBoxModel(lUni));
                 cbxUni.setModel(mUni);
                 
                 arrayItem[0] = Integer.parseInt(n);
@@ -275,7 +275,7 @@ public class ComboBoxesSQL extends JPanel {
                 cbxPte.setEnabled(false);
                 cbxAcao.setEnabled(true);
                 btnAcao.setEnabled(true);
-                mSub = new DefaultComboBoxModel(lSub.toVector());
+                mSub = new DefaultComboBoxModel(comporComboBoxModel(lSub));
                 cbxSub.setModel(mSub);
                 
                 nivel = "unidade";
@@ -303,7 +303,7 @@ public class ComboBoxesSQL extends JPanel {
 //                for(int i = 1; i < obj.length; i++) {
 //                    obj[i] = lCmp.toArray()[i - 1];
 //                }
-                mCmp = new DefaultComboBoxModel(lCmp.toVector());
+                mCmp = new DefaultComboBoxModel(comporComboBoxModel(lCmp));
                 cbxCmp.setModel(mCmp);
                 
                 nivel = "subunidade";
@@ -330,7 +330,7 @@ public class ComboBoxesSQL extends JPanel {
 //                for(int i = 1; i < obj.length; i++) {
 //                    obj[i] = lCmp.toArray()[i - 1];
 //                }
-                mPte = new DefaultComboBoxModel(lPte.toVector());
+                mPte = new DefaultComboBoxModel(comporComboBoxModel(lPte));
                 cbxPte.setModel(mPte);
                 
                 nivel = "componente";

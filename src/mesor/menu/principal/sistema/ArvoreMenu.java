@@ -16,6 +16,7 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import mesor.menu.DialogoAviso;
 import mesor.menu.HoraFormatada;
 
 import mesor.menu.painel.aba.PainelConteudo;
@@ -32,6 +33,7 @@ import mesor.sql.Lista;
 /**
  *
  * @author Rubens Oliveira da Cunha Júnior
+ * @deprecated 
  */
 public class ArvoreMenu {
     
@@ -95,6 +97,7 @@ public class ArvoreMenu {
             criarNoDeConsultaSQL();
             
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         
@@ -351,7 +354,10 @@ public class ArvoreMenu {
             if(e.isPopupTrigger()) {
                 try {
                     mostrarPopupMenu(e);
-                } catch(SQLException ex) {ex.printStackTrace();}
+                } catch(SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
             }}
         
         @Override
@@ -359,7 +365,10 @@ public class ArvoreMenu {
             if(e.isPopupTrigger()) {
                 try {
                     mostrarPopupMenu(e);
-                } catch(SQLException ex) {ex.printStackTrace();}
+                } catch(SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
             }
         }
         
@@ -414,7 +423,7 @@ public class ArvoreMenu {
                         ),
                     p);
             pnlAbaSudeste.addTab(g, null,
-                        new PainelConteudo(new TabelaParametrosEICs()), g);
+                        new PainelConteudo(new TabelaParametrosEICs(p)), g);
         }
     }
     

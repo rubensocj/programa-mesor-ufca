@@ -276,7 +276,9 @@ public abstract class Janela {
                     }
                     
                     System.out.println(s.getIdBD());
-                } catch(SQLException ex) { ex.printStackTrace();}
+                } catch(SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();}
             }
         }        
     }

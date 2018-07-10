@@ -49,12 +49,12 @@ public class ModeloTabela extends AbstractTableModel {
                         ResultSet.TYPE_SCROLL_INSENSITIVE);
             setQuery(consulta);
         } catch (SQLException e) {
-            
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();
             Consulta.conectar();
 
         } catch(Exception ex2) {
-            
+            DialogoAviso.show(ex2.getMessage());
             ex2.printStackTrace();
             Consulta.conectar();
             
@@ -67,7 +67,7 @@ public class ModeloTabela extends AbstractTableModel {
                 setQuery(consulta);
             } catch (SQLException ex) {
                 DialogoAviso.show("SQLException em construtor ModeloTabela(consulta): " + 
-                        ex.getLocalizedMessage());
+                        ex.getMessage());
                 ex.printStackTrace();
             }
         }
@@ -86,6 +86,7 @@ public class ModeloTabela extends AbstractTableModel {
             return Class.forName(nomeClasse);
         } // Fim do try
         catch(SQLException | ClassNotFoundException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         } // Fim do catch
         
@@ -103,6 +104,7 @@ public class ModeloTabela extends AbstractTableModel {
             return metaData.getColumnCount();
         } // Fim do try
         catch(SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         } // Fim do catch
         
@@ -119,6 +121,7 @@ public class ModeloTabela extends AbstractTableModel {
             return metaData.getColumnName(coluna + 1);
         } // Fim do try
         catch(SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         } // Fim do catch
         
@@ -147,6 +150,7 @@ public class ModeloTabela extends AbstractTableModel {
             return resultSet.getObject(coluna + 1);
         } // Fim do try.
         catch(SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         } // Fim do catch.
         
@@ -193,6 +197,7 @@ public class ModeloTabela extends AbstractTableModel {
             return model;
         }
         catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         
@@ -208,6 +213,7 @@ public class ModeloTabela extends AbstractTableModel {
 //                connection.close();
             } // Fim do try
             catch(SQLException ex) {
+                DialogoAviso.show(ex.getMessage());
                 ex.printStackTrace();
             } // Fim do catch
             finally {

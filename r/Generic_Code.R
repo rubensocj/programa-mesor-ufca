@@ -164,7 +164,7 @@ theoreticalMoments = sampleConditionalMoments(parameters)
 forecasting = graphicStudyOfCumulativeTimes(x=data_base_x, bootstrapSample= bSample, conditionalMeans = theoreticalMoments, parameters=parameters);
 
 #}
-#computeForecastingTable(forecasting, 220);
+computeForecastingTable(forecasting, 0, paste(PATH5, "TableIC.txt", sep = ""));
 #optimum$optimum$value
 # mle_objs$optimum_InterventionType$parameters
 # optimum_InterventionType

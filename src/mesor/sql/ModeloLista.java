@@ -42,12 +42,12 @@ public class ModeloLista extends DefaultListModel {
             
             setQuery(consulta);
         } catch (SQLException e) {
-            
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();            
             Consulta.conectar();
 
         } catch(Exception ex2) {
-            
+            DialogoAviso.show(ex2.getMessage());
             ex2.printStackTrace();
             Consulta.conectar();
             
@@ -60,7 +60,7 @@ public class ModeloLista extends DefaultListModel {
                 setQuery(consulta);
             } catch (SQLException ex) {
                 DialogoAviso.show("SQLException em construtor ModeloLista(consulta): " + 
-                        ex.getLocalizedMessage());
+                        ex.getMessage());
                 ex.printStackTrace();
             }
         }
@@ -85,7 +85,7 @@ public class ModeloLista extends DefaultListModel {
                 k++;
             }
         } catch (SQLException e) {
-            DialogoAviso.show("Erro de operação. " + e.getLocalizedMessage());
+            DialogoAviso.show("Erro de operação. " + e.getMessage());
         }
     }
     
@@ -98,6 +98,7 @@ public class ModeloLista extends DefaultListModel {
                         ResultSet.CONCUR_READ_ONLY,
                         ResultSet.TYPE_SCROLL_INSENSITIVE);
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             Logger.getLogger(ModeloLista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -173,7 +174,7 @@ public class ModeloLista extends DefaultListModel {
                 k++;
             }
         } catch (SQLException e) {
-            DialogoAviso.show("Erro de operação. " + e.getLocalizedMessage());
+            DialogoAviso.show("Erro de operação. " + e.getMessage());
         }
         return arrayRes;
     }

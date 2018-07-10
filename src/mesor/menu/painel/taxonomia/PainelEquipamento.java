@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.ModeloTabela;
 import mesor.menu.DivisorSplitPane;
@@ -408,7 +409,10 @@ public class PainelEquipamento {
                                 break;
                             default: break;
                         }
-                    } catch(SQLException ex) { ex.printStackTrace(); }
+                    } catch(SQLException ex) {
+                        DialogoAviso.show(ex.getMessage());
+                        ex.printStackTrace();
+                    }
                 } else {
                     // Bip do mouse ao clicar no botão
                     Toolkit.getDefaultToolkit().beep();
@@ -734,6 +738,7 @@ public class PainelEquipamento {
                         // (?i) torna a busca case insensitive
                         ordUni.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }
@@ -752,6 +757,7 @@ public class PainelEquipamento {
                         // (?i) torna a busca case insensitive
                         ordSub.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }
@@ -770,6 +776,7 @@ public class PainelEquipamento {
                         // (?i) torna a busca case insensitive
                         ordCmp.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }
@@ -788,6 +795,7 @@ public class PainelEquipamento {
                         // (?i) torna a busca case insensitive
                         ordPte.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
                     } catch(PatternSyntaxException ex) {
+                        DialogoAviso.show(ex.getMessage());
                         ex.printStackTrace();
                     }
                 }

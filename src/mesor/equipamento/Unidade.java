@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.Vector;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.Consulta;
 
@@ -184,6 +185,7 @@ public class Unidade {
             sqlDataAq = converterData(dataAquisicao);
             sqlDataOp = converterData(dataInicioOperacao);
         } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         
@@ -220,6 +222,7 @@ public class Unidade {
             sqlDataAq = converterData(dataAquisicao);
             sqlDataOp = converterData(dataInicioOperacao);
         } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.Lista;
 /**
@@ -53,6 +54,7 @@ public class ArvoreMenu {
             criarNoDeConsultaSQL();
             
         } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
             ex.printStackTrace();
         }
         

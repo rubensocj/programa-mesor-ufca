@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import mesor.menu.DialogoAviso;
 
 import mesor.sql.Consulta;
 
@@ -139,7 +140,10 @@ public class Demanda {
             // Converte "String" como "Timestamp" para "Date".
             dataDate = formatoSQLTimestamp.parse(this.getData());
             
-        } catch (ParseException ex) {ex.printStackTrace();} // Fim do try-catch.
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        } // Fim do try-catch.
         
         n = Consulta.insertDemanda(dataDate, this.modo, this.impacto,
                 this.causa, this.modoOperacional, this.unidade.getIdBD(),
@@ -159,7 +163,10 @@ public class Demanda {
             // Converte "String" como "Timestamp" para "Date".
             dataDate = formatoSQLTimestamp.parse(this.getData());
             
-        } catch (ParseException ex) {ex.printStackTrace();} // Fim do try-catch.
+        } catch (ParseException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        } // Fim do try-catch.
         
         n = Consulta.updateDemanda(dataDate, this.modo, this.impacto,
                 this.causa, this.modoOperacional, this.idBD);

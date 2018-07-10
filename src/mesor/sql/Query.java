@@ -45,12 +45,12 @@ public class Query extends Consulta{
 
             i = (int) (long) resultSet.getObject(1);
         } catch (SQLException e) {
-            
+            DialogoAviso.show(e.getMessage());
             e.printStackTrace();            
             Consulta.conectar();
 
         } catch(Exception ex2) {
-            
+            DialogoAviso.show(ex2.getMessage());
             ex2.printStackTrace();
             Consulta.conectar();
             
@@ -63,7 +63,7 @@ public class Query extends Consulta{
                 setQuery(consulta);
             } catch (SQLException ex) {
                 DialogoAviso.show("SQLException em construtor Query(consulta): " + 
-                        ex.getLocalizedMessage());
+                        ex.getMessage());
                 ex.printStackTrace();
             }
         }

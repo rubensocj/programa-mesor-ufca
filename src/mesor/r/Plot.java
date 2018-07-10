@@ -31,6 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import mesor.menu.DialogoAviso;
 import mesor.menu.principal.PainelPrincipal;
 
 /**
@@ -64,7 +65,9 @@ public class Plot extends JPanel {
     public Plot() {
         try {
             img = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "wgrp_plot.png"));
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            DialogoAviso.show(e.getMessage());
+            e.printStackTrace();}
         
 //        btn.addActionListener(new ActionListener() {
 //            @Override
@@ -133,7 +136,7 @@ public class Plot extends JPanel {
         try {
             // Cria a imagem a partir do arquivo
             // Pega o aspect ratio da imagem importada
-            BufferedImage p = ImageIO.read(new File(mesor.menu.Janela.LOCAL + "\\wgrp_plot" + pn + ".png"));
+            BufferedImage p = ImageIO.read(new File(camadaR.getRLocal() + "\\wgrp_plot" + pn + ".png"));
             h1 = p.getHeight(null);
             w1 = p.getWidth(null);
             ratio = h1/w1;
@@ -164,7 +167,10 @@ public class Plot extends JPanel {
                         RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g.drawImage(p, 0, 0, (int) w2, (int) h2, null);
             g.dispose();
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            DialogoAviso.show(e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     // -------------------------------------------------------------------------

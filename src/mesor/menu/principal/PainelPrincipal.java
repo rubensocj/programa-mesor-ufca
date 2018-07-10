@@ -65,9 +65,9 @@ public class PainelPrincipal extends JPanel {
         pnlNordeste = new JPanel(new BorderLayout());
         pnlNordeste.add(pnlAbaNordeste);
         
-        pnlOeste = new JPanel(new BorderLayout());
+        pnlOeste = new JPanel(new FlowLayout());
 //        pnlOeste.add(treeSistema.getPaneTree(), BorderLayout.CENTER);
-        pnlOeste.add(cbxSQL, BorderLayout.CENTER);
+        pnlOeste.add(cbxSQL);
 
         pnlSudeste = new JPanel(new BorderLayout());
         pnlSudeste.add(pnlAbaSudeste);
@@ -100,7 +100,6 @@ public class PainelPrincipal extends JPanel {
                                                 pnlOeste, sptVertical);
         sptHorizontal.setOpaque(true);
         sptHorizontal.setOneTouchExpandable(true);
-        sptHorizontal.setDividerLocation(250);
         divSptHorizontal = new DivisorSplitPane(true, sptHorizontal);
         // ----
         

@@ -77,7 +77,7 @@ public class PainelSistema {
             modelo = (ModeloTabela) tab.getModel();
             modelo.setQuery("SELECT * FROM sistema");
         } catch (SQLException ex) {
-            DialogoAviso.show("SQLExcpetion: " + ex.getLocalizedMessage());
+            DialogoAviso.show("SQLExcpetion: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

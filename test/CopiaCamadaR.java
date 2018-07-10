@@ -27,6 +27,7 @@ import org.rosuda.javaGD.JavaGD;
 
 import java.io.IOException;
 import javax.swing.JFrame;
+import mesor.menu.DialogoAviso;
 
 /**
  *
@@ -375,6 +376,7 @@ public class CopiaCamadaR extends GDInterface {
                 cont++;
             }
         } catch (IOException x) {
+            DialogoAviso.show(x.getMessage());
             System.err.format("IOException: %s%n", x);
         }
         rEnv();

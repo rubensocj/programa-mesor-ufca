@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 import javax.swing.border.BevelBorder;
 import mesor.intervencao.Equipe;
+import mesor.menu.DialogoAviso;
 import mesor.menu.DialogoConfirma;
 
 import mesor.menu.adicionar.JanelaAdicionarSistema;
@@ -73,6 +74,7 @@ public class JanelaAlterarSistema extends JanelaAdicionarSistema {
                 try {
                     p.setPage(ajudaHTML.toURL());
                 } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
                     ex.printStackTrace();
                 }
                 

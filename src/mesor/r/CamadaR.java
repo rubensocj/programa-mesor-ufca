@@ -57,6 +57,8 @@ public class CamadaR {
     static REXP rexpOptimum_KijimaII;
     static REXP rexpOptimum;
     static REXP rexpOptimum_InterventionType;
+    static REXP rexpForecasting;
+    static REXP rexpInterpret;
 
     // REXP diretório de trabalho R
     static REXP rexpWd;
@@ -88,8 +90,8 @@ public class CamadaR {
     
     /**
      * Construtor
-     * @param p
-     * @param s
+     * @param p Nome dos arquivos de imagem (plot) e de texto (tabela)
+     * @param s Série temporal
      */
     public CamadaR(String p, SerieTemporal s) {
         // Define a série temporal e nome do plot
@@ -178,6 +180,10 @@ public class CamadaR {
         CamadaR.nomePlot = nome;
     }
     
+    public String getRLocal() {
+        return R_LOCAL;
+    }
+    
     /**
      * Verifica se as condições necessárias para a inicialização da sessão R
      * foram atendidas e tenta criar a sessão. Ao criá-la, o ambiente R está
@@ -218,6 +224,7 @@ public class CamadaR {
         rexpWd = re.eval("getwd()");
         // String pública com o caminho do diretório de trabalho, com "/"
         R_LOCAL = rexpWd.asString();
+        System.out.println(R_LOCAL);
         // String pública com o path do diretório de trabalho, com "\\"
         // A classe java Path usa barras duplas invertidas, "\\"
         R_PATH = R_LOCAL.replace("/", "\\");
@@ -314,7 +321,9 @@ public class CamadaR {
         // Chama método de MK_WGRP.R que cria parametersAndICs_table.txt
         System.out.println("Chamando summarizeICsAndParametersTable...");
         rexpICsAndParameters = re.eval("df=summarizeICsAndParametersTable(" +
-                R_MLE_OBJS + ", " + R_TEMPOS_ENTRE + ", \"" + R_LOCAL + "/\")");
+                R_MLE_OBJS + ", " +
+                R_TEMPOS_ENTRE + ", \"" +
+                R_LOCAL + "/" + "parametersAndICs_table" + nomePlot + "\")");
         System.out.println("Feito.\n");
         rEnv();
 
@@ -349,12 +358,26 @@ public class CamadaR {
         re.eval("plot.new();");
         
         System.out.println("Plotando...");
-        re.eval("graphicStudyOfCumulativeTimes(x=data_base_x, " +
+        re.eval("forecasting = graphicStudyOfCumulativeTimes(x=data_base_x, " +
                     "bootstrapSample= bSample, conditionalMeans = " + 
                     "theoreticalMoments, parameters=parameters);");
+        rexpForecasting = re.eval("forecasting");
         
         // Finaliza o dispositivo gráfico
         re.eval("dev.off();");
+        System.out.println("Feito.\n");
+        
+        // Chama método de MK_WGRP.R que cria ICs_table.txt
+        System.out.println("Chamando computeForecastingTable...");
+        String nomeTableIC = R_LOCAL + "/ICs_table" + nomePlot;
+        re.eval("computeForecastingTable(forecasting, 0, \"" + nomeTableIC + "\")");
+//                R_LOCAL + "/" + "ICs_table_" +
+//                nomePlot.replace("Gráfico ", "") + "\")");
+
+        re.eval("interpret = interpretation(optimum, " + "\"" +
+                R_LOCAL + "/" + "interpretation" + nomePlot + "\")");
+        rexpInterpret = re.eval("interpret");
+        
         System.out.println("Feito.");
     }
     
@@ -437,6 +460,7 @@ public class CamadaR {
                 cont++;
             }
         } catch (IOException x) {
+            DialogoAviso.show(x.getMessage());
             System.err.format("IOException: %s%n", x);
         }
         rEnv();

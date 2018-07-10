@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelDemanda;
@@ -89,7 +90,9 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                             LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
                 try {
                     p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) { ex.printStackTrace();
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
                 }
                 
                 JScrollPane aPane = new JScrollPane(p,
@@ -188,7 +191,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
             pnlPrincipal.add(painelSistema(), BorderLayout.NORTH);
             /* Adiciona o ItemListener a cbxSistema */
             cbxSistema.addItemListener(new ItemEventSistema(pnlUnidade));
-        } catch (SQLException ex) {ex.printStackTrace();}
+        } catch (SQLException ex) {
+            DialogoAviso.show(ex.getMessage());
+            ex.printStackTrace();
+        }
         pnlPrincipal.add(painelAbas(), BorderLayout.WEST);
         pnlPrincipal.add(pnlAlterar, BorderLayout.EAST);
         return pnlPrincipal;
@@ -270,7 +276,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
             /* Atualiza a tabela de demandas */
             try {
                 tb.setQuery("SELECT * FROM demanda");
-            } catch (SQLException ex) {ex.printStackTrace();}
+            } catch (SQLException ex) {
+                DialogoAviso.show(ex.getMessage());
+                ex.printStackTrace();
+            }
             
             pnlDemanda.habilitarTabela(true);
             pnlDemanda.atualizarAparenciaDaTabela();
@@ -391,7 +400,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                             "WHERE demanda.id_unidade = " +
                                 String.valueOf(pnlUnidade.unidade.getIdBD()) +
                             " GROUP BY demanda.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "subunidade":
@@ -404,7 +416,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                             " AND demanda.id_subunidade = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY demanda.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "componente":
@@ -419,7 +434,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                             " AND demanda.id_componente = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY demanda.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                     case "parte":
@@ -436,7 +454,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                             " AND demanda.id_parte = " +
                                 pnlUnidade.idSelecionado +
                             " GROUP BY demanda.id");
-                        } catch (SQLException ex) {ex.printStackTrace();}
+                        } catch (SQLException ex) {
+                            DialogoAviso.show(ex.getMessage());
+                            ex.printStackTrace();
+                        }
                         
                         break;
                         
@@ -597,7 +618,10 @@ public class JanelaAlterarDemanda extends JanelaAdicionarDemanda {
                  */
                 try {
                     tb.setQuery("SELECT demanda.* FROM demanda");
-                } catch (SQLException ex) {ex.printStackTrace();}
+                } catch (SQLException ex) {
+                    DialogoAviso.show(ex.getMessage());
+                    ex.printStackTrace();
+                }
 
                 pnlUnidade.limpaSelecao();
                 pnlUnidade.habilitarTabela(PainelEquipamento.TAB_UNIDADE);
