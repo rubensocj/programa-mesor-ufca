@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -114,6 +115,19 @@ public abstract class Janela {
      */
     public void criarBotoesOpcoes() {}
     
+    public JButton criarBotaoAjuda() {
+        JButton btn = new JButton("Ajuda");
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JanelaAjuda janela = new JanelaAjuda("Conteudo");
+                janela.mostrarDialog((Component) dialog);
+            }
+        });
+        
+        return btn;
+    }
+    
     /**
      * Inicializa os botões de alterações - escolher, voltar, salvar alterações,
      * buscar e limpar busca.
@@ -172,21 +186,21 @@ public abstract class Janela {
         pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
         pane.setOptions(options);
         
-        frm = new JFrame();
-        frm.setContentPane(pane);
-        frm.setTitle(titulo);
-        frm.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frm.pack();
-        frm.setVisible(true);
-        frm.setResizable(false);
-        frm.setLocationRelativeTo(null);
-        frm.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
+//        frm = new JFrame();
+//        frm.setContentPane(pane);
+//        frm.setTitle(titulo);
+//        frm.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//        frm.pack();
+//        frm.setVisible(true);
+//        frm.setResizable(false);
+//        frm.setLocationRelativeTo(null);
+//        frm.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
         
-//        dialog = pane.createDialog(pane, titulo);
-//        dialog.pack();
-//        dialog.setVisible(true);
-//        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//        dialog.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
+        dialog = pane.createDialog(pane, titulo);
+        dialog.pack();
+        dialog.setVisible(true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
     }
     
     /**
@@ -204,21 +218,21 @@ public abstract class Janela {
         pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
         pane.setOptions(options);
         
-        frm = new JFrame();
-        frm.setContentPane(pane);
-        frm.setTitle(titulo);
-        frm.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frm.pack();
-        frm.setVisible(true);
-        frm.setResizable(false);
-        frm.setLocationRelativeTo(null);
-        frm.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
-        
-//        dialog = pane.createDialog(pane, titulo);
-//        dialog.pack();
-//        dialog.setVisible(true);
-//        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//        dialog.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
+//        frm = new JFrame();
+//        frm.setContentPane(pane);
+//        frm.setTitle(titulo);
+//        frm.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//        frm.pack();
+//        frm.setVisible(true);
+//        frm.setResizable(false);
+//        frm.setLocationRelativeTo(null);
+//        frm.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
+//        
+        dialog = pane.createDialog(pane, titulo);
+        dialog.pack();
+        dialog.setVisible(true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(Janela.criarIcon("/res/icone/mesor.jpg").getImage());
     }
     
     /**

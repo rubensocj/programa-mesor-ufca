@@ -45,7 +45,7 @@ public class Consulta {
     
     // Acesso ao servidor: usuário e senha.
 //    private static final String USERNAME = "sql10190138";   // online
-    private static final String USERNAME = "mesor";   // localhost
+    private static final String USERNAME = "root";   // localhost
 //    private static final String USERNAME = "u789035304_mesor";   // remoto
     
     // Obsoleto

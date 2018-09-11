@@ -6,8 +6,10 @@
 
 package mesor.menu.painel.aba;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -45,6 +47,7 @@ public class PainelEmAbas extends JTabbedPane {
         int ind = this.getTabCount() - 1;
         setTabComponentAt(ind, new BotaoAba(titulo, c));        
     }
+    
 //    /**
 //     * Adiciona um aba ao painel com abas
 //     * 

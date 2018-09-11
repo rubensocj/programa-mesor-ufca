@@ -69,7 +69,7 @@ public class JanelaAdicionarEquipamento extends Janela {
     public void criarBotoesOpcoes() {
         btn1 = new JButton("Confirmar");
         btn2 = new JButton("Cancelar");
-        btn3 = new JButton("Ajuda");
+        btn3 = criarBotaoAjuda();
         options = new Object[] {this.btn1, this.btn2, this.btn3};
         
         btn1.addActionListener(new Salvar());
@@ -79,38 +79,6 @@ public class JanelaAdicionarEquipamento extends Janela {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("opção CANCELAR selecionada");
                 frm.dispose();
-            }
-        });
-        
-        btn3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("opção AJUDA selecionada");
-                JEditorPane p = new JEditorPane();
-                p.setContentType("text/html");
-                p.setEditable(false);
-                File ajudaHTML = new File(
-                            LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
-                try {
-                    p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) {
-                    DialogoAviso.show(ex.getMessage());
-                    ex.printStackTrace();
-                }
-                
-                JScrollPane aPane = new JScrollPane(p,
-                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                p.setPreferredSize(new Dimension(400,500));
-                
-                JDialog janelaAjuda = new JDialog(frm);
-                janelaAjuda.add(aPane);
-                janelaAjuda.setTitle("Ajuda");
-                janelaAjuda.pack();
-                janelaAjuda.setLocationRelativeTo(null);
-                janelaAjuda.setMinimumSize(new Dimension(400,500));
-                
-                janelaAjuda.setVisible(true);
             }
         });
     }
@@ -171,12 +139,7 @@ public class JanelaAdicionarEquipamento extends Janela {
         unidade.setSistema(eventSistema.getSistema().getIdBD());
 
         unidade.sqlInserir();
-        try {
-            PainelPrincipal.treeSistema.atualizaNoSistema();
-        } catch (SQLException ex) {
-            DialogoAviso.show(ex.getMessage());
-            Logger.getLogger(JanelaAdicionarEquipamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PainelPrincipal.cbxSQL.atualizarModelo();
     }
     
     // -------------------------------------------------------------------------
@@ -475,7 +438,7 @@ public class JanelaAdicionarEquipamento extends Janela {
             /* Se não houver erro, executa a operação */
             if(mensagemErro.isEmpty()) {
                 confirmar();
-                frm.dispose();
+                dialog.dispose();
             } else {
                 /* Se houver erro, exibe mensagem de erro */
                 JOptionPane mPane = new JOptionPane();

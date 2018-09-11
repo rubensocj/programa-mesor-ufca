@@ -168,7 +168,7 @@ public class PainelIntervencao {
             public void actionPerformed(ActionEvent e) {
                 if(tabIntervencao.getSelectedRowCount() == 1) {
                     try {
-//                        intervencao.sqlExcluir();
+                        intervencao.sqlExcluir();
                         reiniciarTabela();
                         atualizarAparenciaDaTabela();
                     } catch(SQLException ex) {

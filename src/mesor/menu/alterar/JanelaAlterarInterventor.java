@@ -55,47 +55,15 @@ public class JanelaAlterarInterventor extends JanelaAdicionarInterventor {
     @Override
     public void criarBotoesOpcoes() {
         btn1 = new JButton("OK");
-        btn2 = new JButton("Ajuda");
+        btn2 = criarBotaoAjuda();
         options = new Object[] {this.btn1, this.btn2};
         
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frm.dispose();
+                dialog.dispose();
             }
         });
-        
-        btn2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("opção AJUDA selecionada");
-                JEditorPane p = new JEditorPane();
-                p.setContentType("text/html");
-                p.setEditable(false);
-                File ajudaHTML = new File(
-                            LOCAL + "\\ajuda\\janelaAdicionarEquipamento.html");
-                try {
-                    p.setPage(ajudaHTML.toURL());
-                } catch (IOException ex) {
-                    DialogoAviso.show(ex.getMessage());
-                    ex.printStackTrace();
-                }
-                
-                JScrollPane aPane = new JScrollPane(p,
-                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                p.setPreferredSize(new Dimension(400,500));
-                
-                JDialog janelaAjuda = new JDialog(frm);
-                janelaAjuda.add(aPane);
-                janelaAjuda.setTitle("Ajuda");
-                janelaAjuda.pack();
-                janelaAjuda.setLocationRelativeTo(null);
-                janelaAjuda.setMinimumSize(new Dimension(400,500));
-                
-                janelaAjuda.setVisible(true);
-            }
-        });     
     }
     
     @Override

@@ -8,25 +8,34 @@ package mesor.menu.principal;
 
 import mesor.menu.principal.sistema.ArvoreMenu;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import mesor.menu.DialogoAviso;
 
 import mesor.menu.DivisorSplitPane;
+import mesor.menu.Janela;
 
 import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.aba.PainelEmAbas;
 import mesor.menu.principal.sistema.ComboBoxesSQL;
 
 import mesor.r.Plot;
+import mesor.r.Plot1;
 import mesor.r.TabelaParametrosEICs;
 
 /**
@@ -45,19 +54,21 @@ public class PainelPrincipal extends JPanel {
     private static JSplitPane sptHorizontal, sptVertical;
     
     public static ArvoreMenu treeSistema;
-    public ComboBoxesSQL cbxSQL;
+    public static ComboBoxesSQL cbxSQL;
     public JButton btnTeste = new JButton("Adicionar aba");
     
     /**
      * Construtores.
      */
     public PainelPrincipal() {        
-        // Inicializa os paineis com abas
+        // Inicializa o painel Nordeste com abas e importa a imagem de boas vindas
         pnlAbaNordeste = new PainelEmAbas();
+        pnlAbaNordeste.addTab("Bem-vindo", null, (Component) new PainelConteudo(new Plot1()), "");
+
+        // Inicializa o painel sudeste com abas
         pnlAbaSudeste = new PainelEmAbas();
         
         // Inicializa a JTree
-//        treeSistema = new ArvoreMenu();
         cbxSQL = new ComboBoxesSQL();
         // ----
         
@@ -66,7 +77,6 @@ public class PainelPrincipal extends JPanel {
         pnlNordeste.add(pnlAbaNordeste);
         
         pnlOeste = new JPanel(new FlowLayout());
-//        pnlOeste.add(treeSistema.getPaneTree(), BorderLayout.CENTER);
         pnlOeste.add(cbxSQL);
 
         pnlSudeste = new JPanel(new BorderLayout());
@@ -115,6 +125,15 @@ public class PainelPrincipal extends JPanel {
     // -------------------------------------------------------------------------
 
     public static void atualizarArvore() {
+    }
+    
+    private static JPanel montarPainelInicial() {
+        JPanel pnl = new JPanel(new FlowLayout());
+        BufferedImage img = null;
+        
+        img = (BufferedImage) Janela.criarIcon("res/icone/mesor.jpg").getImage();
+        
+        return pnl;
     }
     
     private static class ActionAdicionarAba implements ActionListener {

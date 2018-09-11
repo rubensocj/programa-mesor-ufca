@@ -227,4 +227,12 @@ public class Intervencao {
         n = Consulta.uptadeIntervencao(categoria, atividade, dataInicioDate,
                     dataTerminoDate, this.demanda.getIdBD(), this.idBD);
     }
+
+    /**
+     * Deleta informações do banco de dados.
+     */
+    public void sqlExcluir() {
+        int n;
+        n = Consulta.deleteIntervencao(this.idBD);
+    }
 }

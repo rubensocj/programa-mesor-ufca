@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import mesor.menu.JanelaAjuda;
 import mesor.menu.Janela;
 import static mesor.menu.Janela.LOCAL;
 import mesor.menu.alterar.JanelaAlterarInterventor;
@@ -33,13 +34,14 @@ import mesor.r.CamadaR;
 public class MenuPrincipal extends JFrame {
     
     private JMenuBar barraMenu;
-    private JMenu menuAdicionar, menuAlterar;
+    private JMenu menuAdicionar, menuAlterar, menuAjuda;
     private JMenuItem adicionarDemanda, adicionarEquipamento,
                 adicionarIntervencao, adicionarInterventor, adicionarEquipe,
                 adicionarSistema;
     private JMenuItem alterarDemanda, alterarEquipamento, 
                 alterarIntervencao, alterarInterventor, alterarEquipe,
                 alterarSistema;
+    private JMenuItem ajudaConteudo, ajudaSobre;
         
     private final String eventSelected = "ActionEvent";
 
@@ -59,6 +61,9 @@ public class MenuPrincipal extends JFrame {
         
         menuAlterar = new JMenu("Alterar/Excluir");
         menuAlterar.setMnemonic(KeyEvent.VK_L);
+        
+        menuAjuda = new JMenu("Ajuda");
+        menuAjuda.setMnemonic(KeyEvent.VK_J);
         
         /**      
          * 1. Legenda exibida quando cursor do mouse passar sobre o componente:
@@ -91,6 +96,10 @@ public class MenuPrincipal extends JFrame {
         alterarEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
         alterarSistema = new JMenuItem("Sistema", KeyEvent.VK_S);
         
+        // Cria os itens do menu "Ajuda"
+        ajudaConteudo = new JMenuItem("Conteúdo da ajuda", KeyEvent.VK_C);
+        ajudaSobre = new JMenuItem("Sobre", KeyEvent.VK_S);
+        
         // Adiciona o ActionListener aos itens
         adicionarEquipamento.addActionListener(new adicionarEquipamento());
         adicionarIntervencao.addActionListener(new adicionarIntervencao());
@@ -105,6 +114,9 @@ public class MenuPrincipal extends JFrame {
         alterarInterventor.addActionListener(new alterarInterventor());
         alterarEquipe.addActionListener(new alterarEquipe());
         alterarSistema.addActionListener(new alterarSistema());
+        
+        ajudaConteudo.addActionListener(new ajuda("Conteudo"));
+        ajudaSobre.addActionListener(new ajuda("Sobre"));
         
         // Adiciona o item ao submenu "Adicionar"
         menuAdicionar.add(adicionarDemanda);
@@ -122,9 +134,14 @@ public class MenuPrincipal extends JFrame {
         menuAlterar.add(alterarInterventor);
         menuAlterar.add(alterarSistema);
         
+        // Adiciona o item ao submenu "Ajuda"
+        menuAjuda.add(ajudaConteudo);
+        menuAjuda.add(ajudaSobre);
+        
         // Adiciona o menu "Arquivo" à barra de menus
         barraMenu.add(menuAdicionar);
         barraMenu.add(menuAlterar);
+        barraMenu.add(menuAjuda);
 
         return barraMenu;
     }
@@ -315,6 +332,24 @@ public class MenuPrincipal extends JFrame {
             if (eventSelected.equals("ActionEvent")) {
                 JanelaAlterarSistema janela = new JanelaAlterarSistema();
                 janela.mostrar("Alterar/Excluir sistema");
+            }
+        }
+    }
+    
+    private class ajuda implements ActionListener {
+        
+        private final String tipoAjuda;
+        
+        public ajuda(String t) {
+            tipoAjuda = t;
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: CONTEÚDO DA AJUDA.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAjuda janela = new JanelaAjuda(tipoAjuda);
+                janela.mostrarFrame();
             }
         }
     }

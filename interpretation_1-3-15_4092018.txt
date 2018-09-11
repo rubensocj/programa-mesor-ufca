@@ -1,0 +1,1 @@
+O sistema está em deterioração. Os tempos entre falhas diminuem cronologicamente, e pode-se interpretar o valor de q em relação à qualidade de intervenção. Para q = 0.261913180795259 entre 0 e 1, foi realizada uma intervenção que leva à condição intermediária entre 'tão bom quanto novo' e 'tão ruim quanto antes'.

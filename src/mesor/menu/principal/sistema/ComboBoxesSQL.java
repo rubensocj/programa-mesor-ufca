@@ -78,17 +78,7 @@ public class ComboBoxesSQL extends JPanel {
         cbxAcao.setModel(new DefaultComboBoxModel(
                 new Object[] {"Selecione...", "Previsão", "Demandas", "Intervenções", "Equipes"}));
        
-        Lista lSis = new Lista("SELECT CONCAT_WS(\" - \", id, nome) FROM sistema;");
-        if(lSis.size() != 0) {
-            cbxSis.setEnabled(true);
-            mSis = new DefaultComboBoxModel(comporComboBoxModel(lSis));
-            cbxSis.setModel(mSis);
-            
-            cbxSis.addItemListener(new ItemEventSis());
-            cbxUni.addItemListener(new ItemEventUni());
-            cbxSub.addItemListener(new ItemEventSub());
-            cbxCmp.addItemListener(new ItemEventCmp());
-        }
+        atualizarModelo();
         
         btnAcao = new JButton("Confirmar");
         btnAcao.setEnabled(false);
@@ -350,6 +340,29 @@ public class ComboBoxesSQL extends JPanel {
                 CODIGO_SELECAO = n;
                 NIVEL_SELECAO = 5;
             }
+        }
+    }
+    
+    private Lista getSistemas() {
+        return new Lista("SELECT CONCAT_WS(\" - \", id, nome) FROM sistema;");
+    }
+    
+    public void atualizarModelo() {
+        Lista lSis = getSistemas();
+        if(lSis.size() != 0) {
+            cbxSis.setEnabled(true);
+            cbxUni.setEnabled(false);
+            cbxSub.setEnabled(false);
+            cbxCmp.setEnabled(false);
+            cbxPte.setEnabled(false);
+            
+            mSis = new DefaultComboBoxModel(comporComboBoxModel(lSis));
+            cbxSis.setModel(mSis);
+            
+            cbxSis.addItemListener(new ItemEventSis());
+            cbxUni.addItemListener(new ItemEventUni());
+            cbxSub.addItemListener(new ItemEventSub());
+            cbxCmp.addItemListener(new ItemEventCmp());
         }
     }
 }
