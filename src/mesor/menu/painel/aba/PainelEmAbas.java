@@ -45,7 +45,8 @@ public class PainelEmAbas extends JTabbedPane {
     public void addTab(String titulo, Icon i, Component c, String n) {
         super.addTab(titulo, i, c, n);
         int ind = this.getTabCount() - 1;
-        setTabComponentAt(ind, new BotaoAba(titulo, c));        
+        setTabComponentAt(ind, new BotaoAba(titulo, c));
+        this.setSelectedIndex(ind);
     }
     
 //    /**

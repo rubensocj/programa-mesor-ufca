@@ -33,6 +33,7 @@ public class JanelaAjuda extends Janela {
     /**
      * Construtores.
      * @param tipoAjuda
+     * @deprecated 
      */
     public JanelaAjuda(String tipoAjuda) {
 

@@ -29,7 +29,7 @@ import mesor.sql.ModeloTabela;
 
 public class JanelaAdicionarIntervencao extends Janela {
     
-    public PainelEquipamento pnlUnidade = new PainelEquipamento();
+    public PainelEquipamento pnlUnidade = new PainelEquipamento(290, 90);
     public PainelDemanda pnlDemanda = new PainelDemanda();
     public PainelEquipe pnlEquipe = new PainelEquipe(310,90);
     

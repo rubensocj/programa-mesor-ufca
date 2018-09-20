@@ -35,7 +35,7 @@ import mesor.menu.painel.aba.PainelEmAbas;
 import mesor.menu.principal.sistema.ComboBoxesSQL;
 
 import mesor.r.Plot;
-import mesor.r.Plot1;
+import mesor.menu.ImagemImportada;
 import mesor.r.TabelaParametrosEICs;
 
 /**
@@ -63,7 +63,7 @@ public class PainelPrincipal extends JPanel {
     public PainelPrincipal() {        
         // Inicializa o painel Nordeste com abas e importa a imagem de boas vindas
         pnlAbaNordeste = new PainelEmAbas();
-        pnlAbaNordeste.addTab("Bem-vindo", null, (Component) new PainelConteudo(new Plot1()), "");
+        pnlAbaNordeste.addTab("Bem-vindo", null, (Component) new PainelConteudo(new ImagemImportada()), "");
 
         // Inicializa o painel sudeste com abas
         pnlAbaSudeste = new PainelEmAbas();

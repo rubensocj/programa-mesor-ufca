@@ -330,35 +330,7 @@ public class JanelaAlterarEquipe extends JanelaAdicionarEquipe {
     // -------------------------------------------------------------------------
     // Métodos privados.
     // -------------------------------------------------------------------------
-    
-    /**
-     * Monta o painel da tabela com informações gerais da equipe de intervenção.
-     * 
-     * @return Um JPanel.
-     * @deprecated 
-     */
-    private JPanel painelTabelaEquipeGeral() {
-        /* Painel com os botões de escolher e voltar */
-        JPanel pnlBtnAlterar = new JPanel(new BorderLayout(0,10));
-        pnlBtnAlterar.add(btnEscolher, BorderLayout.NORTH);
-        pnlBtnAlterar.add(btnVoltar, BorderLayout.CENTER);
-        
-        pnlEqpGeral = new PainelEquipe(PainelEquipe.Tabela.equipe);
-        pnlEqpGeral.tamanhoDaTabela(new Dimension(300,350));
-        pnlEqpGeral.atualizarAparenciaDaTabela();
-        
-        JLabel lblEquipeGeral = new JLabel("Selecione uma equipe: ");
-        
-        JPanel pnlEquipeGeral1 = new JPanel(new BorderLayout());
-        pnlEquipeGeral1.add(lblEquipeGeral, BorderLayout.NORTH);
-        pnlEquipeGeral1.add(pnlEqpGeral.painelTabelas(), BorderLayout.CENTER);
-        
-        JPanel pnlEquipeGeral2 = new JPanel(new FlowLayout());
-        pnlEquipeGeral2.add(pnlEquipeGeral1);
-        pnlEquipeGeral2.add(pnlBtnAlterar);
-        return pnlEquipeGeral2;
-    }
-
+   
     private Component painelExcluirEquipe() {
         // Botão "Remover" interventor.
         btnRemEquipe = new JButton("Remover");

@@ -170,6 +170,7 @@ public class JanelaAdicionarEquipe extends Janela {
         }
         
         equipe.sqlInserir();
+        dialog.dispose();
     }
     
     // -------------------------------------------------------------------------

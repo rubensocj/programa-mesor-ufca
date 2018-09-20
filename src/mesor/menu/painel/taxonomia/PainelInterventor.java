@@ -25,7 +25,7 @@ import mesor.menu.Janela;
  * @version 1.0 7/2/2017
  * @author Rubens Jr
  */
-public class PainelInterventor {
+public class PainelInterventor extends JPanel {
 
     private String selecao1;
     
@@ -195,7 +195,8 @@ public class PainelInterventor {
     
     /**
      * 
-     * @param t
+     * @param t indica se a tabela permite seleção múltipla de linhas (true)
+     * ou não (false)
      * @return Um JPanel com as tabelas.
      */
     public JPanel painelTabelas(boolean t) {

@@ -35,7 +35,7 @@ public class JanelaAdicionarDemanda extends Janela {
     
     public HoraFormatada horaFormatada;
     
-    public PainelEquipamento pnlUnidade = new PainelEquipamento();
+    public PainelEquipamento pnlUnidade = new PainelEquipamento(290, 90);
     
     public ItemEventSistema eventSistema = new ItemEventSistema(pnlUnidade);
     
@@ -200,6 +200,11 @@ public class JanelaAdicionarDemanda extends Janela {
                 if(cbxImpacto.getSelectedIndex()!=0) {
                     // Se o item selecionado não for "Selecione...".
                     impacto = cbxImpacto.getSelectedItem().toString();
+                    if(impacto.equals("Crítico")) {
+                        impacto = "Critico";
+                    } else if(impacto.equals("Não crítico")) {
+                        impacto = "Nao critico";
+                    }
                 } else {impacto = null;} // Caso contrário, impacto = null.
             }
         });

@@ -33,7 +33,7 @@ import mesor.menu.Janela;
  * @version 1.0 19/02/2017
  * @author Rubens Jr
  */
-public class PainelEquipe {
+public class PainelEquipe extends JPanel {
 
     private JLabel lblEqp;
     private TableRowSorter<ModeloTabela> ordEqp;
@@ -48,9 +48,13 @@ public class PainelEquipe {
     private final DefaultTableCellRenderer render;   
     private final JScrollPane ePane; 
     private ModeloTabela modelo;
-    private Tabela tipoDeTabela;
+    
+    private int largura, altura;
     
     public PainelEquipe(int x, int y) {
+        
+        largura = x;
+        altura = y;
         
         lblEqp = new JLabel(" Equipes:");
         
@@ -74,7 +78,7 @@ public class PainelEquipe {
                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         tabEquipe.setFillsViewportHeight(true);
-        tabEquipe.setPreferredScrollableViewportSize(new Dimension(x,y));
+        tabEquipe.setPreferredScrollableViewportSize(new Dimension(largura, altura));
         
         inicializaEConfiguraBusca();
         
@@ -90,43 +94,10 @@ public class PainelEquipe {
         pnlEqpFinal.setOpaque(true);
     }
     
-    /**
-     * Construtores.
-     * @param tabela
-     */
-    public PainelEquipe(Tabela tabela) {
-        setTabela(tabela);
-        
-        /**
-         * Renderizador de célula da tabela.
-         */
-        render = new DefaultTableCellRenderer();
-        render.setHorizontalAlignment(JLabel.CENTER);
-        
-        tabEquipe = new JTable(new ModeloTabela(
-                    "SELECT * FROM " + String.valueOf(this.tipoDeTabela)));
-        
-        /**
-         * Cria o JScrollPane da tabela.
-         */
-        ePane = new JScrollPane(tabEquipe,
-                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        tabEquipe.setFillsViewportHeight(true);
-        
-        pnlEquipe = new JPanel(new FlowLayout());
-        pnlEquipe.add(ePane);
-        pnlEquipe.setOpaque(true);
-    }
-    
     // -------------------------------------------------------------------------
     // Métodos.
     // -------------------------------------------------------------------------
-     
-    public void setTabela(Tabela tabela) {
-        this.tipoDeTabela = tabela;
-    }
-    
+
     /**
      * 
      * @return Um JPanel com a tabela.
@@ -175,39 +146,11 @@ public class PainelEquipe {
         tabEquipe.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tabEquipe.getTableHeader().setReorderingAllowed(false);
         tabEquipe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tabEquipe.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        
-//        switch(this.tipoDeTabela) {
-//            case equipe:
-                tabEquipe.getColumnModel().getColumn(0).setPreferredWidth(40);
-                tabEquipe.getColumnModel().getColumn(1).setPreferredWidth(273);
 
-                tabEquipe.getColumnModel().getColumn(0).setCellRenderer(render);
-                
-//                break;
-//                
-//            case interventor:
-//                tabEquipe.getColumnModel().getColumn(0).setPreferredWidth(40);
-//                tabEquipe.getColumnModel().getColumn(1).setPreferredWidth(70);
-//                tabEquipe.getColumnModel().getColumn(2).setPreferredWidth(280);
-//                tabEquipe.getColumnModel().getColumn(3).setPreferredWidth(70);
-//                tabEquipe.getColumnModel().getColumn(4).setPreferredWidth(100);
-//                tabEquipe.getColumnModel().getColumn(5).setPreferredWidth(100);
-//                tabEquipe.getColumnModel().getColumn(6).setPreferredWidth(180);
-//                tabEquipe.getColumnModel().getColumn(7).setPreferredWidth(180);
-//                tabEquipe.getColumnModel().getColumn(8).setPreferredWidth(90);
-//                tabEquipe.getColumnModel().getColumn(9).setPreferredWidth(90);
-//                tabEquipe.getColumnModel().getColumn(10).setPreferredWidth(280);
-//                tabEquipe.getColumnModel().getColumn(11).setPreferredWidth(150);
-//                
-//                tabEquipe.getColumnModel().getColumn(0).setCellRenderer(render);
-//                tabEquipe.getColumnModel().getColumn(1).setCellRenderer(render);
-//                tabEquipe.getColumnModel().getColumn(4).setCellRenderer(render);
-//                tabEquipe.getColumnModel().getColumn(5).setCellRenderer(render);
-//                break;
-//                
-//            default:break;
-//        }
+        tabEquipe.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tabEquipe.getColumnModel().getColumn(1).setPreferredWidth(largura - 40);
+
+        tabEquipe.getColumnModel().getColumn(0).setCellRenderer(render);
     }
     
     /**

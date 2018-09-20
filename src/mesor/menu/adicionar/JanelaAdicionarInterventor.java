@@ -536,7 +536,10 @@ public class JanelaAdicionarInterventor extends Janela {
                 interventor.setFormacao(tfdFormacao.getText());
                 interventor.setEspecializacao(tfdEsp.getText());
                 interventor.setRemuneracao(tfdRemuneracao.getText());
-                interventor.setEstadoCivil(cbxECivil.getSelectedItem().toString());
+                
+                String eCivil = cbxECivil.getSelectedItem().toString();
+                if(eCivil.equals("Viúvo(a)")) { eCivil = "Viuvo(a)"; }
+                interventor.setEstadoCivil(eCivil);
                 interventor.setEndereco(tfdEndereco.getText());
                 interventor.setEstado(cbxEstado.getSelectedItem().toString());
                 interventor.setCidade(tfdCidade.getText());

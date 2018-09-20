@@ -76,7 +76,7 @@ public class ComboBoxesSQL extends JPanel {
         cbxPte = new ComboBoxSql();
         cbxAcao = new ComboBoxSql();
         cbxAcao.setModel(new DefaultComboBoxModel(
-                new Object[] {"Selecione...", "Previsão", "Demandas", "Intervenções", "Equipes"}));
+                new Object[] {"Selecione...", "Demandas", "Intervenções", "Modelagem e Previsão"}));
        
         atualizarModelo();
         
@@ -157,7 +157,7 @@ public class ComboBoxesSQL extends JPanel {
                 
                 // Ações
                 switch(a) {
-                    case "Previsão":
+                    case "Modelagem e Previsão":
                         
                         String cod = String.valueOf(arrayItem[0]);
                         int i = 1;
@@ -212,7 +212,6 @@ public class ComboBoxesSQL extends JPanel {
                         pnlAbaNordeste.addTab(t, null,
                                         new PainelConteudo(pnlIntervencao.getTabela()), t);
                         break;
-                    case "Equipes": break;
                 }
             } else {
                 DialogoAviso.show("Informe uma ação e ao menos a unidade");

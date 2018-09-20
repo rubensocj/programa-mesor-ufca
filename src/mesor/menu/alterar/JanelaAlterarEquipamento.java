@@ -34,7 +34,7 @@ public class JanelaAlterarEquipamento extends JanelaAdicionarEquipamento {
     private final JPanel pnlTabela;
     
     private JTextField tfdDescricao;
-    public PainelEquipamento pnlUnidade = new PainelEquipamento();
+    public PainelEquipamento pnlUnidade = new PainelEquipamento(290, 90);
     
     private static final int ALTERAR_UNIDADE = 0;
     private static final int ALTERAR_ITEM = 1;

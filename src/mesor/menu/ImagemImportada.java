@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package mesor.r;
+package mesor.menu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import mesor.menu.DialogoAviso;
 import mesor.menu.Janela;
 import mesor.menu.principal.PainelPrincipal;
+import mesor.r.SerieTemporal;
 
 /**
  * Plot.java
@@ -42,7 +43,7 @@ import mesor.menu.principal.PainelPrincipal;
  * @version 1.0 22/10/2017
  * @author Rubens Júnior
  */
-public class Plot1 extends JPanel {
+public class ImagemImportada extends JPanel {
     
     private static JLabel imageLabel;
     private static Graphics2D g2d;
@@ -64,9 +65,9 @@ public class Plot1 extends JPanel {
     /**
      * Construtor padrão.
      */
-    public Plot1() {
+    public ImagemImportada() {
         try {
-            img = ImageIO.read(Toolkit.getDefaultToolkit().getClass().getResource("/res/icone/bemvindo700.png"));
+            img = ImageIO.read(Toolkit.getDefaultToolkit().getClass().getResource("/res/icone/bemvindo650.png"));
         } catch (IOException e) {
             DialogoAviso.show(e.getMessage());
             e.printStackTrace();}
@@ -79,7 +80,7 @@ public class Plot1 extends JPanel {
      * @param x
      * @param y 
      */
-    public Plot1(int x, int y) {
+    public ImagemImportada(int x, int y) {
         // Pega a largura da aba que mostrará o plot
         wPnl = x;
         

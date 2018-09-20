@@ -31,7 +31,7 @@ import mesor.menu.Janela;
  * @version 1.0 7/2/2017
  * @author Rubens Jr
  */
-public class PainelEquipamento {
+public class PainelEquipamento extends JPanel {
 
     private String selecao1;
     private String selecao2;
@@ -89,10 +89,18 @@ public class PainelEquipamento {
     
     private final JButton btnExcluir = new JButton("Excluir item");
     
+    private int largura, altura;
+    
     /**
      * Construtor.
+     * @param x largura do painel
+     * @param y altura do painel
      */
-    public PainelEquipamento() {
+    public PainelEquipamento(int x, int y) {
+        
+        largura = x;
+        altura = y;
+        
         lblUni = new JLabel(" Unidade: *");
         lblSub = new JLabel(" Subunidade:");
         lblComp = new JLabel(" Componente:");
@@ -116,22 +124,28 @@ public class PainelEquipamento {
         
         ModeloTabela modeloUni = new ModeloTabela("SELECT * FROM unidade;");
         ordUni = new TableRowSorter<>(modeloUni);
+        
         tabUnidade = new JTable(modeloUni);
         tabUnidade.setRowSorter(ordUni);
         tabUnidade.setCellSelectionEnabled(false);
+        
         atualizarAparenciaDaTabela(TAB_UNIDADE);
+        
         tabSubunidade = new JTable(new ModeloTabela(
                     "SELECT * FROM subunidade;"));
         tabSubunidade.setCellSelectionEnabled(false);
         atualizarAparenciaDaTabela(TAB_SUBUNIDADE);
+        
         tabComponente = new JTable(new ModeloTabela(
                     "SELECT * FROM componente;"));
         tabComponente.setCellSelectionEnabled(false);
         atualizarAparenciaDaTabela(TAB_COMPONENTE);
+        
         tabParte = new JTable(new ModeloTabela(
                     "SELECT * FROM parte;"));
         tabParte.setCellSelectionEnabled(false);
         atualizarAparenciaDaTabela(TAB_PARTE);
+        
         habilitarTabela(TAB_UNIDADE);
         
         // Adiciona os MOUSELISTENER às painelTabelas.
@@ -268,7 +282,7 @@ public class PainelEquipamento {
             public void mouseExited(MouseEvent e) {}});
         
         // Cria JSCROLLPANE e configura as TABELAS.
-        Dimension dim = new Dimension(290, 90);
+        Dimension dim = new Dimension(largura, altura);
         
         // Unidade
         JScrollPane uPane = new JScrollPane(tabUnidade,
@@ -299,7 +313,6 @@ public class PainelEquipamento {
         tabParte.setPreferredScrollableViewportSize(dim);
         
         // Cria os paineis e organiza o painel maior.
-        
         inicializaEConfiguraBusca();
         
         // Subunidade
@@ -335,21 +348,21 @@ public class PainelEquipamento {
         sptPaneCmpPte.setOpaque(true);
 //        sptPaneCmpPte.addMouseListener(new DivisorSplitPaneListener(sptPaneCmpPte));
         sptPaneCmpPte.setOneTouchExpandable(true);
-        sptPaneCmpPte.setDividerLocation(170);
+        sptPaneCmpPte.setDividerLocation(0.5);
         divCmpPte = new DivisorSplitPane(false, sptPaneCmpPte);
         
         sptPaneSubCmp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
                                    pnlSub, sptPaneCmpPte);
         sptPaneSubCmp.setOpaque(true);
         sptPaneSubCmp.setOneTouchExpandable(true);
-        sptPaneSubCmp.setDividerLocation(170);        
+        sptPaneSubCmp.setDividerLocation(0.5);        
         divSubCmp = new DivisorSplitPane(false, sptPaneSubCmp);
         
         sptPaneUniSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
                                    pnlUni, sptPaneSubCmp);
         sptPaneUniSub.setOpaque(true);
         sptPaneUniSub.setOneTouchExpandable(true);
-        sptPaneUniSub.setDividerLocation(290);
+        sptPaneUniSub.setDividerLocation((int) Math.abs(largura*0.8));
         divUniSub = new DivisorSplitPane(true, sptPaneUniSub);
 
         // PainelEquipamento "Itens selecionados"

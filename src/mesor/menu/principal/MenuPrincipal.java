@@ -17,12 +17,23 @@ import mesor.sql.Consulta;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
+import mesor.menu.DialogoAviso;
 import mesor.menu.JanelaAjuda;
 import mesor.menu.Janela;
 import static mesor.menu.Janela.LOCAL;
 import mesor.menu.alterar.JanelaAlterarInterventor;
+import mesor.menu.painel.aba.PainelConteudo;
+import mesor.menu.painel.taxonomia.PainelEquipamento;
+import mesor.menu.painel.taxonomia.PainelEquipe;
+import mesor.menu.painel.taxonomia.PainelIntervencao;
+import mesor.menu.painel.taxonomia.PainelInterventor;
 import mesor.r.CamadaR;
 
 /**
@@ -34,7 +45,7 @@ import mesor.r.CamadaR;
 public class MenuPrincipal extends JFrame {
     
     private JMenuBar barraMenu;
-    private JMenu menuAdicionar, menuAlterar, menuAjuda;
+    private JMenu menuVisualizar, menuAdicionar, menuAlterar, menuAjuda;
     private JMenuItem adicionarDemanda, adicionarEquipamento,
                 adicionarIntervencao, adicionarInterventor, adicionarEquipe,
                 adicionarSistema;
@@ -42,6 +53,7 @@ public class MenuPrincipal extends JFrame {
                 alterarIntervencao, alterarInterventor, alterarEquipe,
                 alterarSistema;
     private JMenuItem ajudaConteudo, ajudaSobre;
+    private JMenuItem visualEquipamento, visualEquipe, visualInterventor;
         
     private final String eventSelected = "ActionEvent";
 
@@ -61,6 +73,9 @@ public class MenuPrincipal extends JFrame {
         
         menuAlterar = new JMenu("Alterar/Excluir");
         menuAlterar.setMnemonic(KeyEvent.VK_L);
+        
+        menuVisualizar = new JMenu("Visualizar");
+        menuVisualizar.setMnemonic(KeyEvent.VK_V);
         
         menuAjuda = new JMenu("Ajuda");
         menuAjuda.setMnemonic(KeyEvent.VK_J);
@@ -96,6 +111,11 @@ public class MenuPrincipal extends JFrame {
         alterarEquipe = new JMenuItem("Equipe de Intervenção", KeyEvent.VK_Q);
         alterarSistema = new JMenuItem("Sistema", KeyEvent.VK_S);
         
+        // Cria os itens do menu "Visualizar"
+        visualEquipamento = new JMenuItem("Equipamentos", KeyEvent.VK_E);
+        visualEquipe = new JMenuItem("Equipes de Intervenção", KeyEvent.VK_Q);
+        visualInterventor = new JMenuItem("Interventores", KeyEvent.VK_I);
+        
         // Cria os itens do menu "Ajuda"
         ajudaConteudo = new JMenuItem("Conteúdo da ajuda", KeyEvent.VK_C);
         ajudaSobre = new JMenuItem("Sobre", KeyEvent.VK_S);
@@ -114,6 +134,10 @@ public class MenuPrincipal extends JFrame {
         alterarInterventor.addActionListener(new alterarInterventor());
         alterarEquipe.addActionListener(new alterarEquipe());
         alterarSistema.addActionListener(new alterarSistema());
+        
+        visualEquipamento.addActionListener(new visualizar("Equipamento"));
+        visualEquipe.addActionListener(new visualizar("Equipe"));
+        visualInterventor.addActionListener(new visualizar("Interventor"));
         
         ajudaConteudo.addActionListener(new ajuda("Conteudo"));
         ajudaSobre.addActionListener(new ajuda("Sobre"));
@@ -134,6 +158,11 @@ public class MenuPrincipal extends JFrame {
         menuAlterar.add(alterarInterventor);
         menuAlterar.add(alterarSistema);
         
+        // Adiciona o item ao submenu "Visualizar"
+        menuVisualizar.add(visualEquipamento);
+        menuVisualizar.add(visualEquipe);
+        menuVisualizar.add(visualInterventor);
+        
         // Adiciona o item ao submenu "Ajuda"
         menuAjuda.add(ajudaConteudo);
         menuAjuda.add(ajudaSobre);
@@ -141,6 +170,7 @@ public class MenuPrincipal extends JFrame {
         // Adiciona o menu "Arquivo" à barra de menus
         barraMenu.add(menuAdicionar);
         barraMenu.add(menuAlterar);
+        barraMenu.add(menuVisualizar);
         barraMenu.add(menuAjuda);
 
         return barraMenu;
@@ -348,8 +378,71 @@ public class MenuPrincipal extends JFrame {
         public void actionPerformed(ActionEvent event) {
             System.out.println("ActionEvent: CONTEÚDO DA AJUDA.");
             if (eventSelected.equals("ActionEvent")) {
-                JanelaAjuda janela = new JanelaAjuda(tipoAjuda);
-                janela.mostrarFrame();
+                
+                File htmlFile;
+                try {
+                    htmlFile = new File(Toolkit.getDefaultToolkit().getClass().getResource("/res/ajuda/ajuda" + tipoAjuda + ".html").toURI());
+                    Desktop.getDesktop().browse(htmlFile.toURI());
+                } catch (URISyntaxException ex) {
+                    DialogoAviso.show(ex.getLocalizedMessage());
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    DialogoAviso.show(ex.getLocalizedMessage());
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Classe que lida com a ação dos itens do menu Visualizar
+     */
+    private class visualizar implements ActionListener {
+        
+        private final String tipoVis;
+        private Component cmp;
+        private String titulo;
+        
+        /**
+         * Construtor
+         * @param t tipo de elemento a ser visualizado. Pode ser "Equipamento",
+         * "Equipe" ou "Interventor"
+         */
+        public visualizar(String t) {
+            tipoVis = t;
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: VISUALIZAR.");
+            if (eventSelected.equals("ActionEvent")) {
+                
+                switch(tipoVis) {
+                    case "Equipamento":
+                        PainelEquipamento pnlEqp = new PainelEquipamento(
+                                    PainelPrincipal.pnlAbaNordeste.getWidth(),
+                                    PainelPrincipal.pnlAbaNordeste.getHeight());
+                        cmp = pnlEqp.painelTabelas();
+                        titulo = "Equipamentos";
+                        break;
+                    case "Equipe": 
+                        PainelEquipe pnlEq = new PainelEquipe(
+                                    PainelPrincipal.pnlAbaNordeste.getWidth(),
+                                    PainelPrincipal.pnlAbaNordeste.getHeight());
+                        cmp = pnlEq.painelTabelas();
+                        titulo = "Equipes de Intervenção";
+                        break;
+                    case "Interventor": 
+                        PainelInterventor pnlInt = new PainelInterventor(
+                                    PainelPrincipal.pnlAbaNordeste.getWidth(),
+                                    PainelPrincipal.pnlAbaNordeste.getHeight());
+                        titulo = "Interventores";
+                        cmp = pnlInt.painelTabelas();
+                        break;
+                }
+                
+                // Adiciona uma aba ao painel nordeste com o conteudo selecionado
+                PainelPrincipal.pnlAbaNordeste.addTab(titulo, null, cmp, titulo);
             }
         }
     }
