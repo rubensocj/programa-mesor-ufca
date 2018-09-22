@@ -348,21 +348,21 @@ public class PainelEquipamento extends JPanel {
         sptPaneCmpPte.setOpaque(true);
 //        sptPaneCmpPte.addMouseListener(new DivisorSplitPaneListener(sptPaneCmpPte));
         sptPaneCmpPte.setOneTouchExpandable(true);
-        sptPaneCmpPte.setDividerLocation(0.5);
+        sptPaneCmpPte.setDividerLocation((int) Math.abs(altura*0.3));
         divCmpPte = new DivisorSplitPane(false, sptPaneCmpPte);
         
         sptPaneSubCmp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
                                    pnlSub, sptPaneCmpPte);
         sptPaneSubCmp.setOpaque(true);
         sptPaneSubCmp.setOneTouchExpandable(true);
-        sptPaneSubCmp.setDividerLocation(0.5);        
+        sptPaneSubCmp.setDividerLocation((int) Math.abs(altura*0.3));        
         divSubCmp = new DivisorSplitPane(false, sptPaneSubCmp);
         
         sptPaneUniSub = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
                                    pnlUni, sptPaneSubCmp);
         sptPaneUniSub.setOpaque(true);
         sptPaneUniSub.setOneTouchExpandable(true);
-        sptPaneUniSub.setDividerLocation((int) Math.abs(largura*0.8));
+        sptPaneUniSub.setDividerLocation((int) Math.abs(largura*0.75));
         divUniSub = new DivisorSplitPane(true, sptPaneUniSub);
 
         // PainelEquipamento "Itens selecionados"

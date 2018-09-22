@@ -135,19 +135,4 @@ public class PainelPrincipal extends JPanel {
         
         return pnl;
     }
-    
-    private static class ActionAdicionarAba implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            pnlAbaNordeste.adicionarAba(
-//                        String.valueOf(e.getWhen()),
-//                        new PainelConteudo(new Plot()),
-//                        String.valueOf(e.getWhen()));
-//            pnlAbaSudeste.adicionarAba(
-//                        String.valueOf(e.getWhen()),
-//                        new PainelConteudo(TabelaParametrosEICs.getTabelaICsEParameters()),
-//                        String.valueOf(e.getWhen()));
-        }
-    }
-    
 }

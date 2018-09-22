@@ -78,7 +78,7 @@ public class MenuPrincipal extends JFrame {
         menuVisualizar.setMnemonic(KeyEvent.VK_V);
         
         menuAjuda = new JMenu("Ajuda");
-        menuAjuda.setMnemonic(KeyEvent.VK_J);
+        menuAjuda.setMnemonic(KeyEvent.VK_D);
         
         /**      
          * 1. Legenda exibida quando cursor do mouse passar sobre o componente:

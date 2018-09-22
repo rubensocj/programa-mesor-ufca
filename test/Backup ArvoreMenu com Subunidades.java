@@ -33,7 +33,7 @@ import mesor.sql.Lista;
  *
  * @author Rubens Oliveira da Cunha J�nior
  */
-public class ArvoreMenu {
+ class ArvoreMenu {
     
     static JTree tree;
     static DefaultMutableTreeNode noSistema;
@@ -308,15 +308,15 @@ public class ArvoreMenu {
     public static class ActionPrevisao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            pnlAbaNordeste.adicionarAba(
-                        String.valueOf(e.getWhen()),
-                        new PainelConteudo(new Plot()),
-                        String.valueOf(e.getWhen()));
-            pnlAbaSudeste.adicionarAba(
-                        String.valueOf(e.getWhen()),
-                        new PainelConteudo(
-                                TabelaParametrosEICs.getTabelaICsEParameters()),
-                        String.valueOf(e.getWhen()));
+//            pnlAbaNordeste.adicionarAba(
+//                        String.valueOf(e.getWhen()),
+//                        new PainelConteudo(new Plot()),
+//                        String.valueOf(e.getWhen()));
+//            pnlAbaSudeste.adicionarAba(
+//                        String.valueOf(e.getWhen()),
+//                        new PainelConteudo(
+//                                TabelaParametrosEICs.getTabelaICsEParameters()),
+//                        String.valueOf(e.getWhen()));
         }
     }
     
@@ -324,14 +324,14 @@ public class ArvoreMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Cria um painel demanda da unidade selecionada na tree
-            PainelDemanda pnlDemanda = new PainelDemanda(
-                        new Unidade(NOME_SELECAO_NO, 
-                                    Integer.parseInt(CODIGO_SELECAO_NO)));
-
-            pnlAbaNordeste.adicionarAba(
-                        String.valueOf(e.getWhen()),
-                        new PainelConteudo(pnlDemanda.getTabela()),
-                        String.valueOf(e.getWhen()));
+//            PainelDemanda pnlDemanda = new PainelDemanda(
+//                        new Unidade(NOME_SELECAO_NO, 
+//                                    Integer.parseInt(CODIGO_SELECAO_NO)));
+//
+//            pnlAbaNordeste.adicionarAba(
+//                        String.valueOf(e.getWhen()),
+//                        new PainelConteudo(pnlDemanda.getTabela()),
+//                        String.valueOf(e.getWhen()));
         }
     }
     

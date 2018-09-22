@@ -118,10 +118,10 @@ public class Plot extends JPanel {
      * Exibe o plot do R na tela. Redimensiona a imagem exibida de acordo com
      * as dimensões da aba onde será mostrada, mantendo o aspect ratio original.
      * 
-     * @param x
-     * @param y 
+     * @param x largura do painel nordeste no momento da ação
+     * @param y altura do painel nordeste no momento da ação
      * @param t array de inteiros com os ids de cada nível taxonomico (sistema até parte)
-     * @param pn
+     * @param pn trecho do nome do arquivo que diz respeito ao codigo do elemento e a data da ação
      */
     public Plot(int x, int y, int[] t, String pn) {
         // Pega a largura da aba que mostrará o plot
@@ -201,6 +201,7 @@ public class Plot extends JPanel {
   * This methog resizes an image by resampling its pixels
   * @param src The image to be resized
   * @return The resized image
+  * @deprecated 
   */
 
   private BufferedImage resizeImage(BufferedImage src) {
@@ -242,15 +243,15 @@ public class Plot extends JPanel {
 
   }//resize image 
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        JFrame frm1 = new JFrame();
-        frm1.add(new Plot());
-        frm1.setVisible(true);
-        frm1.pack();
-        frm1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String[] args) {
+//        // TODO code application logic here
+//        JFrame frm1 = new JFrame();
+//        frm1.add(new Plot());
+//        frm1.setVisible(true);
+//        frm1.pack();
+//        frm1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//    }
 }
