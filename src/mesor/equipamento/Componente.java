@@ -2,7 +2,7 @@ package mesor.equipamento;
 
 import java.util.Vector;
 
-import mesor.sql.Consulta;
+import mesor.sql.Consulta; //Teste
 
 /**
  * Componente.java
