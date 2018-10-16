@@ -7,8 +7,10 @@
 package mesor.menu.principal.sistema;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,7 +60,7 @@ public class ComboBoxesSQL extends JPanel {
      * Construtores.
      */
     public ComboBoxesSQL() {
-        super(new BorderLayout());
+        super(new BorderLayout(0, 10));
         
         // Inicializa labels
         lblSis = new JLabel("Sistemas");

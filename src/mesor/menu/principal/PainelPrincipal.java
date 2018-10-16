@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -63,10 +65,12 @@ public class PainelPrincipal extends JPanel {
     public PainelPrincipal() {        
         // Inicializa o painel Nordeste com abas e importa a imagem de boas vindas
         pnlAbaNordeste = new PainelEmAbas();
+        pnlAbaNordeste.setBorder(BorderFactory.createEmptyBorder());
         pnlAbaNordeste.addTab("Bem-vindo", null, (Component) new PainelConteudo(new ImagemImportada()), "");
 
         // Inicializa o painel sudeste com abas
         pnlAbaSudeste = new PainelEmAbas();
+        pnlAbaSudeste.setBorder(BorderFactory.createEmptyBorder());
         
         // Inicializa a JTree
         cbxSQL = new ComboBoxesSQL();
@@ -77,6 +81,7 @@ public class PainelPrincipal extends JPanel {
         pnlNordeste.add(pnlAbaNordeste);
         
         pnlOeste = new JPanel(new FlowLayout());
+        pnlOeste.setBorder(BorderFactory.createEmptyBorder());
         pnlOeste.add(cbxSQL);
 
         pnlSudeste = new JPanel(new BorderLayout());

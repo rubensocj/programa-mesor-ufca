@@ -16,6 +16,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
@@ -33,6 +34,7 @@ public class PainelEmAbas extends JTabbedPane {
     public PainelEmAbas() {
         setTabPlacement(JTabbedPane.TOP);
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        setBorder(BorderFactory.createEmptyBorder());
         setOpaque(true);
         setPreferredSize(new Dimension(400, 200));
     }

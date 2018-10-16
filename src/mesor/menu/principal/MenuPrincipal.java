@@ -13,8 +13,6 @@ import mesor.menu.adicionar.JanelaAdicionarDemanda;
 import mesor.menu.adicionar.JanelaAdicionarSistema;
 import mesor.menu.adicionar.JanelaAdicionarInterventor;
 
-import mesor.sql.Consulta;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -25,16 +23,11 @@ import java.util.logging.Logger;
 
 import javax.swing.*;
 import mesor.menu.DialogoAviso;
-import mesor.menu.JanelaAjuda;
 import mesor.menu.Janela;
-import static mesor.menu.Janela.LOCAL;
 import mesor.menu.alterar.JanelaAlterarInterventor;
-import mesor.menu.painel.aba.PainelConteudo;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelEquipe;
-import mesor.menu.painel.taxonomia.PainelIntervencao;
 import mesor.menu.painel.taxonomia.PainelInterventor;
-import mesor.r.CamadaR;
 
 /**
  * MenuPrincipal.java
@@ -45,7 +38,9 @@ import mesor.r.CamadaR;
 public class MenuPrincipal extends JFrame {
     
     private JMenuBar barraMenu;
-    private JMenu menuVisualizar, menuAdicionar, menuAlterar, menuAjuda;
+    
+    private JMenu menuArquivo, menuVisualizar, menuAdicionar, menuAlterar, menuAjuda;
+    private JMenuItem arquivoAlterarBanco, arquivoEnviarBanco, arquivoObterBanco;
     private JMenuItem adicionarDemanda, adicionarEquipamento,
                 adicionarIntervencao, adicionarInterventor, adicionarEquipe,
                 adicionarSistema;
@@ -57,21 +52,26 @@ public class MenuPrincipal extends JFrame {
         
     private final String eventSelected = "ActionEvent";
 
-    /**
-     *
-     */
     public static final PainelPrincipal PAINEL_PRINCIPAL = new PainelPrincipal();
     
     private JMenuBar criaBarraMenu() {
         // Cria a barra de menu
         barraMenu = new JMenuBar();
-        barraMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
+        barraMenu.setMaximumSize(new Dimension(56, 32769));
+        barraMenu.setMinimumSize(new Dimension(0,2));
+        barraMenu.setPreferredSize(new Dimension(56,21));
+        barraMenu.setBorder(BorderFactory.createEmptyBorder());
+        barraMenu.setOpaque(true);
+        barraMenu.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         
         /* Cria os menus e define os atalhos do teclado. */
-        menuAdicionar = new JMenu("Adicionar");
-        menuAdicionar.setMnemonic(KeyEvent.VK_A);
+        menuArquivo = new JMenu("Arquivo");
+        menuArquivo.setMnemonic(KeyEvent.VK_A);
         
-        menuAlterar = new JMenu("Alterar/Excluir");
+        menuAdicionar = new JMenu("Adicionar");
+        menuAdicionar.setMnemonic(KeyEvent.VK_D);
+        
+        menuAlterar = new JMenu("Editar");
         menuAlterar.setMnemonic(KeyEvent.VK_L);
         
         menuVisualizar = new JMenu("Visualizar");
@@ -94,6 +94,11 @@ public class MenuPrincipal extends JFrame {
          * 
          * menuArquivo.addSeparator(); 
          */
+        
+        // Cria os itens do menu "Arquivo"
+        arquivoAlterarBanco = new JMenuItem("Alterar banco de dados");
+        arquivoEnviarBanco = new JMenuItem("Enviar banco de dados...");
+        arquivoObterBanco = new JMenuItem("Obter banco de dados...");
         
         // Cria os itens do menu "Adicionar"
         adicionarDemanda = new JMenuItem("Demanda", KeyEvent.VK_D);
@@ -121,6 +126,10 @@ public class MenuPrincipal extends JFrame {
         ajudaSobre = new JMenuItem("Sobre", KeyEvent.VK_S);
         
         // Adiciona o ActionListener aos itens
+        arquivoAlterarBanco.addActionListener(new arquivoAlterarBanco());
+        arquivoEnviarBanco.addActionListener(new arquivoEnviarBanco());
+        arquivoObterBanco.addActionListener(new arquivoObterBanco());
+        
         adicionarEquipamento.addActionListener(new adicionarEquipamento());
         adicionarIntervencao.addActionListener(new adicionarIntervencao());
         adicionarInterventor.addActionListener(new adicionarInterverntor());
@@ -141,6 +150,11 @@ public class MenuPrincipal extends JFrame {
         
         ajudaConteudo.addActionListener(new ajuda("Conteudo"));
         ajudaSobre.addActionListener(new ajuda("Sobre"));
+        
+        // Adiciona o item ao submenu "Arquivo"
+        menuArquivo.add(arquivoAlterarBanco);
+        menuArquivo.add(arquivoEnviarBanco);
+        menuArquivo.add(arquivoObterBanco);
         
         // Adiciona o item ao submenu "Adicionar"
         menuAdicionar.add(adicionarDemanda);
@@ -168,6 +182,7 @@ public class MenuPrincipal extends JFrame {
         menuAjuda.add(ajudaSobre);
         
         // Adiciona o menu "Arquivo" à barra de menus
+        barraMenu.add(menuArquivo);
         barraMenu.add(menuAdicionar);
         barraMenu.add(menuAlterar);
         barraMenu.add(menuVisualizar);
@@ -227,6 +242,42 @@ public class MenuPrincipal extends JFrame {
     // -------------------------------------------------------------------------
     // Classes privadas.
     // -------------------------------------------------------------------------
+    
+    private class arquivoAlterarBanco implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ALTERAR BANCO.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAdicionarEquipamento janela;
+                janela = new JanelaAdicionarEquipamento();
+                janela.mostrar("Adicionar unidade de equipamento", 0);
+            }
+        }
+    }
+    
+    private class arquivoObterBanco implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ALTERAR BANCO.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAdicionarEquipamento janela;
+                janela = new JanelaAdicionarEquipamento();
+                janela.mostrar("Adicionar unidade de equipamento", 0);
+            }
+        }
+    }
+    
+    private class arquivoEnviarBanco implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("ActionEvent: ALTERAR BANCO.");
+            if (eventSelected.equals("ActionEvent")) {
+                JanelaAdicionarEquipamento janela;
+                janela = new JanelaAdicionarEquipamento();
+                janela.mostrar("Adicionar unidade de equipamento", 0);
+            }
+        }
+    }
     
     private class adicionarEquipamento implements ActionListener {
         @Override
@@ -452,8 +503,18 @@ public class MenuPrincipal extends JFrame {
      * @param args 
      */
     public static void main(String[] args) {
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
-//        CamadaR.main(args);
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //UIManager.put("swing.boldMetal", Boolean.FALSE);
         mostraMenuPrincipal();
         }
 }
