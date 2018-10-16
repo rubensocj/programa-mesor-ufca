@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 
 import mesor.menu.DialogoAviso;
 
@@ -34,14 +33,15 @@ public class Consulta {
     private static final String BD_HOST = V_HOST + ":3306";
     // Nome do banco de dados.
 //    private static final String BD_NAME = "sql10190138";    // online
-        private static final String BD_NAME = "bdprograma";   // localhost
+    private static final String BD_NAME = "bdprograma";   // localhost
+    private static String NEW_BD_NAME = "bdprograma";   // localhost
 //        private static final String BD_NAME = "u789035304_mesor";   // remoto
 
     // Obsoleto
 //    private static final String BD_NAME = "bdmesorprograma";
     
     // URL de conexão
-    private static final String BD_URL = "jdbc:mysql://" + BD_HOST + "/" + BD_NAME;
+    private static String BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME;
     
     // Acesso ao servidor: usuário e senha.
 //    private static final String USERNAME = "sql10190138";   // online
@@ -1526,12 +1526,34 @@ public class Consulta {
         return res;
     }
     
+     /**
+      * Altera o banco de dados de trabalho do usuario
+      * 
+      * @param newBdName 
+      */
+    public static void alterarBanco(String newBdName) {
+        // verifica se os bancos tem nomes iguais
+        if(newBdName.equals(BD_NAME)) {
+            DialogoAviso.show("Não é possível alterar o banco de dados. Os bancos devem ter nomes diferentes");
+        } else {
+            // desconecta da conexao atual
+            desconectar();
+            // altera o nome do banco
+            Consulta.NEW_BD_NAME = newBdName;
+            // conecta ao novo banco
+            conectar();
+        }
+    }
+    
     /**
      * Tenta conctar ao banco de dados e captura possíveis exceções, exibindo
      * diálogo de "erro".
      */
     public static void testarConexão() {
         try {
+            // certifica-se de atualizar a url
+            BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME;
+            
             // Testa se a conexão é nula
             if(connection == null) {
                 System.out.println("Conexão nula. Iniciando conexão com o servidor...");
@@ -1737,7 +1759,53 @@ public class Consulta {
      */
     public static void desconectar() {
         try {
+            
+            inserirComponente.close();
+            inserirDemanda.close();
+            inserirEquipe.close();
+            inserirExperienciaRequerida.close();
+            inserirHabilidadeRequerida.close();
+            inserirIntervencao.close();
+            inserirInterventor.close();
+            inserirObjetivoEspecifico.close();
+            inserirParte.close();
+            inserirSistema.close();
+            inserirSubunidade.close();
+            inserirUnidade.close();
+            
+            alterarComponente.close();
+            alterarDemanda.close();
+            alterarEquipe.close();
+            alterarExperienciaRequerida.close();
+            alterarHabilidadeRequerida.close();
+            alterarIntervencao.close();
+            alterarInterventor.close();
+            alterarObjetivoEspecifico.close();
+            alterarParte.close();
+            alterarSistema.close();
+            alterarSubunidade.close();
+            alterarUnidade.close();
+            
+            atualizarVinculoEquipe.close();
+            desvincularEquipe.close();
+            vincularEquipe.close();
+            vincularIntervencao.close();
+            
+            deletarComponente.close();
+            deletarDemanda.close();
+            deletarEquipe.close();
+            deletarExperienciaRequerida.close();
+            deletarHabilidadeRequerida.close();
+            deletarIntervencao.close();
+            deletarInterventor.close();
+            deletarObjetivoEspecifico.close();
+            deletarParte.close();
+            deletarSistema.close();
+            deletarSubunidade.close();
+            deletarUnidade.close();
+            
             connection.close();
+            
             conectado = false;
         }
         catch(SQLException sqlException) {

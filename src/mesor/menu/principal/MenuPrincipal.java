@@ -24,10 +24,12 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import mesor.menu.DialogoAviso;
 import mesor.menu.Janela;
+import mesor.menu.SeletorArquivo;
 import mesor.menu.alterar.JanelaAlterarInterventor;
 import mesor.menu.painel.taxonomia.PainelEquipamento;
 import mesor.menu.painel.taxonomia.PainelEquipe;
 import mesor.menu.painel.taxonomia.PainelInterventor;
+import mesor.sql.Consulta;
 
 /**
  * MenuPrincipal.java
@@ -126,9 +128,9 @@ public class MenuPrincipal extends JFrame {
         ajudaSobre = new JMenuItem("Sobre", KeyEvent.VK_S);
         
         // Adiciona o ActionListener aos itens
-        arquivoAlterarBanco.addActionListener(new arquivoAlterarBanco());
-        arquivoEnviarBanco.addActionListener(new arquivoEnviarBanco());
-        arquivoObterBanco.addActionListener(new arquivoObterBanco());
+        arquivoAlterarBanco.addActionListener(new banco());
+        arquivoEnviarBanco.addActionListener(new banco());
+        arquivoObterBanco.addActionListener(new banco());
         
         adicionarEquipamento.addActionListener(new adicionarEquipamento());
         adicionarIntervencao.addActionListener(new adicionarIntervencao());
@@ -243,42 +245,48 @@ public class MenuPrincipal extends JFrame {
     // Classes privadas.
     // -------------------------------------------------------------------------
     
-    private class arquivoAlterarBanco implements ActionListener {
+    private class banco implements ActionListener {
+        
         @Override
         public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR BANCO.");
-            if (eventSelected.equals("ActionEvent")) {
-                JanelaAdicionarEquipamento janela;
-                janela = new JanelaAdicionarEquipamento();
-                janela.mostrar("Adicionar unidade de equipamento", 0);
+            
+            // cria o seletor de pastas
+            JFileChooser fc = new JFileChooser();
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fc.setApproveButtonText("Selecionar pasta");
+            
+            // indica se o botao de selecao de diretorio foi selecionado
+            int op = 0;
+            if(event.getSource() == arquivoAlterarBanco) {
+                // mostra o dialog para selecionar o diretorio
+                op = fc.showDialog(MenuPrincipal.this, null);
+                
+                if(op == JFileChooser.APPROVE_OPTION) {
+                    // referencia o item selecionado
+                    File file = fc.getSelectedFile();
+                    
+                    // pega o nome da pasta selecionada como o nome do novo banco
+                    String NEW_BD_NAME = file.getName();
+                    
+                    // altera o nome do banco 
+                    Consulta.alterarBanco(NEW_BD_NAME);
+                    
+                    // atualiza comboboxs
+                    PainelPrincipal.cbxSQL.atualizarModelo();
+                }
+            } else if (event.getSource() == arquivoObterBanco) {
+                // mostra o dialog para selecionar o diretorio
+                op = fc.showDialog(MenuPrincipal.this, null);
+                
+                if(op == JFileChooser.APPROVE_OPTION) {
+                    System.out.println("selcionadoooo");
+                }
+            } else if (event.getSource() ==  arquivoEnviarBanco) {
+                
             }
         }
     }
-    
-    private class arquivoObterBanco implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR BANCO.");
-            if (eventSelected.equals("ActionEvent")) {
-                JanelaAdicionarEquipamento janela;
-                janela = new JanelaAdicionarEquipamento();
-                janela.mostrar("Adicionar unidade de equipamento", 0);
-            }
-        }
-    }
-    
-    private class arquivoEnviarBanco implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("ActionEvent: ALTERAR BANCO.");
-            if (eventSelected.equals("ActionEvent")) {
-                JanelaAdicionarEquipamento janela;
-                janela = new JanelaAdicionarEquipamento();
-                janela.mostrar("Adicionar unidade de equipamento", 0);
-            }
-        }
-    }
-    
+
     private class adicionarEquipamento implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -516,5 +524,6 @@ public class MenuPrincipal extends JFrame {
         }
         //UIManager.put("swing.boldMetal", Boolean.FALSE);
         mostraMenuPrincipal();
+        //SeletorArquivo sl = new SeletorArquivo();
         }
 }
