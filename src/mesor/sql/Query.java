@@ -12,6 +12,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mesor.menu.DialogoAviso;
 /**
  * Query.java
@@ -89,5 +91,32 @@ public class Query extends Consulta{
         // Determina o número de linhas no ResultSet.
         resultSet.last(); // Move para a última linha.
         numLinhas = resultSet.getRow(); // Pega o número de linhas.
+    }
+    
+    /**
+     * Faz uma consulta SQL e pega o resultado desta como uma variável em Java.
+     * Usada para fazer consultas simples, como a busca pelo diretório "data"
+     * 
+     * @param query
+     * @return 
+     */
+    public static Object getQueryResultAsObject(String query) {
+        Object result = null;
+        
+        try {
+//            resultSet = statement.executeQuery("SET @var := (" + query + ");");
+            statement = Consulta.connection.createStatement(
+                        ResultSet.CONCUR_READ_ONLY,
+                        ResultSet.TYPE_SCROLL_INSENSITIVE);
+
+            setQuery(query);
+            
+            result = resultSet.getObject(1);
+        } catch (SQLException ex) {
+            DialogoAviso.show("SQLException em getQueryResultAsObject()");
+            Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result;
     }
 }

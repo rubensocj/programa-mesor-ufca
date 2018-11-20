@@ -37,11 +37,20 @@ public class Consulta {
     private static String NEW_BD_NAME = "bdprograma";   // localhost
 //        private static final String BD_NAME = "u789035304_mesor";   // remoto
 
+    private static final String INSTANCE_NAME = "mesor-intervention-manager";
     // Obsoleto
 //    private static final String BD_NAME = "bdmesorprograma";
     
+    // conexao ao google cloud
+    private static final String URL_GCLOUD = String.format(
+        "jdbc:mysql://google/%s?cloudSqlInstance=%s" +
+        "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+            BD_NAME,
+            INSTANCE_NAME);
+    
     // URL de conexão
-    private static String BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME;
+    private static String BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME; // localhost
+//    private static String BD_URL = URL_GCLOUD; // google cloud
     
     // Acesso ao servidor: usuário e senha.
 //    private static final String USERNAME = "sql10190138";   // online
@@ -60,7 +69,7 @@ public class Consulta {
 
     // gerencia a conexão.
     public static Connection connection = null;
-    private static ResultSet resultSet = null;
+    public static ResultSet resultSet = null;
     
     // lida com a conexão com o BD
     public static boolean conectado = false;
@@ -1552,7 +1561,7 @@ public class Consulta {
     public static void testarConexão() {
         try {
             // certifica-se de atualizar a url
-            BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME;
+            //BD_URL = "jdbc:mysql://" + BD_HOST + "/" + NEW_BD_NAME;
             
             // Testa se a conexão é nula
             if(connection == null) {
