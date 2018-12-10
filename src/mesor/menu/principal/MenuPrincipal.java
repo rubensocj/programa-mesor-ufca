@@ -267,53 +267,58 @@ public class MenuPrincipal extends JFrame {
                 // Pega a pasta "data" do MySQL
                 Object dataDir = Query.getQueryResultAsObject("SELECT @@datadir");
                 
+                // Path do bdPrograma
+                String pathBdPrograma = dataDir.toString().concat("bdprograma");
+                
+                try {
+                    // Criar aquivo zip do banco escolhido na pasta de execução do programa
+                    Zip.ziparDiretorio(new File(pathBdPrograma), new File(System.getProperty("user.dir")));
+                    
+                    // Abre o navegador do windows na pasta de execução do programa
+                    Runtime.getRuntime().exec("explorer.exe /select," + System.getProperty("user.dir"));
+                } catch (IOException ex) {
+                    DialogoAviso.show("IOException em Zip.ziparDiretorio()");
+                    Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 // cria o seletor de pastas
-                JFileChooser fc = new JFileChooser((String) dataDir);
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fc.setApproveButtonText("Selecionar banco de dados");
+//                JFileChooser fc = new JFileChooser();
+//                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//                fc.setApproveButtonText("Selecionar pasta destino");
                 
                 // Novo seletor de arquivo para escolher o caminho destino
                 // mostra o dialog para selecionar o diretorio
-                op = fc.showDialog(MenuPrincipal.this, null);
+//                op = fc.showDialog(MenuPrincipal.this, null);
                 
                 // Quando a pasta for selecionada
-                if(op == JFileChooser.APPROVE_OPTION) {
-                    // referencia o item selecionado
-                    File diretorioOrigem = fc.getCurrentDirectory();
-                    
-//                    // Seleciona a pasta destino do arquivo zipado
-//                    JFileChooser fc2 = new JFileChooser();
-//                    fc2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//                    fc2.setApproveButtonText("Selecionar pasta destino");
-//                    
-//                    int op2 = 0;
-//                    op2 = fc2.showDialog(fc, null);
-//                    
-//                    if(op2 == JFileChooser.APPROVE_OPTION) {
-//                        // Pega o diretorio destino
-//                        File diretorioDestino = fc2.getCurrentDirectory();
-                        
-                        try {
-                            // Criar aquivo zip do banco escolhido na pasta destino selecionada
-                            Zip.ziparDiretorio(diretorioOrigem, null);
-                        } catch (IOException ex) {
-                            DialogoAviso.show("IOException em Zip.ziparDiretorio()");
-                            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-//                    }
-                }                
-            } else if (event.getSource() ==  arquivoObterBanco) {
-                // configurar diretorios para incluir banco obtido por email a pasta data do MySQL
-                System.out.println("arquivoObterBanco");
-
-                // cria o seletor de pastas
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fc.setApproveButtonText("Selecionar pasta");
-                
-                // mostra o dialog para selecionar o diretorio
-                op = fc.showDialog(MenuPrincipal.this, null);
+//                if(op == JFileChooser.APPROVE_OPTION) {
+//                    // referencia o path pra o bdprograma
+//                    File diretorioOrigem = new File(pathBdPrograma);
+//
+//                    // referencia o item selecionado                    
+//                    File diretorioDestino = fc.getCurrentDirectory();
+//                        
+//                        try {
+//                            // Criar aquivo zip do banco escolhido na pasta destino selecionada
+//                            Zip.ziparDiretorio(diretorioOrigem, diretorioDestino);
+//                        } catch (IOException ex) {
+//                            DialogoAviso.show("IOException em Zip.ziparDiretorio()");
+//                            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                }                
             }
+//            else if (event.getSource() ==  arquivoObterBanco) {
+//                // configurar diretorios para incluir banco obtido por email a pasta data do MySQL
+//                System.out.println("arquivoObterBanco");
+//
+//                // cria o seletor de pastas
+//                JFileChooser fc = new JFileChooser();
+//                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//                fc.setApproveButtonText("Selecionar pasta");
+//                
+//                // mostra o dialog para selecionar o diretorio
+//                op = fc.showDialog(MenuPrincipal.this, null);
+//            }
             
             
             
