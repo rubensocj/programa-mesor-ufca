@@ -273,6 +273,9 @@ public class MenuPrincipal extends JFrame {
                 try {
                     // Criar aquivo zip do banco escolhido na pasta de execução do programa
                     Zip.ziparDiretorio(new File(pathBdPrograma), new File(System.getProperty("user.dir")));
+                    // informar na mensagaem de confirmacao o user.dir
+                    // informar na mensagem nome do arquivo .zip
+                    // opção ABRIR banco de dados
                     
                     // Abre o navegador do windows na pasta de execução do programa
                     Runtime.getRuntime().exec("explorer.exe /select," + System.getProperty("user.dir"));

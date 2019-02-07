@@ -26,9 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import mesor.menu.DialogoAviso;
 
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
-
 /**
  *
  * @author Rubens Oliveira da Cunha Júnior
